@@ -25,3 +25,4 @@
 * Scheduling calendar: react-calendar
 * Notifications & Modals: ?
 * Styling: ?
+* Skill Chart: chart.js
