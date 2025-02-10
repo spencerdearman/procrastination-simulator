@@ -1,4 +1,4 @@
-class Time {
+export default class Time {
   constructor(scale = 60) {
       this.realSecondsPerGameHour = scale; /* Note, 60 real seconds = 1 game hr */
       this.startTime = Date.now(); // Store the real-world start time
