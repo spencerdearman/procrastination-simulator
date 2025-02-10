@@ -9,6 +9,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
+import { GameContext} from'./game-context/GameContext';
 
 //Registering the Chart.js components
 ChartJS.register(
