@@ -1,8 +1,8 @@
-import Attributes from './Attributes.js';
+import Attributes from "./Attributes.js";
 
 export default class Player {
-    constructor(name){
-        this.name = name;
-        this.attributes = new Attributes();
-    }
+  constructor(name) {
+    this.name = name;
+    this.attributes = new Attributes();
+  }
 }
