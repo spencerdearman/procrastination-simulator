@@ -1,5 +1,8 @@
 # Developer Guidelines
 
+> [!IMPORTANT]
+> Run `npm install` before doing any work in this repository
+
 ## Pre-Commit Hooks
 
 We use [Husky](https://typicode.github.io/husky/) to handle our pre-commit
