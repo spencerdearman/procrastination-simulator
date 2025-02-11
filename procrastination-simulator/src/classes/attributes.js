@@ -19,8 +19,4 @@ export default class Attributes {
             this[attribute] = Math.min(100, Math.max(0, this[attribute] - amount));
         }
     }
-
-    calculateSkillGraph() {
-        //To be implemented
-    }
 }

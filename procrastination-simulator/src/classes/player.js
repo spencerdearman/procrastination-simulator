@@ -1,4 +1,4 @@
-import Attributes from './attributes.js';
+import Attributes from './Attributes.js';
 
 export default class Player {
     constructor(name){
