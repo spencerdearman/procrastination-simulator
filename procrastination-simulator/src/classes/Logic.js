@@ -1,4 +1,4 @@
-export default class GameManager {
+export default class Logic {
     constructor(player, days) {
         this.player = player; 
         this.currentDayIndex = 0;
