@@ -47,7 +47,6 @@ export function App() {
             <Radar data={data} />
         </div>
         </body>
-      
     </div>
   );
 }
