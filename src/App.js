@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import Player from './classes/Player';
-import PlayerStats from './components/PlayerStats';
+import React, { useState } from "react";
+import Player from "./classes/Player";
+import PlayerStats from "./components/PlayerStats";
 
 export function App() {
   const [player] = useState(new Player("Player 1"));
