@@ -12,7 +12,7 @@ export default class Task {
     #startTime; //Date
     #endTime; //Date
     #completed = false;
-    #status = "PENDING";
+    #status = "PENDING"; //Default status is PENDING
     #optional; //bool
     #movable; //bool
     #current; //bool
@@ -83,8 +83,37 @@ export default class Task {
         //to implement
     }
 
-    completeTask(){
-        //confirm if I need this function
+    completeTask(playerAttributes){
+        if (typeof playerAttributes !== "object" || playerAttributes === null) {
+            console.error("Invalid playerAttributes provided. Expected an object.");
+            return;
+        }
+
+        if (!this.#completed){
+            this.#completed = true;
+            this.setStatus("COMPLETE");
+
+            if (Object.keys(this.#attributeImpacts).length === 0) {
+                console.warn(`Task "${this.name}" has no attribute impacts defined.`);
+            }
+
+            //Apply attribute impacts to player attributes
+            for (let key in this.#attributeImpacts) {
+                if (playerAttributes.hasOwnProperty(key)){
+                    playerAttributes[key] += this.#attributeImpacts[key];
+                    playerAttributes[key] = Math.min(100, Math.max(0, playerAttributes[key]));
+                } else {
+                    console.error(`Player attributes lacks attribute: ${key}`)
+                }
+            }
+            console.log(`Task "${this.name}" completed successfully.`);
+        } else {
+            console.warn(`Task "${this.name}" is already completed.`);
+        }
+    }
+
+    isOverdue() {
+        //to implement
     }
 
     resetCompleted(){
