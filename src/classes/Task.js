@@ -140,4 +140,21 @@ export default class Task {
     getDifficulty(){
         return this.#difficulty;
     }
+
+    toJSON() {
+        return {
+            name: this.name,
+            category: this.category,
+            startTime: this.#startTime,
+            endTime: this.#endTime,
+            duration: this.#duration,
+            completed: this.#completed,
+            attributeImpacts: this.#attributeImpacts,
+            difficulty: this.#difficulty,
+        };
+    }
+
+    debug() {
+        console.log(this.toJSON);
+    }
 }
