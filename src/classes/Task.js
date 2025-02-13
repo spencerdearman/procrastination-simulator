@@ -12,6 +12,7 @@ export default class Task {
     #startTime; //Date
     #endTime; //Date
     #completed = false;
+    #status = "PENDING";
     #optional; //bool
     #movable; //bool
     #current; //bool
@@ -19,9 +20,22 @@ export default class Task {
     #attributeImpacts = {"academics": 0, "socialLife": 0, "energy": 0, "mentalHealth": 0 };
     #difficulty; //scale of 1 - 4
 
-    constructor(name){
+    constructor(name) {
         this.name = name;
         this.category; // values limited to Category enum
+    }
+
+    setStatus(status) {
+        validStatus = ["PENDING, COMPLETE, IN_PROGRESS, ABORTED"];
+        if (validStatus.includes(status)){
+            this.#status = status;
+        } else{
+            console.error(`Invalid status: ${status}. Allowed statuses are: ${validStatuses.join(', ')}`);
+        }
+    }
+
+    getStatus() {
+        return this.#status;
     }
 
     set category(value) {
@@ -53,14 +67,6 @@ export default class Task {
         //to implement
     }
 
-    setDueDate() {
-        //to implement
-    }
-
-    getDueDate() {
-        //to implement
-    }
-
     setDuration() {
         //to implement
     }
@@ -83,14 +89,6 @@ export default class Task {
 
     resetCompleted(){
         this.#completed = false;
-    }
-
-    getTask(){
-        //to implement
-    }
-
-    setTask(){
-        //to implement
     }
 
     setOptional(optional) {
