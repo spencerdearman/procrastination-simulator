@@ -31,8 +31,9 @@ export default class Task {
 
   setStatus(status) {
     const validStatus = ["PENDING, COMPLETE, IN_PROGRESS, ABORTED"];
-    if (validStatus.includes(status)) {
-      this.#status = status;
+    let normalizedStatus = status.toUpperCase();
+    if (validStatus.includes(normalizedStatus)) {
+      this.#status = normalizedStatus;
     } else {
       console.error(
         `Invalid status: ${status}. Allowed statuses are: ${validStatus.join(", ")}`,
@@ -45,9 +46,10 @@ export default class Task {
   }
 
   setCategory(value) {
+    let normalizedValue = value.toLowerCase();
     // Check if the value is a valid category
-    if (Object.values(Task.Category).includes(value)) {
-      this.#category = value; // Assign if valid
+    if (Object.values(Task.Category).includes(normalizedValue)) {
+      this.#category = normalizedValue; // Assign if valid
     } else {
       console.error(
         `Invalid category: ${value}. Allowed categories are: ${Object.values(Task.Category).join(", ")}`,
@@ -105,7 +107,15 @@ export default class Task {
   }
 
   abort() {
-    //to implement
+    if (!this.#completed) {
+      this.#completed = false;
+      this.setStatus("ABORTED");
+      console.log(`Task "${this.name}" has been aborted.`);
+    } else {
+      console.warn(
+        `Task "${this.name}" is already completed and cannot be aborted.`,
+      );
+    }
   }
 
   completeTask(playerAttributes) {
