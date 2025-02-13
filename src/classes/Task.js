@@ -140,6 +140,10 @@ export default class Task {
        }
     }
 
+    getMovable() {
+        return this.#movable;
+    }
+
     setAttributeImpact(key, value) {
         if (this.#attributeImpacts.hasOwnProperty(key) && value >= - 100 && value <= 100) {
             this.#attributeImpacts[key] = value;
