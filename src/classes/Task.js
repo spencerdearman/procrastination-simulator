@@ -21,6 +21,20 @@ export default class Task {
 
     constructor(name){
         this.name = name;
+        this.category; // values limited to Category enum
+    }
+
+    set category(value) {
+        // Check if the value is a valid category
+        if (Object.values(Task.Category).includes(value)) {
+            this.category = value; // Assign if valid
+        } else {
+            console.error(`Invalid category: ${value}. Allowed categories are: ${Object.values(Task.Category).join(', ')}`);
+        }
+    }
+
+    get category() {
+    return this.category;
     }
 
     setStartTime(){
