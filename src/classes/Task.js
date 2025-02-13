@@ -1,3 +1,4 @@
+import Time from './Time';
 export default class Task {
     static Category = Object.freeze({
         MANDATORY: "mandatory",
@@ -10,69 +11,72 @@ export default class Task {
 
     #startTime; //Date
     #endTime; //Date
-    #dueDate; //Date
-    #duration; //Date
-    #completed; //bool
+    #completed = false;
     #optional; //bool
     #movable; //bool
     #current; //bool
+    #duration = 1 //each task is 1 in-game hour
     #attributeImpacts = {"academics": 0, "socialLife": 0, "energy": 0, "mentalHealth": 0 };
     #difficulty; //scale of 1 - 4
 
     constructor(name){
-        this.name = name;   
+        this.name = name;
     }
 
     setStartTime(){
-
+        //to implement
     }
 
     getStartTime(){
-
+        //to implement
     }
 
     setEndTime() {
-
+        //to implement
     }
 
     getEndTime() {
-
+        //to implement
     }
 
     setDueDate() {
-
+        //to implement
     }
 
     getDueDate() {
-
+        //to implement
     }
 
     setDuration() {
-
+        //to implement
     }
 
     getDuration() {
-
+        //to implement
     }
 
     changeTime(){
-
+        //to implement
     }
 
     abort(){
-
+        //to implement
     }
 
-    complete(){
+    completeTask(){
+        //confirm if I need this function
+    }
 
+    resetCompleted(){
+        this.#completed = false;
     }
 
     getTask(){
-
+        //to implement
     }
 
     setTask(){
-
+        //to implement
     }
 
     setOptional(optional) {
@@ -101,8 +105,7 @@ export default class Task {
         }
         else {
             console.error(`Attribute impact values should be between -100 and +100.\nAttribute keys should be 'academics', 'socialLife', 'energy', or 'mentalHealth'`);
-        }
-        
+        }  
     }
 
     getAttributeImpact(key) {
