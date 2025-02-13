@@ -93,14 +93,14 @@ export default class Task {
 
     setMovable(movable) {
         if (typeof movable === 'boolean') {
-            this.#movable === movable;
+            this.#movable = movable;
         } else {
         console.error(`Incorrect data type. Required type: boolean. Provided type: ${typeof(movable)}`);
        }
     }
 
     setAttributeImpact(key, value) {
-        if (this.#attributeImpacts.hasOwnProperty[key] && value >= - 100 && value <= 100) {
+        if (this.#attributeImpacts.hasOwnProperty(key) && value >= - 100 && value <= 100) {
             this.#attributeImpacts[key] = value;
         }
         else {
@@ -109,7 +109,7 @@ export default class Task {
     }
 
     getAttributeImpact(key) {
-        if (this.#attributeImpacts.hasOwnProperty[key]){
+        if (this.#attributeImpacts.hasOwnProperty(key)){
             return this.#attributeImpacts[key];
         } else{
             console.error(`Key: ${key} does not exist in the attributeImpact dictionary`);
