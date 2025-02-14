@@ -13,9 +13,9 @@ export default class Task {
   #endTime; // End time of the task (Date object)
   #completed = false; // Whether the task is completed
   #status = "PENDING"; // Current status of the task: PENDING, COMPLETE, IN_PROGRESS, ABORTED
-  #optional; // Whether the task is optional (boolean)
-  #movable; // Whether the task's time can be changed (boolean)
-  #current; // Whether the task is currently running (boolean)
+  #optional = false; // Whether the task is optional (boolean)
+  #movable = false; // Whether the task's time can be changed (boolean)
+  #current = false; // Whether the task is currently running (boolean)
   #duration = 1; // Duration of the task in in-game hours
   #attributeImpacts = {
     academics: 0,
@@ -435,7 +435,9 @@ export default class Task {
    */
   overlapsWith(otherTask) {
     if (!(otherTask instanceof Task)) {
-      console.error(`Invalid task provided for overlap check.`);
+      console.error(
+        `Invalid task provided for overlap check with "${this.name}".`,
+      );
       return false;
     }
 
