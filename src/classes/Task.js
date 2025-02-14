@@ -273,6 +273,18 @@ export default class Task {
     }
   }
 
+  overlapsWith(otherTask) {
+    if (!(otherTask instanceof Task)) {
+      console.error(`Invalid task provided for overlap check.`);
+      return false;
+    }
+
+    return (
+      this.#startTime < otherTask.getEndTime() &&
+      this.#endTime > otherTask.getStartTime()
+    );
+  }
+
   setDifficulty(difficulty) {
     if (difficulty >= 1 && difficulty <= 4) {
       this.#difficulty = difficulty;
