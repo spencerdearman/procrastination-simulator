@@ -7,15 +7,22 @@ export default class Notification extends Task {
   #followUp; // Follow-up activity (string)
   #accepted = false; // Whether the notification has been accepted (boolean)
   #notificationTime; // Time of the notification (Date)
+  #option1; // First option text
+  #option2; // Second option text
+  #option1Impact = {}; // Impact of option 1 (e.g., { academics: 10, socialLife: -5 })
+  #option2Impact = {}; // Impact of option 2 (e.g., { academics: -5, socialLife: 10 })
+  #narrativeOutcome; // Narrative follow-up text
+  #forced = false; // Indicates if the notification is a forced interaction
 
   /**
    * Constructor to initialize a Notification instance.
    * @param {string} name - The name of the task/notification.
    * @param {number} notificationDuration - The duration of the notification.
    */
-  constructor(name, notificationDuration) {
+  constructor(name, notificationDuration, forced = false) {
     super(name);
     this.#notificationDuration = notificationDuration;
+    this.#forced = forced;
   }
 
   /**
