@@ -111,6 +111,28 @@ export default class Task {
   }
 
   /**
+   * Sets whether the task is currently has been completed.
+   * @param {boolean} isCompleted - Whether the task is running.
+   */
+  setCompleted(isCompleted) {
+    if (typeof isCompleted === "boolean") {
+      this.#completed = isCompleted;
+    } else {
+      console.error(
+        `Invalid value for "completed". Expected a boolean but got ${typeof isCompleted}.`,
+      );
+    }
+  }
+
+  /**
+   * Gets whether the task has been completed.
+   * @returns {boolean} True if the task has been completed, otherwise false.
+   */
+  getCompleted() {
+    return this.#completed;
+  }
+
+  /**
    * Calculates the end time of the task based on its start time and duration.
    * @param {Date} startTime - The start time of the task.
    * @param {number} duration - The duration of the task in hours.
@@ -230,7 +252,7 @@ export default class Task {
    */
   abortTask() {
     if (!this.#completed) {
-      this.#completed = false;
+      this.setCompleted(false);
       this.setStatus("ABORTED");
       console.log(`Task "${this.name}" has been aborted.`);
     } else {
@@ -251,7 +273,7 @@ export default class Task {
     }
 
     if (!this.#completed) {
-      this.#completed = true;
+      this.setCompleted(true);
       this.setStatus("COMPLETE");
 
       if (Object.keys(this.#attributeImpacts).length === 0) {
@@ -306,7 +328,7 @@ export default class Task {
    * Resets the task's completion status to false, allowing it to be marked as incomplete again.
    */
   resetCompleted() {
-    this.#completed = false;
+    this.setCompleted(false);
   }
 
   /**
