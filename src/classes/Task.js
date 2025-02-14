@@ -102,7 +102,7 @@ export default class Task {
     return this.#duration;
   }
 
-  changeTime() {
+  changeTime(time) {
     //to implement
   }
 
@@ -150,8 +150,19 @@ export default class Task {
     }
   }
 
-  isOverdue() {
-    //to implement
+  isOverdue(currentGameTime) {
+    if (!this.#endTime) {
+      console.error(`End time for task "${this.name}" is not set.`);
+      return false;
+    }
+    // Compare the task's end time to the provided current game time
+    if (currentGameTime > this.#endTime && this.#status !== "COMPLETE") {
+      console.log(`Task "${this.name}" is overdue.`);
+      return true;
+    }
+
+    console.log(`Task "${this.name}" is not overdue.`);
+    return false;
   }
 
   resetCompleted() {
