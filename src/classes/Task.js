@@ -119,6 +119,17 @@ export default class Task {
     return this.#duration;
   }
 
+  // Method to start the task
+  startTask() {
+    if (this.#current) {
+      console.warn(`Task "${this.name}" is already running.`);
+      return;
+    }
+    this.#current = true;
+    this.setStatus("IN_PROGRESS");
+    console.log(`Task "${this.name}" has started.`);
+  }
+
   changeTime(newStartTime) {
     // Updates the start time and endtime for tasks. Useful for moveable tasks
     if (!(newStartTime instanceof Date)) {
@@ -147,7 +158,7 @@ export default class Task {
     );
   }
 
-  abort() {
+  abortTask() {
     if (!this.#completed) {
       this.#completed = false;
       this.setStatus("ABORTED");
