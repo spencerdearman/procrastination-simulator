@@ -27,6 +27,7 @@ export default class Task {
 
   constructor(name) {
     this.name = name;
+    this.#category = Task.Category.MANDATORY; // Default category
   }
 
   setStatus(status) {
@@ -273,6 +274,6 @@ export default class Task {
   }
 
   debug() {
-    console.log(this.toJSON);
+    console.log(this.toJSON());
   }
 }
