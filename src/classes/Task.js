@@ -65,6 +65,11 @@ export default class Task {
   setCurrent(isCurrent) {
     if (typeof isCurrent === "boolean") {
       this.#current = isCurrent;
+      if (isCurrent) {
+        this.setStatus("IN_PROGRESS");
+      } else if (this.#status === "IN_PROGRESS") {
+        this.setStatus("PENDING");
+      }
     } else {
       console.error(
         `Invalid value for "current". Expected a boolean but got ${typeof isCurrent}.`,
@@ -207,14 +212,19 @@ export default class Task {
       console.error(`End time for task "${this.name}" is not set.`);
       return false;
     }
-    // Compare the task's end time to the provided current game time
-    if (currentGameTime > this.#endTime && this.#status !== "COMPLETE") {
-      console.log(`Task "${this.name}" is overdue.`);
-      return true;
+
+    if (this.#status === "COMPLETE" || this.#status === "ABORTED") {
+      console.log(
+        `Task "${this.name}" cannot be overdue. Status: ${this.#status}.`,
+      );
+      return false;
     }
 
-    console.log(`Task "${this.name}" is not overdue.`);
-    return false;
+    const overdue = currentGameTime > this.#endTime;
+    console.log(
+      `Task "${this.name}" is ${overdue ? "overdue" : "not overdue"}.`,
+    );
+    return overdue;
   }
 
   resetCompleted() {
