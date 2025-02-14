@@ -118,6 +118,23 @@ export default class Notification extends Task {
   }
 
   /**
+   * Overrides the current activity if the notification is forced.
+   * @param {Task} currentActivity - The current activity being performed.
+   * @returns {string} Message indicating the override.
+   */
+  overrideActivity(currentActivity) {
+    if (!this.#forced) {
+      console.warn("This notification is not a forced interaction.");
+      return;
+    }
+
+    console.log(
+      `Forced Interaction: Overriding activity "${currentActivity.name}".`,
+    );
+    return `Activity "${currentActivity.name}" overridden by a forced notification.`;
+  }
+
+  /**
    * Sets the follow-up activity.
    * @param {string} followUp - The follow-up activity.
    */
