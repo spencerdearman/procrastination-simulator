@@ -26,6 +26,98 @@ export default class Notification extends Task {
   }
 
   /**
+   * Sets the options for the notification.
+   * @param {string} option1 - The first option text.
+   * @param {string} option2 - The second option text.
+   */
+  setOptions(option1, option2) {
+    this.#option1 = option1;
+    this.#option2 = option2;
+  }
+
+  /**
+   * Gets the options for the notification.
+   * @returns {object} An object containing option1 and option2.
+   */
+  getOptions() {
+    return { option1: this.#option1, option2: this.#option2 };
+  }
+
+  /**
+   * Sets the impacts for each option.
+   * @param {object} option1Impact - Impact of choosing option 1.
+   * @param {object} option2Impact - Impact of choosing option 2.
+   */
+  setImpacts(option1Impact, option2Impact) {
+    this.#option1Impact = option1Impact;
+    this.#option2Impact = option2Impact;
+  }
+
+  /**
+   * Gets the impacts for each option.
+   * @returns {object} An object containing impacts for option1 and option2.
+   */
+  getImpacts() {
+    return {
+      option1Impact: this.#option1Impact,
+      option2Impact: this.#option2Impact,
+    };
+  }
+
+  /**
+   * Sets the narrative follow-up text.
+   * @param {string} narrative - Narrative follow-up text.
+   */
+  setNarrative(narrative) {
+    this.#narrativeOutcome = narrative;
+  }
+
+  /**
+   * Gets the narrative follow-up text.
+   * @returns {string} The narrative follow-up text.
+   */
+  getNarrative() {
+    return this.#narrativeOutcome;
+  }
+
+  /**
+   * Handles the player's decision and applies the respective impacts.
+   * @param {string} decision - The player's decision ("option1" or "option2").
+   * @param {object} playerAttributes - The player's attributes to update.
+   */
+  handleDecision(decision, playerAttributes) {
+    let impacts;
+    if (decision === "option1") {
+      impacts = this.#option1Impact;
+    } else if (decision === "option2") {
+      impacts = this.#option2Impact;
+    } else {
+      console.error("Invalid decision. Expected 'option1' or 'option2'.");
+      return;
+    }
+
+    // Apply impacts
+    for (let key in impacts) {
+      if (playerAttributes.hasOwnProperty(key)) {
+        playerAttributes[key] += impacts[key];
+        playerAttributes[key] = Math.min(
+          100,
+          Math.max(0, playerAttributes[key]),
+        ); // Clamp between 0 and 100
+      }
+    }
+
+    console.log(
+      `Decision made: ${decision}. Impacts applied: ${JSON.stringify(impacts)}`,
+    );
+
+    // Display narrative follow-up
+    if (this.#narrativeOutcome) {
+      console.log(`Follow-up Narrative: ${this.#narrativeOutcome}`);
+    }
+  }
+
+  /**
    * Sets the follow-up activity.
    * @param {string} followUp - The follow-up activity.
    */
