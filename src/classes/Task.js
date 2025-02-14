@@ -92,7 +92,7 @@ export default class Task {
       this.#current = isCurrent;
       if (isCurrent) {
         this.setStatus("IN_PROGRESS");
-      } else if (this.#status === "IN_PROGRESS") {
+      } else if (this.getStatus() === "IN_PROGRESS") {
         this.setStatus("PENDING");
       }
     } else {
@@ -143,14 +143,12 @@ export default class Task {
   }
 
   /**
-   * Sets the start time of the task and calculates the end time.
+   * Sets the start time of the task.
    * @param {Date} startTime - The start time of the task.
    */
   setStartTime(startTime) {
     if (startTime instanceof Date) {
       this.#startTime = startTime;
-      // Calculate endTime if assuming duration is fized to 1 hour
-      this.#endTime = this.calculateEndTime(startTime, this.#duration);
     } else {
       console.error(`Invalid start time. Expected a Date object.`);
     }
@@ -162,6 +160,24 @@ export default class Task {
    */
   getStartTime() {
     return this.#startTime;
+  }
+
+  /**
+   * Sets the end time of the task.
+   */
+  setEndTime(endTime = null) {
+    if (endTime instanceof Date) {
+      this.#endTime = endTime;
+    } else if (this.getStartTime() && this.getDuration()) {
+      this.#endTime = this.calculateEndTime(
+        this.getStartTime(),
+        this.getDuration(),
+      );
+    } else {
+      console.warn(
+        `The task has not been assigned a start time or duration yet.`,
+      );
+    }
   }
 
   /**
@@ -180,11 +196,9 @@ export default class Task {
     if (typeof duration === "number" && duration > 0 && duration <= 24) {
       // Max 24 Hours
       this.#duration = duration;
-      if (this.#startTime) {
+      if (this.getStartTime()) {
         // Recalculate endTime based on startTime
-        this.#endTime = new Date(
-          this.#startTime.getTime() + duration * 60 * 60 * 1000,
-        );
+        this.setEndTime();
       }
     } else {
       console.error(
@@ -225,7 +239,7 @@ export default class Task {
       return;
     }
 
-    if (!this.#movable) {
+    if (!this.getMovable()) {
       console.warn(`Task "${this.name}" is not movable.`);
       return;
     }
@@ -236,13 +250,11 @@ export default class Task {
       return;
     }
 
-    this.#startTime = newStartTime;
-    this.#endTime = new Date(
-      newStartTime.getTime() + this.#duration * 60 * 60 * 1000,
-    );
+    this.setStartTime(newStartTime);
+    this.setEndTime(this.calculateEndTime(newStartTime, this.getDuration()));
 
     console.log(
-      `Task "${this.name}" time changed. New start time: ${this.#startTime}, New end time: ${this.#endTime}`,
+      `Task "${this.name}" time changed. New start time: ${this.getStartTime()}, New end time: ${this.getEndTime()}`,
     );
   }
 
@@ -251,7 +263,7 @@ export default class Task {
    * A task cannot be aborted if it is already completed.
    */
   abortTask() {
-    if (!this.#completed) {
+    if (!this.getCompleted()) {
       this.setCompleted(false);
       this.setStatus("ABORTED");
       console.log(`Task "${this.name}" has been aborted.`);
@@ -272,18 +284,18 @@ export default class Task {
       return;
     }
 
-    if (!this.#completed) {
+    if (!this.getCompleted()) {
       this.setCompleted(true);
       this.setStatus("COMPLETE");
 
-      if (Object.keys(this.#attributeImpacts).length === 0) {
+      if (Object.keys(this.getAttributeImpactsObject()).length === 0) {
         console.warn(`Task "${this.name}" has no attribute impacts defined.`);
       }
 
       //Apply attribute impacts to player attributes
-      for (let key in this.#attributeImpacts) {
+      for (let key in this.getAttributeImpactsObject()) {
         if (playerAttributes.hasOwnProperty(key)) {
-          playerAttributes[key] += this.#attributeImpacts[key];
+          playerAttributes[key] += this.getAttributeImpact(key);
           playerAttributes[key] = Math.min(
             100,
             Math.max(0, playerAttributes[key]),
@@ -305,19 +317,19 @@ export default class Task {
    * @returns {boolean} True if the task is overdue, otherwise false.
    */
   isOverdue(currentGameTime) {
-    if (!this.#endTime) {
+    if (!this.getEndTime()) {
       console.error(`End time for task "${this.name}" is not set.`);
       return false;
     }
 
-    if (this.#status === "COMPLETE" || this.#status === "ABORTED") {
+    if (this.getStatus() === "COMPLETE" || this.getStatus() === "ABORTED") {
       console.log(
-        `Task "${this.name}" cannot be overdue. Status: ${this.#status}.`,
+        `Task "${this.name}" cannot be overdue. Status: ${this.getStatus()}.`,
       );
       return false;
     }
 
-    const overdue = currentGameTime > this.#endTime;
+    const overdue = currentGameTime > this.getEndTime();
     console.log(
       `Task "${this.name}" is ${overdue ? "overdue" : "not overdue"}.`,
     );
@@ -380,7 +392,7 @@ export default class Task {
    * @param {string} key - The attribute to modify (e.g., "academics", "socialLife").
    * @param {number} value - The impact value (must be between -100 and 100).
    */
-  setAttributeImpact(key, value) {
+  setAttributeImpacts(key, value) {
     if (
       this.#attributeImpacts.hasOwnProperty(key) &&
       value >= -100 &&
@@ -392,6 +404,13 @@ export default class Task {
         `Attribute impact values should be between -100 and +100.\nAttribute keys should be 'academics', 'socialLife', 'energy', or 'mentalHealth'`,
       );
     }
+  }
+
+  /**
+   * Gets the attribute impacts dictionary.
+   */
+  getAttributeImpactsObject() {
+    return this.#attributeImpacts;
   }
 
   /**
@@ -421,8 +440,8 @@ export default class Task {
     }
 
     return (
-      this.#startTime < otherTask.getEndTime() &&
-      this.#endTime > otherTask.getStartTime()
+      this.getStartTime() < otherTask.getEndTime() &&
+      this.getEndTime() > otherTask.getStartTime()
     );
   }
 
@@ -453,13 +472,13 @@ export default class Task {
   toJSON() {
     return {
       name: this.name,
-      category: this.#category,
-      startTime: this.#startTime,
-      endTime: this.#endTime,
-      duration: this.#duration,
-      completed: this.#completed,
-      attributeImpacts: this.#attributeImpacts,
-      difficulty: this.#difficulty,
+      category: this.getCategory(),
+      startTime: this.getStartTime(),
+      endTime: this.getEndTime(),
+      duration: this.getDuration(),
+      completed: this.getCompleted(),
+      attributeImpacts: this.getAttributeImpactsObject(),
+      difficulty: this.getDifficulty(),
     };
   }
 
