@@ -30,7 +30,7 @@ export default class Task {
   }
 
   setStatus(status) {
-    const validStatus = ["PENDING", "COMPLETE", "IN_PROGRESS", "ABORTED"]; // Correct
+    const validStatus = ["PENDING", "COMPLETE", "IN_PROGRESS", "ABORTED"];
     let normalizedStatus = status.toUpperCase();
     if (validStatus.includes(normalizedStatus)) {
       this.#status = normalizedStatus;
@@ -61,13 +61,15 @@ export default class Task {
     return this.#category;
   }
 
+  calculateEndTime(startTime, duration) {
+    return new Date(startTime.getTime() + duration * 60 * 60 * 1000);
+  }
+
   setStartTime(startTime) {
     if (startTime instanceof Date) {
       this.#startTime = startTime;
       // Calculate endTime if assuming duration is fized to 1 hour
-      this.#endTime = new Date(
-        startTime.getTime() + this.#duration * 60 * 60 * 1000,
-      );
+      this.#endTime = this.calculateEndTime(startTime, this.#duration);
     } else {
       console.error(`Invalid start time. Expected a Date object.`);
     }
