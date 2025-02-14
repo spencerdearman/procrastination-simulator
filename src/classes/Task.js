@@ -205,11 +205,11 @@ export default class Task {
    * Starts the task and updates its status to IN_PROGRESS.
    */
   startTask() {
-    if (this.#current) {
+    if (this.getCurrent()) {
       console.warn(`Task "${this.name}" is already running.`);
       return;
     }
-    this.#current = true;
+    this.setCurrent(true);
     this.setStatus("IN_PROGRESS");
     console.log(`Task "${this.name}" has started.`);
   }
