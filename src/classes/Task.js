@@ -30,7 +30,7 @@ export default class Task {
   }
 
   setStatus(status) {
-    const validStatus = ["PENDING, COMPLETE, IN_PROGRESS, ABORTED"];
+    const validStatus = ["PENDING", "COMPLETE", "IN_PROGRESS", "ABORTED"]; // Correct
     let normalizedStatus = status.toUpperCase();
     if (validStatus.includes(normalizedStatus)) {
       this.#status = normalizedStatus;
