@@ -116,6 +116,12 @@ export default class Task {
       return;
     }
 
+    if (newStartTime < Date.now()) {
+      // Ensure the new start time is in the future
+      console.error(`New start time cannot be in the past.`);
+      return;
+    }
+
     this.#startTime = newStartTime;
     this.#endTime = new Date(
       newStartTime.getTime() + this.#duration * 60 * 60 * 1000,
