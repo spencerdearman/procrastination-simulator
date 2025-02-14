@@ -83,4 +83,30 @@ export default class Notification extends Task {
   getNotificationTime() {
     return this.#notificationTime;
   }
+
+  /**
+   * Function to replace an activity with the notification's follow-up.
+   * @param {Task} activity - The activity to be replaced.
+   * @returns {string} Message indicating the replacement.
+   */
+  replaceActivity(activity) {
+    if (!(activity instanceof Task)) {
+      console.error("Invalid activity provided for replacement.");
+      return;
+    }
+
+    // Logic to replace the activity
+    const followUpActivity = this.getFollowUp();
+    if (followUpActivity) {
+      console.log(
+        `Activity "${activity.name}" has been replaced with follow-up: "${followUpActivity}".`,
+      );
+      return `Activity "${activity.name}" replaced with "${followUpActivity}"`;
+    } else {
+      console.warn(
+        `No follow-up defined for the notification. Replacement could not occur.`,
+      );
+      return `No follow-up defined for the replacement.`;
+    }
+  }
 }
