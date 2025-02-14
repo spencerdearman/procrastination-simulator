@@ -62,6 +62,20 @@ export default class Task {
     return this.#category;
   }
 
+  setCurrent(isCurrent) {
+    if (typeof isCurrent === "boolean") {
+      this.#current = isCurrent;
+    } else {
+      console.error(
+        `Invalid value for "current". Expected a boolean but got ${typeof isCurrent}.`,
+      );
+    }
+  }
+
+  getCurrent() {
+    return this.#current;
+  }
+
   calculateEndTime(startTime, duration) {
     return new Date(startTime.getTime() + duration * 60 * 60 * 1000);
   }
