@@ -102,8 +102,26 @@ export default class Task {
     return this.#duration;
   }
 
-  changeTime(time) {
-    //to implement
+  changeTime(newStartTime) {
+    // Updates the start time and endtime for tasks. Useful for moveable tasks
+    if (!(newStartTime instanceof Date)) {
+      console.error(`Invalid time provided. Expected a Date object.`);
+      return;
+    }
+
+    if (!this.#movable) {
+      console.warn(`Task "${this.name}" is not movable.`);
+      return;
+    }
+
+    this.#startTime = newStartTime;
+    this.#endTime = new Date(
+      newStartTime.getTime() + this.#duration * 60 * 60 * 1000,
+    );
+
+    console.log(
+      `Task "${this.name}" time changed. New start time: ${this.#startTime}, New end time: ${this.#endTime}`,
+    );
   }
 
   abort() {
