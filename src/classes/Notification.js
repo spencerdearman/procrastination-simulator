@@ -89,10 +89,8 @@ export default class Notification extends Task {
    * Resets the decision options after one is made.
    */
   resetOptions() {
-    this.#option1 = "";
-    this.#option2 = "";
-    this.#option1Impact = {};
-    this.#option2Impact = {};
+    this.setOptions("", "");
+    this.setImpacts({}, {});
   }
 
   /**
@@ -149,7 +147,7 @@ export default class Notification extends Task {
    * @returns {string} Message indicating the override.
    */
   overrideActivity(currentActivity) {
-    if (!this.#forced) {
+    if (!this.getForced()) {
       console.warn("This notification is not a forced interaction.");
       return;
     }
