@@ -102,12 +102,18 @@ export default class Notification extends Task {
    */
   handleDecision(decision, playerAttributes) {
     let impacts;
-    if (decision === this.#option1) {
-      impacts = this.#option1Impact;
-    } else if (decision === this.#option2) {
-      impacts = this.#option2Impact;
+
+    const options = this.getOptions();
+    const impactsData = this.getImpacts();
+
+    if (decision === options.option1) {
+      impacts = impactsData.option1Impact;
+    } else if (decision === options.option2) {
+      impacts = impactsData.option2Impact;
     } else {
-      console.error("Invalid decision. Expected 'option1' or 'option2'.");
+      console.error(
+        `Invalid decision: '${decision}'. Expected '${options.option1}' or '${options.option2}'.`,
+      );
       return;
     }
 
@@ -129,7 +135,7 @@ export default class Notification extends Task {
     );
 
     // Display narrative follow-up
-    if (this.#narrativeOutcome) {
+    if (this.getNarrative()) {
       console.log(`Follow-up Narrative: ${this.#narrativeOutcome}`);
     }
 
