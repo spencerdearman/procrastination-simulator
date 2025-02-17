@@ -7,6 +7,7 @@ export default class Task {
     SOCIAL: "social",
     ENERGY: "energy",
     CLUBS: "clubs",
+    NOTIFICATION: "notification",
   });
 
   #startTime; // Start time of the task (Date object)
