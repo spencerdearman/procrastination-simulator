@@ -91,6 +91,7 @@ export default class Notification extends Task {
   resetOptions() {
     this.setOptions("", "");
     this.setImpacts({}, {});
+    this.setFollowUp(""); // Reset follow-up
   }
 
   /**
@@ -105,9 +106,9 @@ export default class Notification extends Task {
     const impactsData = this.getImpacts();
 
     if (decision === options.option1) {
-      impacts = impactsData.option1Impact;
+      impacts = this.getImpacts().option1Impact;
     } else if (decision === options.option2) {
-      impacts = impactsData.option2Impact;
+      impacts = this.getImpacts().option2Impact;
     } else {
       console.error(
         `Invalid decision: '${decision}'. Expected '${options.option1}' or '${options.option2}'.`,
