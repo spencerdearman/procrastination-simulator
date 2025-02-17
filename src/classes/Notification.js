@@ -136,7 +136,7 @@ export default class Notification extends Task {
 
     // Display narrative follow-up
     if (this.getNarrative()) {
-      console.log(`Follow-up Narrative: ${this.#narrativeOutcome}`);
+      console.log(`Follow-up Narrative: ${this.getNarrative()}`);
     }
 
     // Reset options to avoid carrying forward decisions
@@ -230,6 +230,32 @@ export default class Notification extends Task {
    */
   getNotificationTime() {
     return this.#notificationTime;
+  }
+
+  /**
+   * Sets the notification duration.
+   * @param {number} duration - Duration of the notification.
+   */
+  setNotificationDuration(duration) {
+    if (typeof duration === "number" && duration > 0) {
+      this.#notificationDuration = duration;
+    } else {
+      console.error(
+        "Invalid notification duration. Must be a positive number.",
+      );
+    }
+  }
+
+  getForced() {
+    return this.#forced;
+  }
+
+  /**
+   * Gets the notification duration.
+   * @returns {number} The duration of the notification.
+   */
+  getNotificationDuration() {
+    return this.#notificationDuration;
   }
 
   /**
