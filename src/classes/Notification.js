@@ -23,6 +23,7 @@ export default class Notification extends Task {
     super(name);
     this.#notificationDuration = notificationDuration;
     this.#forced = forced;
+    this.setCategory("NOTIFICATION");
   }
 
   /**
@@ -31,8 +32,12 @@ export default class Notification extends Task {
    * @param {string} option2 - The second option text.
    */
   setOptions(option1, option2) {
-    this.#option1 = option1;
-    this.#option2 = option2;
+    if (typeof option1 === "string" && typeof option2 === "string") {
+      this.#option1 = option1;
+      this.#option2 = option2;
+    } else {
+      console.error("Options must be strings.");
+    }
   }
 
   /**
@@ -126,6 +131,12 @@ export default class Notification extends Task {
     if (!this.#forced) {
       console.warn("This notification is not a forced interaction.");
       return;
+    }
+
+    // Stop the current activity if it is running
+    if (currentActivity.getCurrent()) {
+      currentActivity.setCurrent(false);
+      currentActivity.setStatus("ABORTED");
     }
 
     console.log(
