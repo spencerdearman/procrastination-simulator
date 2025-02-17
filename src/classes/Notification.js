@@ -13,6 +13,7 @@ export default class Notification extends Task {
   #option2Impact = {}; // Impact of option 2 (e.g., { academics: -5, socialLife: 10 })
   #narrativeOutcome; // Narrative follow-up text
   #forced = false; // Indicates if the notification is a forced interaction
+  #previousActivity; // The activity that is paused while the notification pops up
 
   /**
    * Constructor to initialize a Notification instance.
@@ -153,16 +154,45 @@ export default class Notification extends Task {
       return;
     }
 
+    // Store the current activity in case we need to resume it later
+    this.setPreviousActivity(currentActivity);
+
     // Stop the current activity if it is running
     if (currentActivity.getCurrent()) {
       currentActivity.setCurrent(false);
       currentActivity.setStatus("ABORTED");
     }
 
+    // Mark the notification as the current task
+    this.setCurrent(true);
+
     console.log(
       `Forced Interaction: Overriding activity "${currentActivity.name}".`,
     );
     return `Activity "${currentActivity.name}" overridden by a forced notification.`;
+  }
+
+  //Set previous activity
+  setPreviousActivity(activity) {
+    this.#previousActivity = activity;
+  }
+
+  //Get previous activity
+  getPreviousActivity() {
+    return this.#previousActivity;
+  }
+
+  resumePreviousActivity() {
+    if (this.#previousActivity) {
+      console.log(`Resuming previous activity: ${this.#previousActivity.name}`);
+
+      this.#previousActivity.setCurrent(true);
+      this.#previousActivity.setStatus("IN_PROGRESS");
+
+      this.#previousActivity = null;
+    } else {
+      console.warn("No previous activity to resume.");
+    }
   }
 
   /**
