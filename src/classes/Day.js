@@ -1,3 +1,6 @@
+import Task from "./Task.js";
+// import Notification from './Notification';
+
 export default class Day {
   constructor() {
     this.notifications = []; // Stores the list of notification class objects
@@ -26,8 +29,25 @@ export default class Day {
     };
   }
 
+  // Adds a notification to the notification list of the day
+  addNotification(notification) {
+    if (!(notification instanceof Notification)) {
+      console.error(
+        "Invalid Notification. Must be an instance of Notification.",
+      );
+      return;
+    }
+
+    this.notifications.push(notification);
+  }
+
   // Adds a task to the task list of the day
   addTask(task) {
+    if (!(task instanceof Task)) {
+      console.error("Invalid task. Must be an instance of Task.");
+      return;
+    }
+
     this.tasks.push(task);
   }
 
