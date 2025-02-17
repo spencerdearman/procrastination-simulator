@@ -86,15 +86,25 @@ export default class Notification extends Task {
   }
 
   /**
+   * Resets the decision options after one is made.
+   */
+  resetOptions() {
+    this.#option1 = "";
+    this.#option2 = "";
+    this.#option1Impact = {};
+    this.#option2Impact = {};
+  }
+
+  /**
    * Handles the player's decision and applies the respective impacts.
    * @param {string} decision - The player's decision ("option1" or "option2").
    * @param {object} playerAttributes - The player's attributes to update.
    */
   handleDecision(decision, playerAttributes) {
     let impacts;
-    if (decision === "option1") {
+    if (decision === this.#option1) {
       impacts = this.#option1Impact;
-    } else if (decision === "option2") {
+    } else if (decision === this.#option2) {
       impacts = this.#option2Impact;
     } else {
       console.error("Invalid decision. Expected 'option1' or 'option2'.");
@@ -112,6 +122,8 @@ export default class Notification extends Task {
       }
     }
 
+    this.setCompleted(true); // Mark notification as completed
+
     console.log(
       `Decision made: ${decision}. Impacts applied: ${JSON.stringify(impacts)}`,
     );
@@ -120,6 +132,9 @@ export default class Notification extends Task {
     if (this.#narrativeOutcome) {
       console.log(`Follow-up Narrative: ${this.#narrativeOutcome}`);
     }
+
+    // Reset options to avoid carrying forward decisions
+    this.resetOptions();
   }
 
   /**
