@@ -16,11 +16,13 @@ function App() {
             <button className="time-button">&gt;</button>
           </div>
           <div id="play-button">
-            <p>Play button goes here</p>
+            {/* replace with actual buttons*/}
+            <button className="control-button">⏪</button>
+            <button className="control-button">▶️</button>
+            <button className="control-button">⏩</button>
           </div>
         </div>
         <div id="calendar">
-          {/* Render 12 time blocks */}
           {[...Array(13)].map((_, index) => (
             <div key={index} className="time-block"></div>
           ))}
@@ -28,7 +30,34 @@ function App() {
       </div>
       <div id="sidebar">
         <div id="stats">
-          <p>stats: im dying rn help</p>
+          <p class="side-bar-header">Your Stats</p>
+
+          <div id="stats-block">
+            <div class="div-academics">
+              <p class="side-bar-subheading">Academics</p>
+              <div class="stats-bar sb-academics"></div>
+              <div class="stats-bar-fill academics-color sb-academics"></div>
+              <div class="stats-score">9/100</div>
+            </div>
+            <div class="div-social-life">
+              <p class="side-bar-subheading">Social Life</p>
+              <div class="stats-bar sb-social-life"></div>
+              <div class="stats-bar-fill social-life-color sb-social-life"></div>
+              <div class="stats-score">9/100</div>
+            </div>
+            <div class="div-energy">
+              <p class="side-bar-subheading">Energy</p>
+              <div class="stats-bar sb-energy"></div>
+              <div class="stats-bar-fill energy-color sb-energy"></div>
+              <div class="stats-score">9/100</div>
+            </div>
+            <div class="div-mental-health">
+              <p class="side-bar-subheading">Mental Health</p>
+              <div class="stats-bar sb-mental-health"></div>
+              <div class="stats-bar-fill mental-health-color sb-mental-health"></div>
+              <div class="stats-score">9/100</div>
+            </div>
+          </div>
         </div>
         <div id="tasks-container">
           <div id="tasks-list">
