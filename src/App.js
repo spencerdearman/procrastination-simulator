@@ -4,11 +4,14 @@ import Day from "./classes/Day";
 import Logic from "./classes/Logic";
 import Task from "./classes/Task";
 import PlayerStats from "./components/PlayerStats";
+import TimeView from "./components/TimeView";
+import Time from "./classes/Time";
 
 export function App() {
   const [player] = useState(new Player("Player 1"));
   const [day] = useState(new Day());
   const [logic] = useState(new Logic(player, [day]));
+  const [time] = useState(new Time(30));
   const [completedTasks, setCompletedTasks] = useState([]);
 
   useEffect(() => {
@@ -68,6 +71,7 @@ export function App() {
       <h1 className="text-2xl font-bold mb-2">Game - Day Test</h1>
       <p className="text-lg font-semibold mb-4">Player Name: {player.name}</p>
       <PlayerStats attributes={player.attributes} />
+      <TimeView time={time} />
       <p className="text-lg font-semibold mt-4">Completed Tasks:</p>
       {completedTasks.length > 0 ? (
         completedTasks.map((task, index) => (
