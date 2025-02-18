@@ -4,7 +4,7 @@ function Notification({
   isMandatory = false,
   title = "Matthew's birthday party",
   message = "Lebron lebron lebron",
-  icon = "🥳"
+  icon = "🥳",
 }) {
   if (isMandatory) {
     // Mandatory Notification
