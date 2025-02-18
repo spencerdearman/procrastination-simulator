@@ -1,3 +1,4 @@
 {
-  "src/**/*.{js,html}": ["prettier --check", "eslint"]
+  "src/**/*.{js,html}": ["prettier --check", "eslint"],
+  "src/**/*.css": ["prettier --check"],
 }
