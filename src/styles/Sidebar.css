@@ -11,8 +11,8 @@
   font-weight: normal;
   font-style: normal;
   font-size: 20px;
-  margin-left: 7px;
-  margin-top: 8px;
+  position: relative;
+  margin-left: 3%;
 }
 
 .side-bar-subheading {
@@ -23,3 +23,17 @@
   font-size: 14px;
   margin-top: 1%;
 }
+
+#stats-block {
+  height: 24.5vh;
+  width: 35vw;
+  border-style: solid;
+  border-color: #EBE8D4;
+  border-radius: 15px;
+  background-color: #FDF7DD;
+  position: relative;
+  left: 5%;
+  top: -12px;
+  /* transform: translate(-50%, -55%); */
+}
+
