@@ -63,10 +63,7 @@ export default class Day {
   updateCompleted() {
     this.completedTasks = [];
     for (let task of this.tasks) {
-      console.log("task is: " +task.name);
-      console.log("task completed is: " + task.completed)
       if (task.completed) {
-        console.log("entering here");
         this.completedTasks.push(task);
       }
     }

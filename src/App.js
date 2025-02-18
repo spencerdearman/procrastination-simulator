@@ -9,9 +9,9 @@ export function App() {
   const [player] = useState(new Player("Player 1"));
   const [day] = useState(new Day());
   const [logic] = useState(new Logic(player, [day]));
+  const [completedTasks, setCompletedTasks] = useState([]);
 
   useEffect(() => {
-    // Check if the day already has tasks, for example
     if (day.tasks.length === 0) {
       logic.seedPlayer({
         academics: 100,
@@ -20,22 +20,46 @@ export function App() {
         mentalHealth: 100,
       });
       console.log("Initial Player Attributes:", player.getAllAttributes());
-  
+
       const task1 = new Task("Study for Exam");
       task1.setCategory("academic");
       task1.setAttributeImpacts("academics", 10);
       task1.setAttributeImpacts("energy", -20);
       day.addTask(task1);
-  
-      console.log("Tasks for the Day:", day.tasks.map((t) => t.name));
-  
+
+      console.log(
+        "Tasks for the Day:",
+        day.tasks.map((t) => t.name),
+      );
+
       task1.startTask();
       task1.completeTask(player.attributes);
       day.updateCompleted();
-  
+
+      const task2 = new Task("Go to the Gym");
+      task2.setCategory("social");
+      task2.setAttributeImpacts("energy", -30);
+      task2.setAttributeImpacts("mentalHealth", 10);
+      day.addTask(task2);
+
+      console.log(
+        "Tasks for the Day:",
+        day.tasks.map((t) => t.name),
+      );
+
+      task2.startTask();
+      task2.completeTask(player.attributes);
+      day.updateCompleted();
+
       logic.endDay();
-      console.log("Completed Tasks:", day.completedTasks.map((t) => t.name));
+      console.log(
+        "Completed Tasks:",
+        day.completedTasks.map((t) => t.name),
+      );
       console.log("Player Attributes After Day:", player.getAllAttributes());
+
+      // Update React state with completed tasks so UI re-renders
+      setCompletedTasks([...day.completedTasks]);
     }
   }, []);
 
@@ -45,8 +69,8 @@ export function App() {
       <p className="text-lg font-semibold mb-4">Player Name: {player.name}</p>
       <PlayerStats attributes={player.attributes} />
       <p className="text-lg font-semibold mt-4">Completed Tasks:</p>
-      {day.completedTasks.length > 0 ? (
-        day.completedTasks.map((task, index) => (
+      {completedTasks.length > 0 ? (
+        completedTasks.map((task, index) => (
           <p key={index} className="text-base">
             - {task.name}
           </p>

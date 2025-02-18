@@ -37,7 +37,7 @@ export default class Task {
       this.status = normalizedStatus;
     } else {
       console.error(
-        `Invalid status: ${status}. Allowed statuses are: ${validStatus.join(", ")}`
+        `Invalid status: ${status}. Allowed statuses are: ${validStatus.join(", ")}`,
       );
     }
   }
@@ -53,8 +53,8 @@ export default class Task {
     } else {
       console.error(
         `Invalid category: ${value}. Allowed categories are: ${Object.values(
-          Task.Category
-        ).join(", ")}`
+          Task.Category,
+        ).join(", ")}`,
       );
     }
   }
@@ -73,7 +73,7 @@ export default class Task {
       }
     } else {
       console.error(
-        `Invalid value for "current". Expected a boolean but got ${typeof isCurrent}.`
+        `Invalid value for "current". Expected a boolean but got ${typeof isCurrent}.`,
       );
     }
   }
@@ -87,7 +87,7 @@ export default class Task {
       this.completed = isCompleted;
     } else {
       console.error(
-        `Invalid value for "completed". Expected a boolean but got ${typeof isCompleted}.`
+        `Invalid value for "completed". Expected a boolean but got ${typeof isCompleted}.`,
       );
     }
   }
@@ -116,9 +116,14 @@ export default class Task {
     if (endTime instanceof Date) {
       this.endTime = endTime;
     } else if (this.getStartTime() && this.getDuration()) {
-      this.endTime = this.calculateEndTime(this.getStartTime(), this.getDuration());
+      this.endTime = this.calculateEndTime(
+        this.getStartTime(),
+        this.getDuration(),
+      );
     } else {
-      console.warn("The task has not been assigned a start time or duration yet.");
+      console.warn(
+        "The task has not been assigned a start time or duration yet.",
+      );
     }
   }
 
@@ -133,7 +138,9 @@ export default class Task {
         this.setEndTime();
       }
     } else {
-      console.error("Invalid duration. Must be a positive number between 1 and 24.");
+      console.error(
+        "Invalid duration. Must be a positive number between 1 and 24.",
+      );
     }
   }
 
@@ -167,7 +174,7 @@ export default class Task {
     this.setStartTime(newStartTime);
     this.setEndTime(this.calculateEndTime(newStartTime, this.getDuration()));
     console.log(
-      `Task "${this.name}" time changed. New start time: ${this.getStartTime()}, New end time: ${this.getEndTime()}`
+      `Task "${this.name}" time changed. New start time: ${this.getStartTime()}, New end time: ${this.getEndTime()}`,
     );
   }
 
@@ -177,7 +184,9 @@ export default class Task {
       this.setStatus("ABORTED");
       console.log(`Task "${this.name}" has been aborted.`);
     } else {
-      console.warn(`Task "${this.name}" is already completed and cannot be aborted.`);
+      console.warn(
+        `Task "${this.name}" is already completed and cannot be aborted.`,
+      );
     }
   }
 
@@ -198,7 +207,10 @@ export default class Task {
       for (let key in this.getAttributeImpactsObject()) {
         if (playerAttributes.hasOwnProperty(key)) {
           playerAttributes[key] += this.getAttributeImpact(key);
-          playerAttributes[key] = Math.min(100, Math.max(0, playerAttributes[key]));
+          playerAttributes[key] = Math.min(
+            100,
+            Math.max(0, playerAttributes[key]),
+          );
         } else {
           console.error(`Player attributes lacks attribute: ${key}`);
         }
@@ -215,11 +227,15 @@ export default class Task {
       return false;
     }
     if (this.getStatus() === "COMPLETE" || this.getStatus() === "ABORTED") {
-      console.log(`Task "${this.name}" cannot be overdue. Status: ${this.getStatus()}.`);
+      console.log(
+        `Task "${this.name}" cannot be overdue. Status: ${this.getStatus()}.`,
+      );
       return false;
     }
     const overdue = currentGameTime > this.getEndTime();
-    console.log(`Task "${this.name}" is ${overdue ? "overdue" : "not overdue"}.`);
+    console.log(
+      `Task "${this.name}" is ${overdue ? "overdue" : "not overdue"}.`,
+    );
     return overdue;
   }
 
@@ -232,7 +248,7 @@ export default class Task {
       this.optional = optional;
     } else {
       console.error(
-        `Incorrect data type. Required type: boolean. Provided type: ${typeof optional}`
+        `Incorrect data type. Required type: boolean. Provided type: ${typeof optional}`,
       );
     }
   }
@@ -246,7 +262,7 @@ export default class Task {
       this.movable = movable;
     } else {
       console.error(
-        `Incorrect data type. Required type: boolean. Provided type: ${typeof movable}`
+        `Incorrect data type. Required type: boolean. Provided type: ${typeof movable}`,
       );
     }
   }
@@ -264,7 +280,7 @@ export default class Task {
       this.attributeImpacts[key] = value;
     } else {
       console.error(
-        `Attribute impact values should be between -100 and +100.\nAttribute keys should be 'academics', 'socialLife', 'energy', or 'mentalHealth'.`
+        `Attribute impact values should be between -100 and +100.\nAttribute keys should be 'academics', 'socialLife', 'energy', or 'mentalHealth'.`,
       );
     }
   }
@@ -283,7 +299,9 @@ export default class Task {
 
   overlapsWith(otherTask) {
     if (!(otherTask instanceof Task)) {
-      console.error(`Invalid task provided for overlap check with "${this.name}".`);
+      console.error(
+        `Invalid task provided for overlap check with "${this.name}".`,
+      );
       return false;
     }
     return (
