@@ -19,14 +19,6 @@ export default class Day {
       FRIDAY: 5,
       SATURDAY: 6,
     });
-
-    // Stores the change in attributes from day to day
-    this.attributeChanges = {
-      academics: 0,
-      socialLife: 0,
-      energy: 0,
-      mentalHealth: 0,
-    };
   }
 
   // Adds a notification to the notification list of the day
