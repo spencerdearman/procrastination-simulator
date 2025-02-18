@@ -12,18 +12,19 @@ import "./App.css";
 //   const [day] = useState(new Day());
 //   const [logic] = useState(new Logic(player, [day]));
 
-//   logic.seedPlayer({
-//     academics: 90,
-//     socialLife: 80,
-//     energy: 85,
-//     mentalHealth: 95,
-//   });
-//   console.log("Initial Player Attributes:", player.getAllAttributes());
+  // logic.seedPlayer({
+  //   academics: 100,
+  //   socialLife: 100,
+  //   energy: 100,
+  //   mentalHealth: 100,
+  // });
+  // console.log("Initial Player Attributes:", player.getAllAttributes());
 
-//   const task1 = new Task("Study for Exam");
-//   task1.setCategory("academic");
-//   task1.setAttributeImpacts("academics", 10);
-//   day.addTask(task1);
+  // const task1 = new Task("Study for Exam");
+  // task1.setCategory("academic");
+  // task1.setAttributeImpacts("academics", 10);
+  // task1.setAttributeImpacts("energy", -10);
+  // day.addTask(task1);
 
 //   const task2 = new Task("Social Meetup");
 //   task2.setCategory("social");
