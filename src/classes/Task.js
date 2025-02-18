@@ -13,6 +13,8 @@ export default class Task {
   constructor(name) {
     this.name = name;
     this.category = Task.Category.MANDATORY;
+    this.description = "";
+    this.icon = "";
     this.startTime = null; // Date object
     this.endTime = null; // Date object
     this.completed = false;
