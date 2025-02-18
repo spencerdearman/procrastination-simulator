@@ -7,14 +7,64 @@ import PlayerStats from "./components/PlayerStats";
 import TimeView from "./components/TimeView";
 import Time from "./classes/Time";
 
+// Dummy JSON data for tasks
+const dummyTaskData = [
+  {
+    name: "Study for Exam",
+    category: "academic",
+    description: "Study for the upcoming exam",
+    icon: "",
+    duration: 1,
+    attributeImpacts: {
+      academics: 10,
+      socialLife: 0,
+      energy: -20,
+      mentalHealth: 0,
+    },
+    difficulty: 2,
+  },
+  {
+    name: "Go to the Gym",
+    category: "social",
+    description: "Work out at the gym",
+    icon: "",
+    duration: 1,
+    attributeImpacts: {
+      academics: 0,
+      socialLife: 0,
+      energy: -30,
+      mentalHealth: 10,
+    },
+    difficulty: 3,
+  },
+];
+
+// Function to parse JSON data into Task instances
+function parseTasks(taskDataArray) {
+  return taskDataArray.map((data) => {
+    const task = new Task(data.name);
+    task.setCategory(data.category);
+    task.description = data.description;
+    task.icon = data.icon;
+    task.duration = data.duration;
+    for (let key in data.attributeImpacts) {
+      task.setAttributeImpacts(key, data.attributeImpacts[key]);
+    }
+    task.difficulty = data.difficulty;
+    return task;
+  });
+}
+
 export function App() {
   const [player] = useState(new Player("Player 1"));
   const [day] = useState(new Day());
   const [logic] = useState(new Logic(player, [day]));
   const [time] = useState(new Time(30));
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
 
   useEffect(() => {
+    // Seed the player if tasks are not already added
     if (day.tasks.length === 0) {
       logic.seedPlayer({
         academics: 100,
@@ -24,54 +74,42 @@ export function App() {
       });
       console.log("Initial Player Attributes:", player.getAllAttributes());
 
-      const task1 = new Task("Study for Exam");
-      task1.setCategory("academic");
-      task1.setAttributeImpacts("academics", 10);
-      task1.setAttributeImpacts("energy", -20);
-      day.addTask(task1);
-
-      console.log(
-        "Tasks for the Day:",
-        day.tasks.map((t) => t.name),
-      );
-
-      task1.startTask();
-      task1.completeTask(player.attributes);
+      // Parse tasks from the dummy JSON and add them to the day
+      const parsedTasks = parseTasks(dummyTaskData);
+      parsedTasks.forEach((task) => {
+        day.addTask(task);
+        // Optionally, start and complete the task as needed:
+        task.startTask();
+        task.completeTask(player.attributes);
+      });
       day.updateCompleted();
-
-      const task2 = new Task("Go to the Gym");
-      task2.setCategory("social");
-      task2.setAttributeImpacts("energy", -30);
-      task2.setAttributeImpacts("mentalHealth", 10);
-      day.addTask(task2);
-
-      console.log(
-        "Tasks for the Day:",
-        day.tasks.map((t) => t.name),
-      );
-
-      task2.startTask();
-      task2.completeTask(player.attributes);
-      day.updateCompleted();
-
       logic.endDay();
+
       console.log(
         "Completed Tasks:",
         day.completedTasks.map((t) => t.name),
       );
       console.log("Player Attributes After Day:", player.getAllAttributes());
 
-      // Update React state with completed tasks so UI re-renders
+      // Update React state so the UI re-renders
       setCompletedTasks([...day.completedTasks]);
     }
-  }, []);
+  }, []); // Run once on mount
+
+  // Set up an interval to update game time (if desired)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGameTime(time.getCurrentGameTime());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [time]);
 
   return (
     <div className="App p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg">
       <h1 className="text-2xl font-bold mb-2">Game - Day Test</h1>
       <p className="text-lg font-semibold mb-4">Player Name: {player.name}</p>
       <PlayerStats attributes={player.attributes} />
-      <TimeView time={time} />
+      <TimeView time={time} currentGameTime={gameTime} />
       <p className="text-lg font-semibold mt-4">Completed Tasks:</p>
       {completedTasks.length > 0 ? (
         completedTasks.map((task, index) => (
