@@ -1,42 +1,53 @@
 import React from "react";
 
-function OptionalNotification() {
-  return (
-    <div class="notification-popup">
-      <div class="notification-main">
-        <span class="emoji-icon" role="img">🥳</span>
-        <div class="notification-text">
-          <h3 class="notification-title">Matthew's Birthday Party 🧑‍💻⚡️⏳⏳⏳</h3>
-          <p class="notification-message">
-            Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron 
-          </p>
+function Notification({
+  isMandatory = false,
+  title = "Matthew's birthday party",
+  message = "Lebron lebron lebron",
+  icon = "🥳"
+}) {
+  if (isMandatory) {
+    // Mandatory Notification
+    return (
+      <div className="alert-popup">
+        <div className="notification-main">
+          <span className="emoji-icon" role="img">
+            {icon}
+          </span>
+          <div className="notification-text">
+            <h3 className="notification-title">{title}</h3>
+            <p className="notification-message">{message}</p>
+          </div>
+        </div>
+        <div className="notification-options">
+          <button className="accept-button">Dismiss</button>
         </div>
       </div>
-      <div class="notification-options">
-        <button class="reject-button" id="reject-button">Reject</button>
-        <button class="accept-button" id="accept-button">Accept</button>
+    );
+  } else {
+    // Optional Notification
+    return (
+      <div className="notification-popup">
+        <div className="notification-main">
+          <span className="emoji-icon" role="img">
+            {icon}
+          </span>
+          <div className="notification-text">
+            <h3 className="notification-title">{title}</h3>
+            <p className="notification-message">{message}</p>
+          </div>
+        </div>
+        <div className="notification-options">
+          <button className="reject-button" id="reject-button">
+            Reject
+          </button>
+          <button className="accept-button" id="accept-button">
+            Accept
+          </button>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
-function MandatoryNotification() {
-  return (
-    <div class="alert-popup">
-    <div class="notification-main">
-      <span class="emoji-icon" role="img">⚠️</span>
-      <div class="notification-text">
-        <h3 class="notification-title">You got hurt😢</h3>
-        <p class="notification-message">
-          Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron Lebron 
-        </p>
-      </div>
-    </div>
-    <div class="notification-options">
-      <button class="accept-button">Dismiss</button>
-    </div>
-  </div>
-  );
-}
-
-export default OptionalNotification; MandatoryNotification();
+export default Notification;
