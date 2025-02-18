@@ -11,6 +11,7 @@ export default class Logic {
     this.currentDay = days[0]; // Current day object
     this.time = new Time(); // Time object to manage game time
     this.tasksCompleted = [];
+    this.timeXSpeed = 2; // current multiplier of time speed
   }
 
   // Seeds the player attributes at the start
