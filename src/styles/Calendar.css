@@ -10,12 +10,18 @@
   width: 100%;
   border-bottom: 1px dashed grey;
   background-color: white;
+  content: center;
 }
 
-.time-section {
-  /* Your styles here */
+.hours {
+  width: 10vw;
+  height: 100vh;
+  border-right: 1px solid black;
+  font-size: 24px;
 }
 
-.task-calendar {
-  /* Your styles here */
+#slot {
+  width: 90vw;
+  height: 100vh;
+  border-left: 1px;
 }

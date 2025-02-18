@@ -4,6 +4,30 @@ function Calendar() {
   return (
     <div id="calendar">
       <div class="time-block">
+        <div class="hours">12AM</div>
+        <div class="slot"></div>
+      </div>
+      <div class="time-block">
+        <div class="hours">1AM</div>
+        <div class="slot"></div>
+      </div>
+      <div class="time-block">
+        <div class="hours">2AM</div>
+        <div class="slot"></div>
+      </div>
+      <div class="time-block">
+        <div class="hours">3AM</div>
+        <div class="slot"></div>
+      </div>
+      <div class="time-block">
+        <div class="hours">4AM</div>
+        <div class="slot"></div>
+      </div>
+      <div class="time-block">
+        <div class="hours">5AM</div>
+        <div class="slot"></div>
+      </div>
+      <div class="time-block">
         <div class="hours">6AM</div>
         <div class="slot"></div>
       </div>
@@ -73,34 +97,6 @@ function Calendar() {
       </div>
       <div class="time-block">
         <div class="hours">11PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">12AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">1AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">2AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">3AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">4AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">5AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">6AM</div>
         <div class="slot"></div>
       </div>
     </div>
