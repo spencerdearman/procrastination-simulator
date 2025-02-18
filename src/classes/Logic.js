@@ -22,15 +22,35 @@ export default class Logic {
   seedGame() {
     let play = Player("Test");
     let sun = Day();
+    this.seedTask(sun);
     let mon = Day();
+    this.seedTask(mon);
     let tue = Day();
+    this.seedTask(tue);
     let wed = Day();
+    this.seedTask(wed);
     let thu = Day();
+    this.seedTask(thu);
     let fri = Day();
+    this.seedTask(fri);
     let sat = Day();
+    this.seedTask(sat);
     let days = [sun, mon, tue, wed, thu, fri, sat];
     let gameLogic = Logic(play, days);
+
     return gameLogic;
+  }
+
+  seedTask(day) {
+    const task1 = new Task("Study for Exam");
+    task1.setCategory("academic");
+    task1.setAttributeImpacts("academics", 10);
+    day.addTask(task1);
+
+    const task2 = new Task("Social Meetup");
+    task2.setCategory("social");
+    task2.setAttributeImpacts("socialLife", 15);
+    day.addTask(task2);
   }
 
   // Starts a new day and applies rollover tasks from the previous day
