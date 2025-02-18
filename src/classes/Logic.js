@@ -109,7 +109,7 @@ export default class Logic {
   }
 
   // Checks all days for completed tasks to self assign
-  totalTasksComlpeted() {
+  totalTasksCompleted() {
     for (let day of this.days) {
       let tList = day.completedTasks;
       for (let task of tList) {
