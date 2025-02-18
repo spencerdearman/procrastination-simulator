@@ -4,10 +4,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 450px;
-  background-color: #FDF7DD;
-  border: 2px solid #C0B9A9; 
+  background-color: #fdf7dd;
+  border: 2px solid #c0b9a9;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 9999;
 }
 
@@ -17,10 +17,10 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 450px;
-  background-color: #FDF7DD;
-  border: 2px solid #C0B9A9; 
+  background-color: #fdf7dd;
+  border: 2px solid #c0b9a9;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 9999;
   cursor: normal;
 }
@@ -40,7 +40,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
-  font-size: 32px;           
+  font-size: 32px;
   line-height: 1;
   margin-bottom: 8px;
 }
@@ -50,7 +50,7 @@
   display: flex;
   flex-direction: column;
   margin: 0 10px;
-  font-family: 'Pixelify Sans'
+  font-family: "Pixelify Sans";
 }
 
 .notification-title {
@@ -71,30 +71,30 @@
 .reject-button,
 .accept-button {
   padding: 10px 16px;
-  border: 2px solid #B2B2B2;
+  border: 2px solid #b2b2b2;
   border-radius: 10px;
   font-size: 14px;
   cursor: pointer;
 }
 
 .reject-button {
-  background-color: #E2DAC7;
+  background-color: #e2dac7;
   color: #333;
-  font-family: 'Pixelify Sans'
+  font-family: "Pixelify Sans";
 }
 
 .accept-button {
-  background-color: #D05147;
+  background-color: #d05147;
   color: #fff;
-  font-family: 'Pixelify Sans'
+  font-family: "Pixelify Sans";
 }
 
 .accept-button:hover {
-  background-color: #EF6054;
+  background-color: #ef6054;
 }
 
 .reject-button:hover {
-  background-color: #FFFBEB;
+  background-color: #fffbeb;
 }
 
 .notification-options {

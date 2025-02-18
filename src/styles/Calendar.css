@@ -3,19 +3,22 @@
   height: 100%;
   display: block;
   overflow-y: scroll;
+  background-color: #e2dac7;
 }
 
 .time-block {
   height: 16vh;
   width: 100%;
   border-bottom: 1px dashed grey;
-  background-color: white;
+  background-color: #e2dac7;
 }
 
 .time-section {
   /* Your styles here */
+  background-color: #e2dac7;
 }
 
 .task-calendar {
   /* Your styles here */
+  background-color: #e2dac7;
 }

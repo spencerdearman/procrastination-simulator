@@ -28,12 +28,11 @@
   height: 24.5vh;
   width: 35vw;
   border-style: solid;
-  border-color: #EBE8D4;
+  border-color: #ebe8d4;
   border-radius: 15px;
-  background-color: #FDF7DD;
+  background-color: #fdf7dd;
   position: relative;
   left: 5%;
   top: -12px;
   /* transform: translate(-50%, -55%); */
 }
-
