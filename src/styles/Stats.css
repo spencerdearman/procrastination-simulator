@@ -1,0 +1,85 @@
+#stats {
+  height: 30vh;
+  border-bottom: 4px solid rgba(128, 128, 128, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.div-academics,
+.div-social-life,
+.div-energy,
+.div-mental-health {
+  width: 32vw;
+  height: 5vh;
+  position: relative;
+  left: 5%;
+}
+
+.div-academics {
+  top: 2%;
+}
+.div-social-life {
+  top: 1%;
+}
+.div-energy,
+.div-mental-health {
+  top: 0;
+}
+
+.stats-bar {
+  height: 2vh;
+  width: 25vw;
+  border-style: solid;
+  border-color: #ebe8d4;
+  background-color: #ebe8d4;
+  border-radius: 5px;
+}
+
+.stats-bar-fill {
+  height: 2vh;
+  width: 5vw;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.academics-color {
+  background-color: #cd4141;
+  border-color: #cd4141;
+}
+
+.social-life-color {
+  background-color: #5ed375;
+  border-color: #5ed375;
+}
+
+.energy-color {
+  background-color: #81beff;
+  border-color: #81beff;
+}
+
+.mental-health-color {
+  background-color: #a97ec5;
+  border-color: #a97ec5;
+}
+
+.sb-academics,
+.sb-social-life,
+.sb-energy,
+.sb-mental-health {
+  position: absolute;
+  bottom: 0;
+}
+
+.stats-score {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  position: absolute;
+  top: 70%;
+  right: 5%;
+  transform: translateY(-50%);
+}

@@ -1,0 +1,25 @@
+#sidebar {
+  width: 40vw;
+  height: 100vh;
+  display: block;
+  border: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+.side-bar-header {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  margin-left: 7px;
+  margin-top: 8px;
+}
+
+.side-bar-subheading {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  margin-top: 1%;
+}
