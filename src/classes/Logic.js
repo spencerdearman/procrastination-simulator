@@ -1,7 +1,6 @@
-import Player from "./Player";
-import Day from "./Day";
-import Time from "./Time";
-import Task from "./Task";
+import Time from "./Time.js";
+import Day from "./Day.js";
+import Player from "./Player.js";
 
 export default class Logic {
   constructor(player, days) {
@@ -14,16 +13,16 @@ export default class Logic {
   }
 
   seedGame() {
-    play = Player("Test")
-    sun = Day();
-    mon = Day();
-    tue = Day();
-    wed = Day();
-    thu = Day();
-    fri = Day();
-    sat = Day();
-    days = [sun, mon, tue, wed, thu, fri, sat];
-    gameLogic = Logic(play, days);
+    let play = Player("Test");
+    let sun = Day();
+    let mon = Day();
+    let tue = Day();
+    let wed = Day();
+    let thu = Day();
+    let fri = Day();
+    let sat = Day();
+    let days = [sun, mon, tue, wed, thu, fri, sat];
+    let gameLogic = Logic(play, days);
   }
 
   nextDay() {
@@ -33,11 +32,10 @@ export default class Logic {
 
   totalTasksComlpeted() {
     for (let day of this.days) {
-        tList = day.completedTasks;
-        for (let task of tList) {
-            this.tasksCompleted.push(task);
-        }
+      let tList = day.completedTasks;
+      for (let task of tList) {
+        this.tasksCompleted.push(task);
+      }
     }
-    }
-
+  }
 }
