@@ -1,11 +1,12 @@
 #stats {
   height: 30vh;
   border-bottom: 4px solid rgba(128, 128, 128, 0.15);
-  display: flex;
+  display: block;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
+
 
 .div-academics,
 .div-social-life,
