@@ -1,0 +1,283 @@
+@import url("https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap");
+
+body {
+  font-family: "Pixelify Sans", sans-serif;
+}
+
+#container {
+  display: flex;
+  width: 100vw;
+  border: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+#main {
+  width: 60vw;
+  height: 100vh;
+  border-style: solid;
+  overflow: hidden;
+  border: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+#sidebar {
+  width: 40vw;
+  height: 100vh;
+  display: block;
+  border: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+#stats {
+  height: 30vh;
+  border-bottom: 4px solid rgba(128, 128, 128, 0.15);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#stats-block {
+}
+
+.attribute {
+}
+
+#tasks-container {
+  height: 68vh;
+  overflow-y: auto;
+}
+
+.task-block {
+  margin: 2vh;
+  padding: 2vh;
+  border-radius: 10px;
+  height: 10vh;
+  background-color: white;
+  border: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+.task-block h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+}
+
+.task-block p {
+  margin: 0;
+  padding: 0;
+  font-size: 0.6em;
+}
+
+#header {
+  display: flex;
+  height: 15vh;
+}
+
+#time {
+  width: 60vw;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  border-right: 4px solid rgba(128, 128, 128, 0.15);
+  border-bottom: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+#play-button {
+  width: 40vw;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  border-bottom: 4px solid rgba(128, 128, 128, 0.15);
+}
+
+#calendar {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow-y: scroll;
+}
+
+.time-block {
+  height: 16vh;
+  width: 100%;
+  border-bottom: 1px dashed grey;
+  background-color: white;
+}
+
+.time-section {
+  /* Your styles here */
+}
+
+.task-calendar {
+  /* Your styles here */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Make current date text red */
+.current-date {
+  color: red;
+}
+
+/* Group the date texts together without a gap */
+.date-wrapper {
+  display: inline-flex;
+  gap: 0;
+}
+
+/* Reset default button styles for time buttons */
+.time-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.time-button:hover {
+  background-color: #e8e8e8;
+}
+
+.control-button {
+  background-color: #f5f5f5;
+  border: 2px solid rgba(128, 128, 128, 0.15);
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: #e8e8e8;
+}
+
+.side-bar-header {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;
+  margin-left: 7px;
+  margin-top: 8px;
+}
+
+.side-bar-subheading {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  /*     margin-top: 5px; */
+  margin-top: 1%;
+}
+
+.div-academics {
+  width: 32vw;
+  height: 5vh;
+  /*     border-style: solid; */
+  position: relative;
+  top: 2%;
+  left: 5%;
+}
+
+.div-social-life {
+  width: 32vw;
+  height: 5vh;
+  /*     border-style: solid; */
+  position: relative;
+  top: 1%;
+  left: 5%;
+}
+
+.div-energy {
+  width: 32vw;
+  height: 5vh;
+  /*     border-style: solid; */
+  position: relative;
+  top: 0;
+  left: 5%;
+}
+
+.div-mental-health {
+  width: 32vw;
+  height: 5vh;
+  /*     border-style: solid; */
+  position: relative;
+  top: 0;
+  left: 5%;
+}
+
+.stats-bar {
+  height: 2vh;
+  width: 25vw;
+  border-style: solid;
+  border-color: #ebe8d4;
+  background-color: #ebe8d4;
+  border-radius: 5px;
+}
+
+.stats-bar-fill {
+  height: 2vh;
+  width: 5vw; /*connect functionality */
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.academics-color {
+  background-color: #cd4141;
+  border-color: #cd4141;
+}
+
+.social-life-color {
+  background-color: #5ed375;
+  border-color: #5ed375;
+}
+
+.energy-color {
+  background-color: #81beff;
+  border-color: #81beff;
+}
+
+.mental-health-color {
+  background-color: #a97ec5;
+  border-color: #a97ec5;
+}
+
+.sb-academics {
+  position: absolute;
+  bottom: 0;
+}
+
+.sb-social-life {
+  position: absolute;
+  bottom: 0;
+}
+
+.sb-energy {
+  position: absolute;
+  bottom: 0;
+}
+
+.sb-mental-health {
+  position: absolute;
+  bottom: 0;
+}
+
+.stats-score {
+  font-family: "Pixelify Sans", serif;
+  font-optical-sizing: auto;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 14px;
+  position: absolute;
+  top: 70%;
+  right: 5%;
+  transform: translateY(-50%);
+}
