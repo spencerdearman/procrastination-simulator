@@ -19,7 +19,8 @@ export default class Task {
     this.endTime = null; // Date object
     this.completed = false;
     this.status = "PENDING"; // PENDING, COMPLETE, IN_PROGRESS, ABORTED
-    this.optional = false;
+    this.planned = false; // is it on the board or is it not
+    this.optional = false; // you cant change the time but it is still skippable
     this.movable = false;
     this.current = false;
     this.duration = 1; // In-game hours
