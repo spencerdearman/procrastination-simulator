@@ -19,7 +19,7 @@ export default class Logic {
     Object.assign(this.player.attributes, playerAttributes);
   }
 
-  // Parses an array of JSON objects into Task instances
+  // Convert an array of JSON objects into Task instances
   parseTasks(taskDataArray) {
     return taskDataArray.map((data) => {
       const task = new Task(data.name);
@@ -27,6 +27,9 @@ export default class Logic {
       task.description = data.description;
       task.icon = data.icon;
       task.duration = data.duration;
+      // Parse startTime and endTime from ISO strings if provided
+      if (data.startTime) task.startTime = new Date(data.startTime);
+      if (data.endTime) task.endTime = new Date(data.endTime);
       for (let key in data.attributeImpacts) {
         task.setAttributeImpacts(key, data.attributeImpacts[key]);
       }
@@ -35,9 +38,14 @@ export default class Logic {
     });
   }
 
-  // Starts the game by seeding the player and tasks (using the dummy JSON data)
+  // Check whether the current game time is within the task's allowed time window
+  isWithinTimeWindow(task, currentGameTime) {
+    if (!task.startTime || !task.endTime) return true;
+    return currentGameTime >= task.startTime && currentGameTime <= task.endTime;
+  }
+
+  // Starts the game: seeds the player, parses tasks, adds them to the day, and starts the game loop
   startGame(taskDataArray) {
-    // Seed the player's attributes
     this.seedPlayer({
       academics: 100,
       socialLife: 100,
@@ -46,24 +54,67 @@ export default class Logic {
     });
     console.log("Initial Player Attributes:", this.player.getAllAttributes());
 
-    // Parse the tasks from JSON and add them to the current day
     const tasks = this.parseTasks(taskDataArray);
     tasks.forEach((task) => {
       this.currentDay.addTask(task);
-      // Optionally, start and complete the task immediately
-      task.startTask();
-      task.completeTask(this.player.attributes);
     });
-    // Update the day's completed tasks
-    this.currentDay.updateCompleted();
-    // End the day (apply any rollover/attribute changes)
-    this.endDay();
 
-    console.log(
-      "Completed Tasks:",
-      this.currentDay.completedTasks.map((t) => t.name),
-    );
-    console.log("Player Attributes After Day:", this.player.getAllAttributes());
+    // Start the game loop to continuously check time and process tasks.
+    this.startGameLoop();
+  }
+
+  // Game loop: checks every second whether a task should start or be completed
+  startGameLoop() {
+    if (this.gameLoopInterval) {
+      clearInterval(this.gameLoopInterval);
+    }
+    this.gameLoopInterval = setInterval(() => {
+      const currentGameTime = this.time.getCurrentGameTime();
+
+      // If a task is running, check if its end time has been reached.
+      if (this.currentRunningTask) {
+        if (currentGameTime >= this.currentRunningTask.endTime) {
+          this.currentRunningTask.completeTask(this.player.attributes);
+          console.log(
+            `Task "${this.currentRunningTask.name}" completed at ${currentGameTime.toLocaleTimeString()}.`,
+          );
+          // Update the current day's completed tasks (if your Day class handles that)
+          this.currentDay.updateCompleted();
+          this.currentRunningTask = null;
+        }
+      } else {
+        // No task is running: look for an eligible task to start.
+        for (let task of this.currentDay.tasks) {
+          if (
+            !task.completed &&
+            this.isWithinTimeWindow(task, currentGameTime)
+          ) {
+            task.startTask();
+            this.currentRunningTask = task;
+            console.log(
+              `Task "${task.name}" started at ${currentGameTime.toLocaleTimeString()}.`,
+            );
+            // Break so that only one task starts at a time.
+            break;
+          }
+        }
+      }
+    }, 1000);
+  }
+
+  // Stop the game loop (if needed)
+  stopGameLoop() {
+    if (this.gameLoopInterval) {
+      clearInterval(this.gameLoopInterval);
+      this.gameLoopInterval = null;
+    }
+  }
+
+  // Ends the day (for example, when the game stops)
+  endDay() {
+    this.stopGameLoop();
+    this.currentDay.updateCompleted();
+    console.log(`Day ${this.currentDayIndex + 1} ended.`);
   }
 
   // Inits all basic components for Logic object
@@ -124,12 +175,6 @@ export default class Logic {
     } else {
       console.log("All days completed. Game over!");
     }
-  }
-
-  // Ends the current day by updating completed tasks
-  endDay() {
-    this.currentDay.updateCompleted();
-    console.log(`Day ${this.currentDayIndex + 1} ended.`);
   }
 
   // Applies the attribute changes (from tasks and day events) to the player

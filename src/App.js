@@ -7,7 +7,7 @@ import PlayerStats from "./components/PlayerStats";
 import TimeView from "./components/TimeView";
 import Time from "./classes/Time";
 
-// Dummy JSON data for tasks
+// Dummy JSON data for tasks (with optional startTime and endTime fields)
 const dummyTaskData = [
   {
     name: "Study for Exam",
@@ -15,6 +15,11 @@ const dummyTaskData = [
     description: "Study for the upcoming exam",
     icon: "",
     duration: 1,
+    // ISO 8601 timestamps:
+    // "2025-01-01T00:00:00" represents midnight on January 1, 2025
+    // "2025-01-01T01:00:00" represents 1:00 AM on January 1, 2025
+    startTime: "2025-01-01T00:00:00",
+    endTime: "2025-01-01T01:00:00",
     attributeImpacts: {
       academics: 10,
       socialLife: 0,
@@ -29,6 +34,8 @@ const dummyTaskData = [
     description: "Work out at the gym",
     icon: "",
     duration: 1,
+    startTime: "2025-01-01T10:30:00",
+    endTime: "2025-01-01T11:30:00",
     attributeImpacts: {
       academics: 0,
       socialLife: 0,
