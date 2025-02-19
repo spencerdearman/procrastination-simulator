@@ -39,22 +39,6 @@ const dummyTaskData = [
   },
 ];
 
-// Function to parse JSON data into Task instances
-function parseTasks(taskDataArray) {
-  return taskDataArray.map((data) => {
-    const task = new Task(data.name);
-    task.setCategory(data.category);
-    task.description = data.description;
-    task.icon = data.icon;
-    task.duration = data.duration;
-    for (let key in data.attributeImpacts) {
-      task.setAttributeImpacts(key, data.attributeImpacts[key]);
-    }
-    task.difficulty = data.difficulty;
-    return task;
-  });
-}
-
 export function App() {
   const [player] = useState(new Player("Player 1"));
   const [day] = useState(new Day());
@@ -64,37 +48,13 @@ export function App() {
   const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
 
   useEffect(() => {
-    // Seed the player if tasks are not already added
+    // If no tasks have been added yet, start the game using the Logic class.
     if (day.tasks.length === 0) {
-      logic.seedPlayer({
-        academics: 100,
-        socialLife: 100,
-        energy: 100,
-        mentalHealth: 100,
-      });
-      console.log("Initial Player Attributes:", player.getAllAttributes());
-
-      // Parse tasks from the dummy JSON and add them to the day
-      const parsedTasks = parseTasks(dummyTaskData);
-      parsedTasks.forEach((task) => {
-        day.addTask(task);
-        // Optionally, start and complete the task as needed:
-        task.startTask();
-        task.completeTask(player.attributes);
-      });
-      day.updateCompleted();
-      logic.endDay();
-
-      console.log(
-        "Completed Tasks:",
-        day.completedTasks.map((t) => t.name),
-      );
-      console.log("Player Attributes After Day:", player.getAllAttributes());
-
-      // Update React state so the UI re-renders
-      setCompletedTasks([...day.completedTasks]);
+      logic.startGame(dummyTaskData);
+      // Update React state with the completed tasks for the UI
+      setCompletedTasks([...logic.currentDay.completedTasks]);
     }
-  }, []); // Run once on mount
+  }, [day, logic]);
 
   // Set up an interval to update game time (if desired)
   useEffect(() => {

@@ -19,6 +19,53 @@ export default class Logic {
     Object.assign(this.player.attributes, playerAttributes);
   }
 
+  // Parses an array of JSON objects into Task instances
+  parseTasks(taskDataArray) {
+    return taskDataArray.map((data) => {
+      const task = new Task(data.name);
+      task.setCategory(data.category);
+      task.description = data.description;
+      task.icon = data.icon;
+      task.duration = data.duration;
+      for (let key in data.attributeImpacts) {
+        task.setAttributeImpacts(key, data.attributeImpacts[key]);
+      }
+      task.difficulty = data.difficulty;
+      return task;
+    });
+  }
+
+  // Starts the game by seeding the player and tasks (using the dummy JSON data)
+  startGame(taskDataArray) {
+    // Seed the player's attributes
+    this.seedPlayer({
+      academics: 100,
+      socialLife: 100,
+      energy: 100,
+      mentalHealth: 100,
+    });
+    console.log("Initial Player Attributes:", this.player.getAllAttributes());
+
+    // Parse the tasks from JSON and add them to the current day
+    const tasks = this.parseTasks(taskDataArray);
+    tasks.forEach((task) => {
+      this.currentDay.addTask(task);
+      // Optionally, start and complete the task immediately
+      task.startTask();
+      task.completeTask(this.player.attributes);
+    });
+    // Update the day's completed tasks
+    this.currentDay.updateCompleted();
+    // End the day (apply any rollover/attribute changes)
+    this.endDay();
+
+    console.log(
+      "Completed Tasks:",
+      this.currentDay.completedTasks.map((t) => t.name),
+    );
+    console.log("Player Attributes After Day:", this.player.getAllAttributes());
+  }
+
   // Inits all basic components for Logic object
   seedGame() {
     let play = Player("Test");
