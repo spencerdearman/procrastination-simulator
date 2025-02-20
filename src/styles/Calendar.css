@@ -14,6 +14,7 @@
   width: 100%;
   border-bottom: 1px dashed grey;
   background-color: white;
+  position: relative;
 }
 
 .time-block:hover {
@@ -28,8 +29,21 @@
   font-size: 24px;
 }
 
-#slot {
-  width: 90vw;
-  height: 100vh;
-  border-left: 1px;
-}
+.slot {
+  width: calc(100% - 70px);
+  height: 100%;
+  /* background-color: #9C27B0; */
+  position: absolute;
+  top: 0px;
+  left: 70px;}
+
+  .slot .task-block {
+    margin:0px;
+    height: 100%;
+    width:100%;
+   }
+   .slot .task-block p{display: none;}
+   .slot.disabled {
+    /* background-color: #9a9a9a; */
+    cursor: not-allowed;
+   }
