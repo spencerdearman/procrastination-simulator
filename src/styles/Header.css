@@ -5,10 +5,10 @@
 }
 
 #time {
-  width: 60vw;
+  width: 80%;
   font-size: 36px;
   display: flex;
-  justify-content: center;
+  justify-content:space-between;
   align-items: center;
   gap: 30px;
   border-right: 4px solid rgba(128, 128, 128, 0.15);
@@ -17,7 +17,7 @@
 }
 
 .date-wrapper {
-  display: inline-flex;
+  /* display: inline-flex; unnecessary */
   gap: 0;
 }
 

@@ -5,8 +5,8 @@ function TimeDisplay({ currentDate }) {
     <div id="time">
       <button className="time-button">&lt;</button>
       <div className="date-wrapper">
-        <p className="current-date">{currentDate}</p>
-        <p>, February 11</p>
+        <span className="current-date">{currentDate}</span>
+        {/* <span>, February 11</span> */}
       </div>
       <button className="time-button">&gt;</button>
     </div>
