@@ -1,24 +1,24 @@
 export default class Time {
   constructor(scale = 60) {
     this.realSecondsPerGameHour = scale;
-    // Base time from which to compute game time
+    this.speedMultiplier = 1;
     this.gameStartTime = new Date(2025, 0, 1, 0, 0, 0);
-    // Real-world reference point for elapsed time
     this.startTime = Date.now();
   }
 
-  // Returns the current game time based on elapsed real seconds
+  // Calculate current game time based on elapsed real seconds and the speed multiplier.
   getCurrentGameTime() {
     const deltaSeconds = (Date.now() - this.startTime) / 1000;
+    const effectiveDelta = deltaSeconds * this.speedMultiplier;
     const gameMinutesPassed = Math.floor(
-      deltaSeconds * (60 / this.realSecondsPerGameHour),
+      effectiveDelta * (60 / this.realSecondsPerGameHour),
     );
     return new Date(
       this.gameStartTime.getTime() + gameMinutesPassed * 60 * 1000,
     );
   }
 
-  // Update the gameStartTime and reset the timer to allow manual adjustments
+  // Allows external updates to the game time and resets the baseline.
   setCurrentGameTime(newGameTime) {
     this.gameStartTime = new Date(newGameTime);
     this.startTime = Date.now();
@@ -31,5 +31,13 @@ export default class Time {
 
   setScale(newScale) {
     this.realSecondsPerGameHour = newScale;
+  }
+
+  // When the speed multiplier is changed, adjust the baseline so that the transition is smooth.
+  setSpeedMultiplier(newSpeed) {
+    const currentGameTime = this.getCurrentGameTime();
+    this.gameStartTime = currentGameTime;
+    this.startTime = Date.now();
+    this.speedMultiplier = newSpeed;
   }
 }

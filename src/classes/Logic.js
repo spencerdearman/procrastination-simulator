@@ -12,7 +12,7 @@ export default class Logic {
     this.currentDay = days[0];
     this.time = timeInstance || new Time();
     this.tasksCompleted = [];
-    this.timeXSpeed = 1; // Prevent doubling
+    this.timeXSpeed = 1;
   }
 
   seedPlayer(playerAttributes) {

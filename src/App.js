@@ -78,6 +78,20 @@ export function App() {
       <p className="text-lg font-semibold mb-4">Player Name: {player.name}</p>
       <PlayerStats attributes={player.attributes} />
       <TimeView time={time} currentGameTime={gameTime} />
+      <div className="my-4">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded mr-2"
+          onClick={() => time.setSpeedMultiplier(2)}
+        >
+          Speed Up
+        </button>
+        <button
+          className="px-4 py-2 bg-green-500 text-white rounded"
+          onClick={() => time.setSpeedMultiplier(1)}
+        >
+          Normal Speed
+        </button>
+      </div>
       <p className="text-lg font-semibold mt-4">Completed Tasks:</p>
       {completedTasks.length > 0 ? (
         completedTasks.map((task, index) => (
