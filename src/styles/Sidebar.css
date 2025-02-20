@@ -20,12 +20,12 @@
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
-  font-size: 14px;
+  font-size: 20px;
   margin-top: 1%;
 }
 
 #stats-block {
-  height: 24.5vh;
+  height: 35vh;
   width: 35vw;
   border-style: solid;
   border-color: #ebe8d4;
@@ -34,5 +34,10 @@
   position: relative;
   left: 5%;
   top: -12px;
-  /* transform: translate(-50%, -55%); */
+
+  /* Use flexbox to evenly distribute elements */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* Ensures equal spacing */
+  align-items: center;
 }

@@ -1,6 +1,6 @@
 #stats {
-  height: 30vh;
-  border-bottom: 4px solid rgba(128, 128, 128, 0.15);
+  height: 40vh;
+  /* border-bottom: 4px solid rgba(128, 128, 128, 0.15); */
   display: block;
   justify-content: center;
   align-items: center;
@@ -12,24 +12,13 @@
 .div-energy,
 .div-mental-health {
   width: 32vw;
-  height: 5vh;
+  height: 7vh;
   position: relative;
   left: 5%;
 }
 
-.div-academics {
-  top: 2%;
-}
-.div-social-life {
-  top: 1%;
-}
-.div-energy,
-.div-mental-health {
-  top: 0;
-}
-
 .stats-bar {
-  height: 2vh;
+  height: 3vh;
   width: 25vw;
   border-style: solid;
   border-color: #ebe8d4;
@@ -38,7 +27,7 @@
 }
 
 .stats-bar-fill {
-  height: 2vh;
+  height: 3vh;
   width: 5vw;
   border-style: solid;
   border-radius: 5px;
