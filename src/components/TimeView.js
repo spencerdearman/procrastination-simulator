@@ -24,10 +24,12 @@ const TimeView = ({ time }) => {
 
   const twiceSpeed = () => {
     time.xSpeed(2);
+    setIsTimeStopped(false);
   };
 
   const halfSpeed = () => {
     time.xSpeed(0.5);
+    setIsTimeStopped(false);
   };
 
   return (
