@@ -7,7 +7,7 @@ import PlayerStats from "./components/PlayerStats";
 import TimeView from "./components/TimeView";
 import Time from "./classes/Time";
 
-// Dummy JSON data for tasks (with optional startTime and endTime fields)
+// Dummy tasks for testing
 const dummyTaskData = [
   {
     name: "Study for Exam",
@@ -15,9 +15,6 @@ const dummyTaskData = [
     description: "Study for the upcoming exam",
     icon: "",
     duration: 1,
-    // ISO 8601 timestamps:
-    // "2025-01-01T00:00:00" represents midnight on January 1, 2025
-    // "2025-01-01T01:00:00" represents 1:00 AM on January 1, 2025
     startTime: "2025-01-01T00:00:00",
     endTime: "2025-01-01T01:00:00",
     attributeImpacts: {
@@ -47,29 +44,33 @@ const dummyTaskData = [
 ];
 
 export function App() {
+  // Create a single shared Time instance.
+  const [time] = useState(new Time(60));
   const [player] = useState(new Player("Player 1"));
   const [day] = useState(new Day());
-  const [logic] = useState(new Logic(player, [day]));
-  const [time] = useState(new Time(30));
+  // Pass the shared Time instance into Logic.
+  const [logic] = useState(new Logic(player, [day], time));
   const [completedTasks, setCompletedTasks] = useState([]);
   const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
 
+  // Start game on initial render if no tasks are present.
   useEffect(() => {
-    // If no tasks have been added yet, start the game using the Logic class.
     if (day.tasks.length === 0) {
       logic.startGame(dummyTaskData);
-      // Update React state with the completed tasks for the UI
       setCompletedTasks([...logic.currentDay.completedTasks]);
     }
   }, [day, logic]);
 
-  // Set up an interval to update game time (if desired)
+  // Poll for updated game time and completed tasks every second.
   useEffect(() => {
     const interval = setInterval(() => {
-      setGameTime(time.getCurrentGameTime());
+      const updatedTime = time.getCurrentGameTime();
+      console.log("Updated Game Time:", updatedTime);
+      setGameTime(updatedTime);
+      setCompletedTasks([...logic.currentDay.completedTasks]);
     }, 1000);
     return () => clearInterval(interval);
-  }, [time]);
+  }, [time, logic]);
 
   return (
     <div className="App p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg">

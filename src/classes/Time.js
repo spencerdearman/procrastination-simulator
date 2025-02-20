@@ -1,20 +1,35 @@
 export default class Time {
   constructor(scale = 60) {
-    this.realSecondsPerGameHour = scale; /* Note, 60 real seconds = 1 game hr */
-    this.startTime = Date.now(); // Store the real-world start time
-    this.gameStartTime = new Date(2025, 0, 1, 0, 0, 0); // Arbitrary in-game start time
+    this.realSecondsPerGameHour = scale;
+    // Base time from which to compute game time
+    this.gameStartTime = new Date(2025, 0, 1, 0, 0, 0);
+    // Real-world reference point for elapsed time
+    this.startTime = Date.now();
   }
 
-  /* Getting the current game time based on the elapsed real time and scale */
+  // Returns the current game time based on elapsed real seconds
   getCurrentGameTime() {
-    let realElapsedSeconds = (Date.now() - this.startTime) / 1000;
-    let gameMinutesElapsed =
-      (realElapsedSeconds / this.realSecondsPerGameHour) * 60;
+    const deltaSeconds = (Date.now() - this.startTime) / 1000;
+    const gameMinutesPassed = Math.floor(
+      deltaSeconds * (60 / this.realSecondsPerGameHour),
+    );
+    return new Date(
+      this.gameStartTime.getTime() + gameMinutesPassed * 60 * 1000,
+    );
+  }
 
-    let newGameTime = new Date(this.gameStartTime);
+  // Update the gameStartTime and reset the timer to allow manual adjustments
+  setCurrentGameTime(newGameTime) {
+    this.gameStartTime = new Date(newGameTime);
+    this.startTime = Date.now();
+  }
 
-    newGameTime.setMinutes(newGameTime.getMinutes() + gameMinutesElapsed);
+  resetGameTime() {
+    this.gameStartTime = new Date(2025, 0, 1, 0, 0, 0);
+    this.startTime = Date.now();
+  }
 
-    return newGameTime;
+  setScale(newScale) {
+    this.realSecondsPerGameHour = newScale;
   }
 }
