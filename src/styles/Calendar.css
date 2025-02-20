@@ -1,17 +1,19 @@
+#calendar-container {
+  width: 100%;
+  height: 85vh;
+  overflow-y: scroll;
+}
+
 #calendar {
   width: 100%;
-  height: 100%;
-  display: block;
-  overflow-y: scroll;
   background-color: #e2dac7;
 }
 
 .time-block {
-  height: 16vh;
+  height: 100px;
   width: 100%;
   border-bottom: 1px dashed grey;
   background-color: white;
-  content: center;
 }
 
 .time-block:hover {
@@ -19,8 +21,9 @@
 }
 
 .hours {
-  width: 10vw;
-  height: 100vh;
+  width: 70px;
+  height: 100%;
+  padding-left: 5px;
   border-right: 1px solid black;
   font-size: 24px;
 }

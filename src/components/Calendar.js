@@ -1,103 +1,43 @@
 import React from "react";
 
+// New TimeBlock component
+const TimeBlock = ({ hour }) => {
+  return (
+    <div className="time-block">
+      <div className="hours">{hour}</div>
+      <div className="slot"></div>
+    </div>
+  );
+};
+
 function Calendar() {
   return (
-    <div id="calendar">
-      <div class="time-block">
-        <div class="hours">12AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">1AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">2AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">3AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">4AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">5AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">6AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">7AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">8AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">9AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">10AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">11AM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">12PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">1PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">2PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">3PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">4PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">5PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">6PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">7PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">8PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">9PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">10PM</div>
-        <div class="slot"></div>
-      </div>
-      <div class="time-block">
-        <div class="hours">11PM</div>
-        <div class="slot"></div>
+    <div id="calendar-container">
+      <div id="calendar">
+        <TimeBlock hour="12AM" />
+        <TimeBlock hour="1AM" />
+        <TimeBlock hour="2AM" />
+        <TimeBlock hour="3AM" />
+        <TimeBlock hour="4AM" />
+        <TimeBlock hour="5AM" />
+        <TimeBlock hour="6AM" />
+        <TimeBlock hour="7AM" />
+        <TimeBlock hour="8AM" />
+        <TimeBlock hour="9AM" />
+        <TimeBlock hour="10AM" />
+        <TimeBlock hour="11AM" />
+        <TimeBlock hour="12PM" />
+        <TimeBlock hour="1PM" />
+        <TimeBlock hour="2PM" />
+        <TimeBlock hour="3PM" />
+        <TimeBlock hour="4PM" />
+        <TimeBlock hour="5PM" />
+        <TimeBlock hour="6PM" />
+        <TimeBlock hour="7PM" />
+        <TimeBlock hour="8PM" />
+        <TimeBlock hour="9PM" />
+        <TimeBlock hour="10PM" />
+        <TimeBlock hour="11PM" />
       </div>
     </div>
   );
