@@ -45,4 +45,8 @@ export default class Time {
   stopTimer() {
     this.playerDefinedSpeed = 0;
   }
+
+  startTimer() {
+    this.playerDefinedSpeed = 1;
+  }
 }
