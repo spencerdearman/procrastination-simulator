@@ -1,5 +1,5 @@
 import Groq from "groq-sdk";
-import {useEffect,useState} from "react";
+import { useEffect, useState } from "react";
 import Stats from "./Stats";
 
 function WeekSummary() {
@@ -47,6 +47,10 @@ function WeekSummary() {
 
   return (
     <div>
+      <div id="header">
+        <p id="intro-text">You are a...</p>
+        {summary && <h3 id="banner-text">Lebron</h3>}
+      </div>
       <div id="content">
         <div id="stats-box">
           <h3 id="blurb-text">Your Cumulative Stats</h3>
@@ -57,10 +61,6 @@ function WeekSummary() {
           <p id="blurb-text">{summary || "Writing Your Journal Entry 📝..."}</p>
           <button className="restart-button">Restart Game</button>
         </div>
-      </div>
-      <div id="header">
-        <p id="intro-text">You are a...</p>
-        <h3 id="banner-text">Lebron</h3>
       </div>
     </div>
   );
