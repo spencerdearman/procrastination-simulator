@@ -3,6 +3,7 @@ import Task from "./Task.js";
 // should have the text content, the accept or decline button....thats it for MVP
 // also have the calls for accept and decline
 export default class Notification extends Task {
+  #description;
   #notificationDuration; // Duration of the notification
   #followUp; // Follow-up activity (string)
   #accepted = false; // Whether the notification has been accepted (boolean)
@@ -17,11 +18,11 @@ export default class Notification extends Task {
 
   /**
    * Constructor to initialize a Notification instance.
-   * @param {string} name - The name of the task/notification.
+   * @param {string} header - The header of the task/notification.
    * @param {number} notificationDuration - The duration of the notification.
    */
-  constructor(name, notificationDuration, forced = false) {
-    super(name);
+  constructor(header, notificationDuration, forced = false) {
+    super(header);
     this.#notificationDuration = notificationDuration;
     this.#forced = forced;
     this.setCategory("NOTIFICATION");
@@ -38,6 +39,18 @@ export default class Notification extends Task {
       this.#option2 = option2;
     } else {
       console.error("Options must be strings.");
+    }
+  }
+
+  getDescription() {
+    return this.#description;
+  }
+
+  setDescription(description) {
+    if (typeof description === "string") {
+      this.#description = description;
+    } else {
+      console.error(`Invalid description. Expected a string.`);
     }
   }
 
@@ -167,9 +180,9 @@ export default class Notification extends Task {
     this.setCurrent(true);
 
     console.log(
-      `Forced Interaction: Overriding activity "${currentActivity.name}".`,
+      `Forced Interaction: Overriding activity "${currentActivity.header}".`,
     );
-    return `Activity "${currentActivity.name}" overridden by a forced notification.`;
+    return `Activity "${currentActivity.header}" overridden by a forced notification.`;
   }
 
   //Set previous activity
@@ -184,7 +197,9 @@ export default class Notification extends Task {
 
   resumePreviousActivity() {
     if (this.#previousActivity) {
-      console.log(`Resuming previous activity: ${this.#previousActivity.name}`);
+      console.log(
+        `Resuming previous activity: ${this.#previousActivity.header}`,
+      );
 
       this.#previousActivity.setCurrent(true);
       this.#previousActivity.setStatus("IN_PROGRESS");
@@ -302,9 +317,9 @@ export default class Notification extends Task {
     const followUpActivity = this.getFollowUp();
     if (followUpActivity) {
       console.log(
-        `Activity "${activity.name}" has been replaced with follow-up: "${followUpActivity}".`,
+        `Activity "${activity.header}" has been replaced with follow-up: "${followUpActivity}".`,
       );
-      return `Activity "${activity.name}" replaced with "${followUpActivity}"`;
+      return `Activity "${activity.header}" replaced with "${followUpActivity}"`;
     } else {
       console.warn(
         `No follow-up defined for the notification. Replacement could not occur.`,
