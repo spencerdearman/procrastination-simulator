@@ -16,38 +16,43 @@ import Player from "classes/Player";
 import Day from "classes/Day";
 import Logic from "classes/Logic";
 
+// Dummy tasks for testing
 const dummyTaskData = [
   {
-    name: "Study for Exam",
-    category: "academic",
-    description: "Study for the upcoming exam",
-    icon: "",
+    name: "Eat Lunch",
+    category: "energy",
+    description: "It's lunchtime...blah blah",
+    icon: "🍽️",
+    startTime: null,
+    endTime: null,
+    completed: false,
+    locked: false,
+    current: false,
     duration: 1,
-    startTime: "2025-01-01T00:00:00",
-    endTime: "2025-01-01T01:00:00",
     attributeImpacts: {
-      academics: 10,
+      academics: 0,
+      socialLife: 10, // if you eat with people idk up to you
+      energy: 40,
+      mentalHealth: 0,
+    },
+  },
+  {
+    name: "Biology 101",
+    category: "academic",
+    description: "You failed that last exam so you should blah blah",
+    icon: "🧑‍🔬",
+    startTime: "2025-01-01T13:00:00",
+    endTime: "2025-01-01T14:00:00",
+    completed: false,
+    locked: true, // NOTE MAKE ALL CLASSES LOCKED = TRUE
+    current: false,
+    duration: 1,
+    attributeImpacts: {
+      academics: 15,
       socialLife: 0,
       energy: -20,
       mentalHealth: 0,
     },
-    difficulty: 2,
-  },
-  {
-    name: "Go to the Gym",
-    category: "social",
-    description: "Work out at the gym",
-    icon: "",
-    duration: 1,
-    startTime: "2025-01-01T10:30:00",
-    endTime: "2025-01-01T11:30:00",
-    attributeImpacts: {
-      academics: 0,
-      socialLife: 0,
-      energy: -30,
-      mentalHealth: 10,
-    },
-    difficulty: 3,
   },
 ];
 
