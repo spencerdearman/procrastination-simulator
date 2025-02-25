@@ -1,13 +1,10 @@
 export default class Task {
   // Define available categories as a static property.
   static Category = Object.freeze({
-    MANDATORY: "mandatory",
     ACADEMIC: "academic",
-    SELFCARE: "selfCare",
     SOCIAL: "social",
     ENERGY: "energy",
-    CLUBS: "clubs",
-    NOTIFICATION: "notification",
+    MENTAL: "mental",
   });
 
   constructor(name) {
@@ -18,10 +15,7 @@ export default class Task {
     this.startTime = null; // Date object
     this.endTime = null; // Date object
     this.completed = false;
-    this.status = "PENDING"; // PENDING, COMPLETE, IN_PROGRESS, ABORTED
-    this.planned = false; // is it on the board or is it not
-    this.optional = false; // you cant change the time but it is still skippable
-    this.movable = false;
+    this.locked = false;
     this.current = false;
     this.duration = 1; // In-game hours
     this.attributeImpacts = {
@@ -30,23 +24,6 @@ export default class Task {
       energy: 0,
       mentalHealth: 0,
     };
-    this.difficulty = undefined; // Scale of 1-4
-  }
-
-  setStatus(status) {
-    const validStatus = ["PENDING", "COMPLETE", "IN_PROGRESS", "ABORTED"];
-    const normalizedStatus = status.toUpperCase();
-    if (validStatus.includes(normalizedStatus)) {
-      this.status = normalizedStatus;
-    } else {
-      console.error(
-        `Invalid status: ${status}. Allowed statuses are: ${validStatus.join(", ")}`,
-      );
-    }
-  }
-
-  getStatus() {
-    return this.status;
   }
 
   setCategory(value) {
@@ -69,11 +46,6 @@ export default class Task {
   setCurrent(isCurrent) {
     if (typeof isCurrent === "boolean") {
       this.current = isCurrent;
-      if (isCurrent) {
-        this.setStatus("IN_PROGRESS");
-      } else if (this.getStatus() === "IN_PROGRESS") {
-        this.setStatus("PENDING");
-      }
     } else {
       console.error(
         `Invalid value for "current". Expected a boolean but got ${typeof isCurrent}.`,
@@ -157,7 +129,6 @@ export default class Task {
       return;
     }
     this.setCurrent(true);
-    this.setStatus("IN_PROGRESS");
     console.log(`Task "${this.name}" has started.`);
   }
 
@@ -184,7 +155,6 @@ export default class Task {
   abortTask() {
     if (!this.getCompleted()) {
       this.setCompleted(false);
-      this.setStatus("ABORTED");
       console.log(`Task "${this.name}" has been aborted.`);
     } else {
       console.warn(
@@ -200,7 +170,6 @@ export default class Task {
     }
     if (!this.getCompleted()) {
       this.setCompleted(true);
-      this.setStatus("COMPLETE");
 
       if (Object.keys(this.getAttributeImpactsObject()).length === 0) {
         console.warn(`Task "${this.name}" has no attribute impacts defined.`);
@@ -227,12 +196,6 @@ export default class Task {
   isOverdue(currentGameTime) {
     if (!this.getEndTime()) {
       console.error(`End time for task "${this.name}" is not set.`);
-      return false;
-    }
-    if (this.getStatus() === "COMPLETE" || this.getStatus() === "ABORTED") {
-      console.log(
-        `Task "${this.name}" cannot be overdue. Status: ${this.getStatus()}.`,
-      );
       return false;
     }
     const overdue = currentGameTime > this.getEndTime();
