@@ -13,6 +13,7 @@ body {
   height: 30vh;
   background-color: #5A2619;
   align-items: center;
+  justify-content: space-around;
   color: white;
 }
 
@@ -40,7 +41,8 @@ body {
 }
 
 #banner-text {
-  font-size: 50px;
+  margin-top: 0px;
+  font-size: 100px;
   font-family: "Pixelify Sans";
   color: white;
 }
