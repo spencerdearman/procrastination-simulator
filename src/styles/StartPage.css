@@ -4,39 +4,35 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-color: white;
 }
 
 #header {
   display: flex;
   flex-direction: column;
+  position: fixed;
+  top: 0;
   width: 100%;
-  height: 30vh;
+  height: 18vh;
   background-color: #5A2619;
   align-items: center;
-  color: white;
+  color: #FDF7DD;
 }
 
 #content {
     display: flex;
     width: 100%;
-    height: 70vh;
+    height: 60vh;
     justify-content: space-evenly;
     flex-direction: row;
-    background-color: #E2DAC7;
 }
 
 #summary-text-box {
-    width: 40%;
-}
-
-#stats-box {
-    width: 46%;
-}
-  
-#intro-text {
-  font-size: 25px;
-  font-family: "Pixelify Sans";
-  color: #FBF2BC;
+    width: 60%;
+    position: relative;
+    top: 10%;
+    background-color: #FDF7DD;
+    border-radius: 5%;
 }
   
 #banner-text {
@@ -45,8 +41,19 @@ body {
   color: white;
 }
   
-#blurb-text {
+.blurb-text {
     font-size: 20px;
+    position: absolute;
     color: black;
     font-family: "Pixelify Sans";
+}
+
+#text-header {
+  position: absolute;
+  top: 2%;
+}
+
+#text-position {
+  position: absolute;
+  top: 10%;
 }
