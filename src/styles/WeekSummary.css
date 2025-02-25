@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#header {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 30vh;
+  background-color: #5a2619;
+  align-items: center;
+  color: white;
+}
+
+#content {
+  display: flex;
+  width: 100%;
+  height: 70vh;
+  justify-content: space-evenly;
+  flex-direction: row;
+  background-color: #e2dac7;
+}
+
+#summary-text-box {
+  width: 40%;
+}
+
+#stats-box {
+  width: 46%;
+}
+
+#intro-text {
+  font-size: 25px;
+  font-family: "Pixelify Sans";
+  color: #fbf2bc;
+}
+
+#banner-text {
+  font-size: 50px;
+  font-family: "Pixelify Sans";
+  color: white;
+}
+
+#blurb-text {
+  font-size: 20px;
+  color: black;
+  font-family: "Pixelify Sans";
+}
