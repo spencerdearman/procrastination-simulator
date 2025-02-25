@@ -1,6 +1,6 @@
 import Task from "./Task.js";
 // notification class
-// should have the text ocntent, the accept or decline button....thats it for MVP
+// should have the text content, the accept or decline button....thats it for MVP
 // also have the calls for accept and decline
 export default class Notification extends Task {
   #notificationDuration; // Duration of the notification
