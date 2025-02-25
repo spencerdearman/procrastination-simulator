@@ -1,0 +1,10 @@
+{
+  "short_name": "Procrastination Simulator",
+  "name": "Procrastination Simulator",
+  "icons": [],
+  "start_url": "/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#000000"
+}
