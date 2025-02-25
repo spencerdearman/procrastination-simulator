@@ -2,6 +2,7 @@
   width: 100%;
   height: 85vh;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 #calendar {
@@ -35,15 +36,18 @@
   /* background-color: #9C27B0; */
   position: absolute;
   top: 0px;
-  left: 70px;}
+  left: 70px;
+}
 
-  .slot .task-block {
-    margin:0px;
-    height: 100%;
-    width:100%;
-   }
-   .slot .task-block p{display: none;}
-   .slot.disabled {
-    /* background-color: #9a9a9a; */
-    cursor: not-allowed;
-   }
+.slot .task-block {
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+.slot .task-block p {
+  display: none;
+}
+.slot.disabled {
+  /* background-color: #9a9a9a; */
+  cursor: not-allowed;
+}
