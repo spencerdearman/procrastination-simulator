@@ -1,0 +1,22 @@
+#play-button {
+  width: 20%;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+.control-button {
+  background-color: #e2dac7;
+  border: 2px solid rgba(128, 128, 128, 0.15);
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 24px;
+  transition: background-color 0.2s;
+}
+
+.control-button:hover {
+  background-color: #e8e8e8;
+}
