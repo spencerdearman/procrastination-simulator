@@ -10,7 +10,7 @@
 }
 
 #stats-block {
-  height: 35vh;
+  height: 33vh;
   width: 100%;
   border-style: solid;
   border-color: #ebe8d4;
@@ -56,23 +56,23 @@
 }
 
 .academics-color {
-  background-color: #cd4141;
-  border-color: #cd4141;
+  background-color: #4d799b;
+  border-color: #4d799b;
 }
 
 .social-life-color {
-  background-color: #5ed375;
-  border-color: #5ed375;
+  background-color: #a1544a;
+  border-color: #a1544a;
 }
 
 .energy-color {
   background-color: #81beff;
-  border-color: #81beff;
+  border-color: #b98d35;
 }
 
 .mental-health-color {
   background-color: #a97ec5;
-  border-color: #a97ec5;
+  border-color: #4d675c;
 }
 
 progress {
@@ -85,44 +85,44 @@ progress::-webkit-progress-value {
 }
 
 .sb-academics::-webkit-progress-value {
-  background-color: #cd4141;
+  background-color: #9FBFD6;
   transition: width 0.3s ease-out;
 } 
 
 .sb-social-life::-webkit-progress-value {
-  background-color: #5ed375;
+    background-color: #E7C5CE;
   transition: width 0.3s ease-out;
 }
 
 .sb-energy::-webkit-progress-value {
-  background-color: #81beff;
+  background-color: #F6E36B;
   transition: width 0.3s ease-out;
 }
 
 .sb-mental-health::-webkit-progress-value {
-  background-color: #a97ec5;
+  background-color: #72a19b;
   transition: width 0.3s ease-out;
 }
 
 .sb-academics::-webkit-progress-bar {
-  background-color: #ffffff;
+  background-color: #ebe8d4;
   /* background-color: #ffffff; */
-  border-color: #cd4141;
+  border-color: #4d799b;
 } 
 
 .sb-social-life::-webkit-progress-bar {
-  background-color: #ffffff;
-  border-color: #5ed375;
+  background-color: #ebe8d4;
+  border-color: #a1544a;
 } 
 
 .sb-energy::-webkit-progress-bar {
-  background-color: #ffffff;
-  border-color: #81beff;
+  background-color: #ebe8d4;
+  border-color: #b98d35;
 }  
 
 .sb-mental-health::-webkit-progress-bar {
-  background-color: #ffffff;
-  border-color: #a97ec5;
+  background-color: #ebe8d4;
+  border-color: #4d675c;
 }
 
 
@@ -203,6 +203,7 @@ progress::-moz-progress-value {
   display:inline-block;
   width: 15%;
   text-align:right;
+  font-size: 20px;
 }
 
 .progress-container{

@@ -22,7 +22,8 @@
 }
 
 .current-date {
-  color: red;
+  color: #fdf7dd;
+  font-size: 50px;
 }
 
 .time-button {
@@ -32,6 +33,7 @@
   font: inherit;
   padding: 0;
   color: #e2dac7;
+  opacity: 0;
 }
 
 .time-button:hover {

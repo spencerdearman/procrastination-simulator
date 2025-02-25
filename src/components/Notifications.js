@@ -3,7 +3,9 @@ import React from "react";
 function NotificationsList(){
   return (
     <div className="notifications-list">
-      {/* <Notification /> */}
+      <Notification/>
+   
+   
     </div>
   );
 }
@@ -13,6 +15,9 @@ function Notification({
   title = "Matthew's birthday party",
   message = "Lebron lebron lebron",
   icon = "🥳",
+  dismissButton = "Dismiss",
+  acceptButton = "Accept",
+  rejectButton = "Reject"
 }) {
   const randomPosition = {
     top: `${Math.floor(Math.random() * 80)}vh`,  // Random value between 0-80% of viewport height
@@ -52,10 +57,10 @@ function Notification({
         </div>
         <div className="notification-options">
           <button className="reject-button" id="reject-button">
-            Reject
+            {rejectButton}
           </button>
           <button className="accept-button" id="accept-button">
-            Accept
+            {acceptButton}
           </button>
         </div>
       </div>
