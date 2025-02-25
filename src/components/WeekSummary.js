@@ -48,7 +48,7 @@ function WeekSummary() {
   return (
     <div>
       <div id="header">
-        <p id="intro-text">You are a...</p>
+        <p className="intro-text">You are a...</p>
         {summary && <h3 id="banner-text">Lebron</h3>}
       </div>
       <div id="content">
@@ -57,7 +57,7 @@ function WeekSummary() {
           <Stats />
         </div>
         <div id="summary-text-box">
-          <h3 id="blurb-text">Your Week</h3>
+          <h3 className="subheader-text">Your Week</h3>
           <p id="blurb-text">{summary || "Writing Your Journal Entry 📝..."}</p>
           <button className="restart-button">Restart Game</button>
         </div>

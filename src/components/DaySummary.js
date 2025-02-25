@@ -54,11 +54,11 @@ function DaySummary({ currentDate = "Tuesday" }) {
       </div>
       <div id="content">
         <div id="stats-box">
-          <h3 id="blurb-text">Your Cumulative Stats</h3>
+          <h3 className="subheader-text">Your Cumulative Stats</h3>
           <Stats />
         </div>
         <div id="summary-text-box">
-          <h3 id="blurb-text">Your Day</h3>
+          <h3 className="subheader-text">Your Day</h3>
           <p id="blurb-text">{summary || "Writing Your Journal Entry 📝..."}</p>
           <button className="restart-button">Next Day</button>
         </div>

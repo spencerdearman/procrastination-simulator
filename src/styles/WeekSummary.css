@@ -45,10 +45,16 @@ body {
     width: 46%;
 }
 
-#intro-text {
+.intro-text {
   font-size: 25px;
   font-family: "Pixelify Sans";
   color: #FBF2BC;
+}
+
+.subheader-text {
+  font-size: 25px;
+  font-family: "Pixelify Sans";
+  color: #5A2619
 }
 
 #banner-text {
