@@ -25,23 +25,32 @@ export default class Logic {
       task.setCategory(data.category);
       task.description = data.description;
       task.icon = data.icon;
+      task.completed = data.completed;
+      task.locked = true; // Ensuring all tasks are locked
+      task.current = data.current;
       task.duration = data.duration;
-
-      task.startTime = new Date(data.startTime);
-      task.endTime = new Date(data.endTime);
-
-      if (isNaN(task.startTime) || isNaN(task.endTime)) {
-        console.error(
-          `Invalid time for task "${task.name}":`,
-          data.startTime,
-          data.endTime,
-        );
+  
+      // Set start and end time conditionally
+      if (data.locked && data.startTime && data.endTime) {
+        task.startTime = new Date(data.startTime);
+        task.endTime = new Date(data.endTime);
+        if (isNaN(task.startTime) || isNaN(task.endTime)) {
+          console.error(
+            `Invalid time for locked task "${task.name}":`,
+            data.startTime,
+            data.endTime
+          );
+        }
+      } else {
+        task.startTime = null;
+        task.endTime = null;
       }
-
+  
+      // Set attribute impacts
       for (let key in data.attributeImpacts) {
         task.setAttributeImpacts(key, data.attributeImpacts[key]);
       }
-      task.difficulty = data.difficulty;
+  
       return task;
     });
   }
@@ -67,27 +76,29 @@ export default class Logic {
       energy: 100,
       mentalHealth: 100,
     });
-    console.log("Initial Player Attributes:", this.player.getAllAttributes());
 
-    const tasks = this.parseTasks(taskDataArray);
-    tasks.forEach((task) => this.currentDay.addTask(task));
+    const parsedTasks = this.parseTasks(taskDataArray);
+    // now we have all the tasks in a third party list
+
+    //filter to the corresponding days/unplanned list and tasks
+    // todo: filter for each day
+    parsedTasks.forEach((task) => this.currentDay.addTask(task));
+    console.log("Tasks added to Day 1:", this.currentDay.tasks);
 
     this.startGameLoop();
   }
 
   startGameLoop() {
-    // Prevent multiple intervals from running
     if (this.gameLoopInterval) {
-      console.warn("Game loop already running. Skipping reinitialization.");
       return;
     }
-
+  
     this.gameLoopInterval = setInterval(() => {
       const currentGameTime = this.time.getCurrentGameTime();
-      console.log(
-        `Checking game time: ${currentGameTime.toLocaleTimeString()}`,
-      );
-
+      const currentHourIndex = this.currentDay.getCurrentGameHour(currentGameTime);
+      
+      console.log(`Checking game time: ${currentGameTime.toLocaleTimeString()}, Hour Index: ${currentHourIndex}`);
+  
       if (this.currentRunningTask) {
         if (currentGameTime >= this.currentRunningTask.endTime) {
           console.log(`Completing Task: ${this.currentRunningTask.name}`);
@@ -96,17 +107,13 @@ export default class Logic {
           this.currentRunningTask = null;
         }
       } else {
-        for (let task of this.currentDay.tasks) {
-          if (
-            !task.completed &&
-            this.isWithinTimeWindow(task, currentGameTime)
-          ) {
-            console.log(
-              `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
-            );
+        if (currentHourIndex >= 0 && currentHourIndex < this.currentDay.tasks.length) {
+          const task = this.currentDay.tasks[currentHourIndex];
+  
+          if (task && !task.completed && this.isWithinTimeWindow(task, currentGameTime)) {
+            console.log(`Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`);
             task.startTask();
             this.currentRunningTask = task;
-            break;
           }
         }
       }
