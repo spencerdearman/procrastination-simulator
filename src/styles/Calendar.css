@@ -33,7 +33,6 @@
 .slot {
   width: calc(100% - 70px);
   height: 100%;
-  /* background-color: #9C27B0; */
   position: absolute;
   top: 0px;
   left: 70px;
@@ -48,6 +47,5 @@
   display: none;
 }
 .slot.disabled {
-  /* background-color: #9a9a9a; */
   cursor: not-allowed;
 }

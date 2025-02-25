@@ -103,26 +103,16 @@ body {
   background-color: white;
 }
 
-.time-section {
-  /* Your styles here */
-}
-
-.task-calendar {
-  /* Your styles here */
-}
-
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-/* Make current date text red */
 .current-date {
   color: red;
 }
 
-/* Group the date texts together without a gap */
 .date-wrapper {
   display: inline-flex;
   gap: 0;
@@ -171,14 +161,12 @@ body {
   font-weight: normal;
   font-style: normal;
   font-size: 14px;
-  /*     margin-top: 5px; */
   margin-top: 1%;
 }
 
 .div-academics {
   width: 32vw;
   height: 5vh;
-  /*     border-style: solid; */
   position: relative;
   top: 2%;
   left: 5%;
@@ -187,7 +175,6 @@ body {
 .div-social-life {
   width: 32vw;
   height: 5vh;
-  /*     border-style: solid; */
   position: relative;
   top: 1%;
   left: 5%;
@@ -196,7 +183,6 @@ body {
 .div-energy {
   width: 32vw;
   height: 5vh;
-  /*     border-style: solid; */
   position: relative;
   top: 0;
   left: 5%;
@@ -205,7 +191,6 @@ body {
 .div-mental-health {
   width: 32vw;
   height: 5vh;
-  /*     border-style: solid; */
   position: relative;
   top: 0;
   left: 5%;
@@ -222,7 +207,7 @@ body {
 
 .stats-bar-fill {
   height: 2vh;
-  width: 5vw; /*connect functionality */
+  width: 5vw;
   border-style: solid;
   border-radius: 5px;
 }
