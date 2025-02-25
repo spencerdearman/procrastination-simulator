@@ -2,7 +2,7 @@ import Groq from "groq-sdk";
 import { useEffect, useState } from "react";
 import Stats from "./Stats";
 
-function DaySummary() {
+function DaySummary({ currentDate = "Tuesday" }) {
   const [summary, setSummary] = useState("");
   const [log, setLog] = useState(null);
   const [name, setName] = useState("Lebron");
@@ -47,8 +47,10 @@ function DaySummary() {
 
   return (
     <div>
-      <div id="header">
-        {<h3 id="banner-text">Your Day at a Glance</h3>}
+      <div id="header-day">
+        <h3 id="banner-text-day">
+          <span style={{ color: "#D05147"}}>{currentDate}</span> at a Glance
+        </h3>
       </div>
       <div id="content">
         <div id="stats-box">
@@ -56,9 +58,9 @@ function DaySummary() {
           <Stats />
         </div>
         <div id="summary-text-box">
-          <h3 id="blurb-text">Your Week</h3>
+          <h3 id="blurb-text">Your Day</h3>
           <p id="blurb-text">{summary || "Writing Your Journal Entry 📝..."}</p>
-          <button className="restart-button">Restart Game</button>
+          <button className="restart-button">Next Day</button>
         </div>
       </div>
     </div>

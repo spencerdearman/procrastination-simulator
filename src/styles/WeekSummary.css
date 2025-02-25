@@ -17,6 +17,17 @@ body {
   color: white;
 }
 
+#header-day {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 30vh;
+  background-color: #5A2619;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
 #content {
     display: flex;
     width: 100%;
@@ -47,11 +58,19 @@ body {
   color: white;
 }
 
+#banner-text-day {
+  font-size: 100px;
+  font-family: "Pixelify Sans";
+  color: white;
+}
+
+
 #blurb-text {
-    font-size: 20px;
+    font-size: 25px;
     color: black;
     font-family: "Pixelify Sans";
 }
+
 .restart-button {
     background-color: #5A2619;
     color: #FBF2BC;
