@@ -1,20 +1,42 @@
 #stats {
   height: 40vh;
+  padding: 20px;
   /* border-bottom: 4px solid rgba(128, 128, 128, 0.15); */
   display: block;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 100%;
+}
+
+#stats-block {
+  height: 35vh;
+  width: 100%;
+  border-style: solid;
+  border-color: #ebe8d4;
+  border-radius: 15px;
+  background-color: #fdf7dd;
+  position: relative;
+  /* left: 5%; */
+  /* top: -12px; */
+
+  /* Use flexbox to evenly distribute elements */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; /* Ensures equal spacing */
+  align-items: center;
+  padding: 20px 0px;
 }
 
 .div-academics,
 .div-social-life,
 .div-energy,
 .div-mental-health {
-  width: 32vw;
-  height: 7vh;
+  width: 100%;
+  /* height: 25%; */
   position: relative;
-  left: 5%;
+  /* left: 5%; */
+  padding: 0px 20px;
 }
 
 .stats-bar {
@@ -53,13 +75,107 @@
   border-color: #a97ec5;
 }
 
-.sb-academics,
-.sb-social-life,
-.sb-energy,
-.sb-mental-health {
-  position: absolute;
-  bottom: 0;
+progress {
+  transition: value 0.3s ease-out;
 }
+
+/* Webkit specific styles for progress bars */
+progress::-webkit-progress-value {
+  transition: width 0.3s ease-out;
+}
+
+.sb-academics::-webkit-progress-value {
+  background-color: #cd4141;
+  transition: width 0.3s ease-out;
+} 
+
+.sb-social-life::-webkit-progress-value {
+  background-color: #5ed375;
+  transition: width 0.3s ease-out;
+}
+
+.sb-energy::-webkit-progress-value {
+  background-color: #81beff;
+  transition: width 0.3s ease-out;
+}
+
+.sb-mental-health::-webkit-progress-value {
+  background-color: #a97ec5;
+  transition: width 0.3s ease-out;
+}
+
+.sb-academics::-webkit-progress-bar {
+  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  border-color: #cd4141;
+} 
+
+.sb-social-life::-webkit-progress-bar {
+  background-color: #ffffff;
+  border-color: #5ed375;
+} 
+
+.sb-energy::-webkit-progress-bar {
+  background-color: #ffffff;
+  border-color: #81beff;
+}  
+
+.sb-mental-health::-webkit-progress-bar {
+  background-color: #ffffff;
+  border-color: #a97ec5;
+}
+
+
+
+
+/* Firefox specific styles */
+progress::-moz-progress-value {
+  transition: width 0.3s ease-out;
+}
+
+.sb-academics::-moz-progress-value {
+  background-color: #cd4141;
+  transition: width 0.3s ease-out;
+} 
+
+.sb-social-life::-moz-progress-value {
+  background-color: #5ed375;
+  transition: width 0.3s ease-out;
+}
+
+.sb-energy::-moz-progress-value {
+  background-color: #81beff;
+  transition: width 0.3s ease-out;
+}
+
+.sb-mental-health::-moz-progress-value {
+  background-color: #a97ec5;
+  transition: width 0.3s ease-out;
+}
+
+.sb-academics::-moz-progress-bar {
+  background-color: #ffffff;
+  /* background-color: #ffffff; */
+  border-color: #cd4141;
+} 
+
+.sb-social-life::-moz-progress-bar {
+  background-color: #ffffff;
+  border-color: #5ed375;
+} 
+
+.sb-energy::-moz-progress-bar {
+  background-color: #ffffff;
+  border-color: #81beff;
+}  
+
+.sb-mental-health::-moz-progress-bar {
+  background-color: #ffffff;
+  border-color: #a97ec5;
+}
+
+
+
 
 .stats-score {
   font-family: "Pixelify Sans", serif;
@@ -71,4 +187,27 @@
   top: 70%;
   right: 5%;
   transform: translateY(-50%);
+}
+
+#stats progress{
+  width: 85%;
+  /* height: 40px; */
+  display:inline-block
+}
+
+#stats::-webkit-progress-bar{
+-webkit-appearance: none;
+}
+
+#stats label{
+  display:inline-block;
+  width: 15%;
+  text-align:right;
+}
+
+.progress-container{
+  display:flex;
+  flex-direction:row;
+  justify-content:space-between;
+  align-items:center;
 }
