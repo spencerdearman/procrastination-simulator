@@ -1,0 +1,67 @@
+#tasks-container {
+  height: 57vh;
+  overflow-y: auto;
+}
+
+.task-block {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  height: auto;
+  min-height: 80px;
+  background-color: white;
+  border: 4px solid rgba(128, 128, 128, 0.15);
+  transition:
+    transform 0.1s ease-in-out,
+    border-color 0.1s ease-in-out;
+}
+
+.task-block h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 30px;
+  font-weight: normal;
+  font-style: normal;
+}
+
+.task-block p {
+  margin: 7px 0 0 0;
+  padding: 0;
+  font-size: 20px;
+  letter-spacing: 0.05em;
+  font-family: "Open Sans", sans-serif;
+}
+
+.task-block:hover {
+  transform: scale(0.98);
+  cursor: grab;
+  border-color: white;
+}
+
+.task-block:active {
+  transform: scale(1.02);
+  cursor: grabbing;
+}
+.task-block:active p {
+  display: none;
+}
+
+.type-academics {
+  border-color: #314d65;
+  background-color: #9fbfd6;
+}
+
+.type-social {
+  border-color: #a1544a;
+  background-color: #e7c5ce;
+}
+
+.type-energy {
+  border-color: #b98d35;
+  background-color: #f6e36b;
+}
+
+.type-mental {
+  border-color: #4d675c;
+  background-color: #d3e5d7;
+}
