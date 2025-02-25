@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Calendar from "./components/Calendar";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
+import NotificationsList from "./components/Notifications";
 import "./styles/Calendar.css";
 import "./styles/global.css";
 import "./styles/Header.css";
@@ -16,6 +17,7 @@ function App() {
 
   return (
     <div id="container">
+      <NotificationsList />
       <div id="main">
         <Header currentDate={currentDate} />
         <Calendar />
