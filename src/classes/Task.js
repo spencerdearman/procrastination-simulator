@@ -15,7 +15,7 @@ export default class Task {
     this.startTime = null; // Date object
     this.endTime = null; // Date object
     this.completed = false;
-    this.locked = false; 
+    this.locked = false;
     this.current = false;
     this.duration = 1; // In-game hours
     this.attributeImpacts = {

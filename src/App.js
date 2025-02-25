@@ -57,7 +57,8 @@ export function App() {
   const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
 
   // Start game on initial render if no tasks are present.
-  useEffect(() => {console.log("about to call startGame");
+  useEffect(() => {
+    console.log("about to call startGame");
     logic.startGame(dummyTaskData);
     setCompletedTasks([...logic.currentDay.completedTasks]);
   }, [day, logic]);

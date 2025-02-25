@@ -6,11 +6,34 @@ export default class Day {
   constructor() {
     this.notifications = []; // Stores the list of notification class objects
     // Stores the list of task class objects ACTUALLY ON CALENDAR
-    this.tasks = [null, null, null, null, null, null, null, null, null, null, 
-                  null, null, null, null, null, null, null, null, null, null, 
-                  null, null, null, null]; 
+    this.tasks = [
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ];
     this.unplannedTasks = []; // Stores the list of task class objects with completed == false
-    
+
     this.completedTasks = []; // Stores the list of task class objects with completed == true
     this.rollover = []; // Movable but uncompleted tasks
 
@@ -47,16 +70,16 @@ export default class Day {
   }
 
   getCurrentGameHour(time) {
-    if (!(time instanceof Date) && typeof time !== 'string') {
-      throw new Error('Time must be a string or a Date object');
+    if (!(time instanceof Date) && typeof time !== "string") {
+      throw new Error("Time must be a string or a Date object");
     }
-  
+
     const dateTime = new Date(time);
-  
+
     if (isNaN(dateTime.getTime())) {
       throw new Error(`Invalid date format: ${time}`);
     }
-  
+
     return dateTime.getHours();
   }
 
@@ -65,26 +88,28 @@ export default class Day {
       console.error("Invalid task. Must be an instance of Task.");
       return;
     }
-  
+
     if (!task.startTime) {
       console.log(`Unplanned task "${task.name}" added to unplannedTasks.`);
       this.unplannedTasks.push(task);
       return;
     }
-  
+
     console.log(`Task "${task.name}" start time:`, task.startTime);
     const index = this.getCurrentGameHour(task.startTime);
-  
+
     if (isNaN(index) || index < 0 || index >= this.tasks.length) {
       console.error(`Invalid task index for "${task.name}":`, index);
       return;
     }
-  
+
     if (this.tasks[index] !== null) {
-      console.error(`Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`);
+      console.error(
+        `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
+      );
       return;
     }
-  
+
     console.log(`Task "${task.name}" scheduled at index ${index}.`);
     this.tasks[index] = task;
   }

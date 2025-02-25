@@ -29,7 +29,7 @@ export default class Logic {
       task.locked = true; // Ensuring all tasks are locked
       task.current = data.current;
       task.duration = data.duration;
-  
+
       // Set start and end time conditionally
       if (data.locked && data.startTime && data.endTime) {
         task.startTime = new Date(data.startTime);
@@ -38,19 +38,19 @@ export default class Logic {
           console.error(
             `Invalid time for locked task "${task.name}":`,
             data.startTime,
-            data.endTime
+            data.endTime,
           );
         }
       } else {
         task.startTime = null;
         task.endTime = null;
       }
-  
+
       // Set attribute impacts
       for (let key in data.attributeImpacts) {
         task.setAttributeImpacts(key, data.attributeImpacts[key]);
       }
-  
+
       return task;
     });
   }
@@ -92,13 +92,16 @@ export default class Logic {
     if (this.gameLoopInterval) {
       return;
     }
-  
+
     this.gameLoopInterval = setInterval(() => {
       const currentGameTime = this.time.getCurrentGameTime();
-      const currentHourIndex = this.currentDay.getCurrentGameHour(currentGameTime);
-      
-      console.log(`Checking game time: ${currentGameTime.toLocaleTimeString()}, Hour Index: ${currentHourIndex}`);
-  
+      const currentHourIndex =
+        this.currentDay.getCurrentGameHour(currentGameTime);
+
+      console.log(
+        `Checking game time: ${currentGameTime.toLocaleTimeString()}, Hour Index: ${currentHourIndex}`,
+      );
+
       if (this.currentRunningTask) {
         if (currentGameTime >= this.currentRunningTask.endTime) {
           console.log(`Completing Task: ${this.currentRunningTask.name}`);
@@ -107,11 +110,20 @@ export default class Logic {
           this.currentRunningTask = null;
         }
       } else {
-        if (currentHourIndex >= 0 && currentHourIndex < this.currentDay.tasks.length) {
+        if (
+          currentHourIndex >= 0 &&
+          currentHourIndex < this.currentDay.tasks.length
+        ) {
           const task = this.currentDay.tasks[currentHourIndex];
-  
-          if (task && !task.completed && this.isWithinTimeWindow(task, currentGameTime)) {
-            console.log(`Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`);
+
+          if (
+            task &&
+            !task.completed &&
+            this.isWithinTimeWindow(task, currentGameTime)
+          ) {
+            console.log(
+              `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
+            );
             task.startTask();
             this.currentRunningTask = task;
           }
