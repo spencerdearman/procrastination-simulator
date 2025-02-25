@@ -1,40 +1,28 @@
-import { useState, useEffect } from "react";
-import Stats from './Stats'
+import Groq from "groq-sdk";
+import {useEffect,useState} from "react";
+import Stats from './Stats';
 
 function WeekSummary() {
   const [summary, setSummary] = useState("");
-  
+  const groq = new Groq({ apiKey: "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", dangerouslyAllowBrowser: true });
+
   useEffect(() => {
     async function fetchSummary() {
-      setSummary(""); // Reset before streaming
+      setSummary(""); // Reset before fetching
       try {
-        const response = await fetch("https://api.groq.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.API_KEY}`, // Ensure this is set properly
-          },
-          body: JSON.stringify({
-            messages: [{ role: "user", content: "Summarize a busy week for a high school student." }],
-            model: "llama-3.1-8b-instant",
-            stream: true, // Enable streaming
-          }),
+        const chatCompletion = await groq.chat.completions.create({
+          messages: [
+            {
+              role: "user",
+              content: "Summarize a busy week for a high school student in a fun, engaging way. Keep it under 100 words.",
+            }
+          ],
+          model: "llama-3.3-70b-versatile", // More capable model
         });
 
-        if (!response.body) throw new Error("No response body");
-
-        const reader = response.body.getReader();
-        const decoder = new TextDecoder();
-
-        while (true) {
-          const { value, done } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          setSummary((prev) => prev + chunk);
-        }
+        setSummary(chatCompletion.choices[0]?.message?.content || "No summary generated.");
       } catch (error) {
-        console.error("Error streaming summary:", error);
+        console.error("Error fetching summary:", error);
         setSummary("Failed to load summary.");
       }
     }
@@ -56,6 +44,7 @@ function WeekSummary() {
         <div id="summary-text-box">
           <h3 id="blurb-text">Your Week</h3>
           <p id="blurb-text">{summary || "Loading your week summary..."}</p>
+          <button className="restart-button">Restart Game</button>
         </div>
       </div>
     </div>

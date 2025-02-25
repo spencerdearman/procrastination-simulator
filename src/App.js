@@ -11,19 +11,14 @@ import "./styles/Notification.css";
 import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
+import WeekSummary from "./components/WeekSummary";
+import "./styles/WeekSummary.css"
 
 function App() {
   const [currentDate, setCurrentDate] = useState("Tuesday");
 
   return (
-    <div id="container">
-      <NotificationsList />
-      <div id="main">
-        <Header currentDate={currentDate} />
-        <Calendar />
-      </div>
-      <Sidebar />
-    </div>
+    <WeekSummary/>
   );
 }
 
