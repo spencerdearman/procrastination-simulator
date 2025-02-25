@@ -10,7 +10,7 @@
 }
 
 #stats-block {
-  height: 35vh;
+  height: 33vh;
   width: 100%;
   border-style: solid;
   border-color: #ebe8d4;
@@ -56,23 +56,23 @@
 }
 
 .academics-color {
-  background-color: #cd4141;
-  border-color: #cd4141;
+  background-color: #4d799b;
+  border-color: #4d799b;
 }
 
 .social-life-color {
-  background-color: #5ed375;
-  border-color: #5ed375;
+  background-color: #a1544a;
+  border-color: #a1544a;
 }
 
 .energy-color {
   background-color: #81beff;
-  border-color: #81beff;
+  border-color: #b98d35;
 }
 
 .mental-health-color {
   background-color: #a97ec5;
-  border-color: #a97ec5;
+  border-color: #4d675c;
 }
 
 progress {
@@ -85,48 +85,45 @@ progress::-webkit-progress-value {
 }
 
 .sb-academics::-webkit-progress-value {
-  background-color: #cd4141;
+  background-color: #9fbfd6;
   transition: width 0.3s ease-out;
-} 
+}
 
 .sb-social-life::-webkit-progress-value {
-  background-color: #5ed375;
+  background-color: #e7c5ce;
   transition: width 0.3s ease-out;
 }
 
 .sb-energy::-webkit-progress-value {
-  background-color: #81beff;
+  background-color: #f6e36b;
   transition: width 0.3s ease-out;
 }
 
 .sb-mental-health::-webkit-progress-value {
-  background-color: #a97ec5;
+  background-color: #72a19b;
   transition: width 0.3s ease-out;
 }
 
 .sb-academics::-webkit-progress-bar {
-  background-color: #ffffff;
+  background-color: #ebe8d4;
   /* background-color: #ffffff; */
-  border-color: #cd4141;
-} 
-
-.sb-social-life::-webkit-progress-bar {
-  background-color: #ffffff;
-  border-color: #5ed375;
-} 
-
-.sb-energy::-webkit-progress-bar {
-  background-color: #ffffff;
-  border-color: #81beff;
-}  
-
-.sb-mental-health::-webkit-progress-bar {
-  background-color: #ffffff;
-  border-color: #a97ec5;
+  border-color: #4d799b;
 }
 
+.sb-social-life::-webkit-progress-bar {
+  background-color: #ebe8d4;
+  border-color: #a1544a;
+}
 
+.sb-energy::-webkit-progress-bar {
+  background-color: #ebe8d4;
+  border-color: #b98d35;
+}
 
+.sb-mental-health::-webkit-progress-bar {
+  background-color: #ebe8d4;
+  border-color: #4d675c;
+}
 
 /* Firefox specific styles */
 progress::-moz-progress-value {
@@ -136,7 +133,7 @@ progress::-moz-progress-value {
 .sb-academics::-moz-progress-value {
   background-color: #cd4141;
   transition: width 0.3s ease-out;
-} 
+}
 
 .sb-social-life::-moz-progress-value {
   background-color: #5ed375;
@@ -157,25 +154,22 @@ progress::-moz-progress-value {
   background-color: #ffffff;
   /* background-color: #ffffff; */
   border-color: #cd4141;
-} 
+}
 
 .sb-social-life::-moz-progress-bar {
   background-color: #ffffff;
   border-color: #5ed375;
-} 
+}
 
 .sb-energy::-moz-progress-bar {
   background-color: #ffffff;
   border-color: #81beff;
-}  
+}
 
 .sb-mental-health::-moz-progress-bar {
   background-color: #ffffff;
   border-color: #a97ec5;
 }
-
-
-
 
 .stats-score {
   font-family: "Pixelify Sans", serif;
@@ -189,25 +183,26 @@ progress::-moz-progress-value {
   transform: translateY(-50%);
 }
 
-#stats progress{
+#stats progress {
   width: 85%;
   /* height: 40px; */
-  display:inline-block
+  display: inline-block;
 }
 
-#stats::-webkit-progress-bar{
--webkit-appearance: none;
+#stats::-webkit-progress-bar {
+  -webkit-appearance: none;
 }
 
-#stats label{
-  display:inline-block;
+#stats label {
+  display: inline-block;
   width: 15%;
-  text-align:right;
+  text-align: right;
+  font-size: 20px;
 }
 
-.progress-container{
-  display:flex;
-  flex-direction:row;
-  justify-content:space-between;
-  align-items:center;
+.progress-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
