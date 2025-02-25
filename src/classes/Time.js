@@ -1,43 +1,52 @@
 export default class Time {
   constructor(scale = 60) {
-    this.realSecondsPerGameHour = scale;
-    this.speedMultiplier = 1;
-    this.gameStartTime = new Date(2025, 0, 1, 0, 0, 0);
-    this.startTime = Date.now();
+    this.realSecondsPerGameHour = scale; /* Note, 60 real seconds = 1 game hr */
+
+    this.startTime = Date.now(); // Store the real-world start time
+
+    this.lastGameRecordTime = new Date(2025, 0, 1, 0, 0, 0); // Arbitrary in-game start time
+
+    this.totalMinutesElapsed = 0;
+
+    this.lastRealWorldCheckTime = Date.now();
+
+    this.playerDefinedSpeed = 1;
   }
 
   // Calculate current game time based on elapsed real seconds and the speed multiplier.
   getCurrentGameTime() {
-    const deltaSeconds = (Date.now() - this.startTime) / 1000;
-    const effectiveDelta = deltaSeconds * this.speedMultiplier;
-    const gameMinutesPassed = Math.floor(
-      effectiveDelta * (60 / this.realSecondsPerGameHour),
+    let realElapsedSeconds = (Date.now() - this.lastRealWorldCheckTime) / 1000;
+
+    this.lastRealWorldCheckTime = Date.now();
+
+    let newGameTime = new Date(
+      this.lastGameRecordTime.getTime() +
+        (realElapsedSeconds / this.realSecondsPerGameHour) *
+          (60 * this.playerDefinedSpeed) *
+          60 *
+          1000,
     );
-    return new Date(
-      this.gameStartTime.getTime() + gameMinutesPassed * 60 * 1000,
-    );
+
+    this.lastGameRecordTime = newGameTime;
+
+    return newGameTime;
   }
 
-  // Allows external updates to the game time and resets the baseline.
-  setCurrentGameTime(newGameTime) {
-    this.gameStartTime = new Date(newGameTime);
-    this.startTime = Date.now();
+  compareTwoTime() {}
+
+  isTriggered() {}
+
+  hasEnded() {}
+
+  xSpeed(speed) {
+    this.playerDefinedSpeed = speed;
   }
 
-  resetGameTime() {
-    this.gameStartTime = new Date(2025, 0, 1, 0, 0, 0);
-    this.startTime = Date.now();
+  stopTimer() {
+    this.playerDefinedSpeed = 0;
   }
 
-  setScale(newScale) {
-    this.realSecondsPerGameHour = newScale;
-  }
-
-  // When the speed multiplier is changed, adjust the baseline so that the transition is smooth.
-  setSpeedMultiplier(newSpeed) {
-    const currentGameTime = this.getCurrentGameTime();
-    this.gameStartTime = currentGameTime;
-    this.startTime = Date.now();
-    this.speedMultiplier = newSpeed;
+  startTimer() {
+    this.playerDefinedSpeed = 1;
   }
 }
