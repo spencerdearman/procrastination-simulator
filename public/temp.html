@@ -9,9 +9,9 @@
 
   <body>
     <div class="tutorial">
-      <button class="tutorial-button" id="tutorial-left">></button>
-      <img src="./Slide 1.png" alt="" id="tutorial-image" />
-      <button class="tutorial-button" id="tutorial-right">></button>
+      <button class="tutorial-button" id="tutorial-left">&lt;</button>
+      <img src="" alt="" id="tutorial-image" />
+      <button class="tutorial-button" id="tutorial-right">&gt;</button>
 
       <script defer>
         var height = document.body.clientHeight;
@@ -41,23 +41,42 @@
         });
 
         var images = [
-          "./images/slide1.png",
-          "./images/slide2.png",
+          "./slide1.png",
+          "./slide2.png",
           "./images/slide3.png",
           "./images/slide4.png",
         ];
         var idx = 0;
 
         image.setAttribute("src", images[0]);
+        buttonLeft.disabled = true;
 
-        function updateButtons(event) {
-          if (idx == 0) buttonLeft.disabled = true;
-          else buttonLeft.disabled = false;
-          if (idx == images.length - 1) buttonRight.disabled = true;
-          else buttonRight.disabled = false;
+        function updateButtonLeft(event) {
+          if (idx > 0) {
+            idx--;
+          }
+          updateButtons();
         }
-        buttonLeft.addEventListener("click", updateButtons);
-        buttonRight.addEventListener("click", updateButtons);
+        function updateButtonRight(event) {
+          if (idx < images.length) {
+            idx++;
+          }
+          updateButtons();
+        }
+
+        function updateButtons() {
+          if (idx <= 0) buttonLeft.disabled = true;
+          else buttonLeft.disabled = false;
+          if (idx >= images.length - 1) buttonRight.disabled = true;
+          else buttonRight.disabled = false;
+
+          image.setAttribute("src", images[idx]);
+          console.log(idx);
+        }
+        buttonLeft.addEventListener("click", updateButtonLeft);
+        buttonRight.addEventListener("click", updateButtonRight);
+        //buttonLeft.addEventListener("click", updateButtons);
+        //buttonRight.addEventListener("click", updateButtons);
       </script>
     </div>
   </body>

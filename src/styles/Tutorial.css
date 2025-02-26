@@ -1,8 +1,7 @@
-body {
-  margin: 0;
-}
-
 .tutorial {
+  position: absolute;
+  z-index: 9999;
+
   width: 100vw;
   height: 100vh;
 
@@ -10,6 +9,8 @@ body {
   gap: 20px;
   justify-content: center;
   align-items: center;
+
+  background-color: rgba(125, 120, 109, 0.9);
 }
 
 .tutorial *,
@@ -21,7 +22,12 @@ body {
 .tutorial-button {
   background: none;
   border: none;
+
+  color: white;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 2rem;
 }
 
-#tutorial-image {
+.tutorial-button:hover {
+  cursor: pointer;
 }

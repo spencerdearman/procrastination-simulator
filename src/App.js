@@ -13,6 +13,7 @@ import "./styles/Notification.css";
 import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
+import "./styles/Tutorial.css";
 // import "./styles/WeekSummary.css";
 
 function App() {
