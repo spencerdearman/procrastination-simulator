@@ -16,6 +16,7 @@ body {
   height: 18vh;
   background-color: #5A2619;
   align-items: center;
+  justify-content: center;
   color: #FDF7DD;
 }
 
@@ -23,37 +24,69 @@ body {
     display: flex;
     width: 100%;
     height: 60vh;
-    justify-content: space-evenly;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
 }
 
 #summary-text-box {
-    width: 60%;
+    width: 60vw;
+    height: auto;
     position: relative;
     top: 10%;
     background-color: #FDF7DD;
     border-radius: 5%;
+    flex-direction: column;
+    display: flex;
+    border: 7px solid #C0B9A9;
 }
   
 #banner-text {
-  font-size: 50px;
+  font-size: 72.5px;
   font-family: "Pixelify Sans";
-  color: white;
+  color: FDF7DD;
 }
   
-.blurb-text {
-    font-size: 20px;
-    position: absolute;
-    color: black;
-    font-family: "Pixelify Sans";
-}
 
 #text-header {
-  position: absolute;
+  font-size: 40px;
+  font-family: "Pixelify Sans";
+  color: #5A2619;
+  /* position: absolute;
   top: 2%;
+  left: 20%; */
+  text-align: center;
+  width: 100%;
 }
 
 #text-position {
+  font-size: 25px;
+  font-family: "Open Sans";
+  color: black;
+  margin: 0 5%;
+  margin-bottom: 10%;
+
+}
+
+#bell-emoji {
   position: absolute;
-  top: 10%;
+  font-size: 35px;
+  top: 1%;
+  left: 5%;
+}
+
+#enter-game {
+  font-size: 25px;
+  font-family: "Pixelify Sans";
+  border: 5px solid #C0B9A9;
+  border-radius: 20%;
+  background-color: #D05147;
+  width: 8vw;
+  height: 8vh;
+  position: absolute;
+  bottom: 2%;
+  left: 40%;
+
+
 }

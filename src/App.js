@@ -12,21 +12,23 @@ import "./styles/Notification.css";
 import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
-// import "./styles/WeekSummary.css";
+import "./styles/StartPage.css"
+import StartPage from "./components/StartPage";
 
 
 function App() {
   const [currentDate, setCurrentDate] = useState("Tuesday");
 
   return (
-    <div id="container">
-      {/* <NotificationsList /> */}
-      <div id="main">
-        <Header currentDate={currentDate} />
-        <Calendar />
-      </div>
-      <Sidebar />
-    </div>
+    // <div id="container">
+    //   <NotificationsList />
+    //   <div id="main">
+    //     <Header currentDate={currentDate} />
+    //     <Calendar />
+    //   </div>
+    //   <Sidebar />
+    // </div>
+    <StartPage/>
   );
 }
 
