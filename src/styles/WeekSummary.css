@@ -1,9 +1,9 @@
 body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #header {
@@ -11,7 +11,7 @@ body {
   flex-direction: column;
   width: 100%;
   height: 30vh;
-  background-color: #5A2619;
+  background-color: #5a2619;
   align-items: center;
   justify-content: space-around;
   color: white;
@@ -22,39 +22,38 @@ body {
   flex-direction: column;
   width: 100%;
   height: 30vh;
-  background-color: #5A2619;
+  background-color: #5a2619;
   align-items: center;
-  justify-content: center;
   color: white;
 }
 
 #content {
-    display: flex;
-    width: 100%;
-    height: 70vh;
-    justify-content: space-evenly;
-    flex-direction: row;
-    background-color: #E2DAC7;
+  display: flex;
+  width: 100%;
+  height: 70vh;
+  justify-content: space-evenly;
+  flex-direction: row;
+  background-color: #e2dac7;
 }
 
 #summary-text-box {
-    width: 40%;
+  width: 40%;
 }
 
 #stats-box {
-    width: 46%;
+  width: 46%;
 }
 
 .intro-text {
   font-size: 25px;
   font-family: "Pixelify Sans";
-  color: #FBF2BC;
+  color: #fbf2bc;
 }
 
 .subheader-text {
   font-size: 25px;
   font-family: "Pixelify Sans";
-  color: #5A2619
+  color: #5a2619;
 }
 
 #banner-text {
@@ -70,29 +69,27 @@ body {
   color: white;
 }
 
-
 #blurb-text {
-    font-size: 25px;
-    color: black;
-    font-family: "Pixelify Sans";
+  font-size: 25px;
+  color: black;
+  font-family: "Pixelify Sans";
 }
 
 .restart-button {
-    background-color: #5A2619;
-    color: #FBF2BC;
-    border: none;
-    border-radius: 10px;
-    padding: 15px 30px;
-    font-family: "Pixelify Sans";
-    font-size: 24px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-
-  }
+  background-color: #5a2619;
+  color: #fbf2bc;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-family: "Pixelify Sans";
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .restart-button:hover {
-    background-color: #6f2e1f;
+  background-color: #6f2e1f;
 }

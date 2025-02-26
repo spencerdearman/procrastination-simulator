@@ -12,14 +12,12 @@ import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
 import WeekSummary from "./components/WeekSummary";
-import "./styles/WeekSummary.css"
+import "./styles/WeekSummary.css";
 
 function App() {
   const [currentDate, setCurrentDate] = useState("Tuesday");
 
-  return (
-    <WeekSummary/>
-  );
+  return <WeekSummary />;
 }
 
 export default App;
