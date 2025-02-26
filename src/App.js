@@ -7,7 +7,6 @@
 
 // export default App;
 
-
 // DONT PUSH THIS SHIT PLS <3
 import React, { useState, useEffect } from "react";
 import Player from "./classes/Player";
@@ -72,14 +71,17 @@ export function App() {
     console.log("about to call startGame");
     logic.startGame(dummyTaskData);
     setCompletedTasks([...logic.currentDay.completedTasks]);
+
+    setGameTime(logic.time.getCurrentGameTime());
   }, [day, logic]);
 
   // Poll for updated game time and completed tasks every second.
   useEffect(() => {
     const interval = setInterval(() => {
-      const updatedTime = time.getCurrentGameTime();
+      const updatedTime = logic.time.getCurrentGameTime();
       console.log("Updated Game Time:", updatedTime);
-      setGameTime(updatedTime);
+
+      setGameTime(updatedTime); // Always keep state in sync
       setCompletedTasks([...logic.currentDay.completedTasks]);
     }, 1000);
     return () => clearInterval(interval);

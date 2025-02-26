@@ -194,7 +194,7 @@ export default class Day {
   updateCompleted() {
     this.completedTasks = [];
     for (let task of this.tasks) {
-      if (task.completed) {
+      if (task && task.completed) {
         this.completedTasks.push(task);
       }
     }

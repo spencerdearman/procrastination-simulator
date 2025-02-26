@@ -109,6 +109,8 @@ export default class Logic {
       return;
     }
 
+    this.time.setCurrentGameTime(new Date("2025-01-01T00:00:00"));
+
     this.logicPlanTask(this.currentDay.unplannedTasks[0], 5);
     console.log("Tasks added to Day 1:", this.currentDay.tasks);
     this.logicMovePlannedTask(this.currentDay.tasks[5], 7);
@@ -150,6 +152,10 @@ export default class Logic {
           }
         }
       }
+
+      if (currentGameTime >= new Date("2025-01-01T23:59:59")) {
+        this.completeDay();
+      }
     }, 1000);
   }
 
@@ -157,6 +163,24 @@ export default class Logic {
     for (let [key, value] of Object.entries(changes)) {
       this.player.addPoints(key, value);
     }
+  }
+
+  // FOR THE NEXT DAY: call startGameLoop() again
+  completeDay() {
+    // End the current day
+    clearInterval(this.gameLoopInterval);
+    this.gameLoopInterval = null;
+
+    // Move to the next day
+    this.currentDayIndex++;
+    if (this.currentDayIndex >= this.days.length) {
+      console.log("Game Over!");
+      return;
+    }
+
+    this.currentDay = this.days[this.currentDayIndex];
+    this.currentDay.updateCompleted();
+    this.time.stopTimer();
   }
 
   completeTask(taskName) {

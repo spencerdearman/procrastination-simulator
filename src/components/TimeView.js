@@ -23,7 +23,7 @@ const TimeView = ({ time }) => {
   };
 
   const twiceSpeed = () => {
-    time.xSpeed(2);
+    time.xSpeed(60);
     setIsTimeStopped(false);
   };
 
