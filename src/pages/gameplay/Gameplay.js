@@ -60,7 +60,7 @@ export default function Gameplay() {
   const [currentDate, setCurrentDate] = useState("Tuesday");
   // Create a single shared Time instance.
   const [time] = useState(new Time(60));
-  const [player] = useState(new Player("Player 1"));
+  const [player, setPlayer] = useState(new Player());
   const [day] = useState(new Day());
   // Pass the shared Time instance into Logic.
   const [logic] = useState(new Logic(player, [day], time));
@@ -82,9 +82,10 @@ export default function Gameplay() {
       console.log("Updated Game Time:", updatedTime);
       setGameTime(updatedTime);
       setCompletedTasks([...logic.currentDay.completedTasks]);
+      setPlayer((player) => player.decrementAttributes());
     }, 1000);
     return () => clearInterval(interval);
-  }, [time, logic]);
+  }, [time, logic, player]);
 
   return (
     <div id="container">
@@ -93,7 +94,7 @@ export default function Gameplay() {
         <Header currentDate={currentDate} />
         <Calendar />
       </div>
-      <Sidebar />
+      <Sidebar attributes={player.attributes} />
     </div>
   );
 }

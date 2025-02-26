@@ -47,7 +47,7 @@ function WeekSummary() {
 
   return (
     <div>
-      <div id="header">
+      <div id="week-summary-header">
         <p className="intro-text">You are a...</p>
         {summary && <h3 id="banner-text">Lebron</h3>}
       </div>

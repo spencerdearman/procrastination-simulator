@@ -116,7 +116,7 @@ body {
 }
 
 .current-time-indicator::before {
-  content: '';
+  content: "";
   position: absolute;
   left: -5px;
   top: -4px;

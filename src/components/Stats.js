@@ -1,26 +1,38 @@
 import React from "react";
 
-function Stats() {
+const Stats = ({ attributes }) => {
+  if (!attributes) {
+    console.log("Attributes missing");
+  }
+
   return (
     <div id="stats">
       <p className="side-bar-header">Your Stats</p>
       <div id="stats-block">
-        <StatBar title="Academics" colorClass="academics-color" score="22" />
+        <StatBar
+          title="Academics"
+          colorClass="academics-color"
+          score={attributes.academics}
+        />
         <StatBar
           title="Social Life"
           colorClass="social-life-color"
-          score="50"
+          score={attributes.socialLife}
         />
-        <StatBar title="Energy" colorClass="energy-color" score="75" />
+        <StatBar
+          title="Energy"
+          colorClass="energy-color"
+          score={attributes.energy}
+        />
         <StatBar
           title="Mental Health"
           colorClass="mental-health-color"
-          score="100"
+          score={attributes.mentalHealth}
         />
       </div>
     </div>
   );
-}
+};
 
 function StatBar({ title, colorClass, score }) {
   return (

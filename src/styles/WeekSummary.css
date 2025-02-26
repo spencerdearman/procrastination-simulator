@@ -6,7 +6,7 @@ body {
   justify-content: center;
 }
 
-#header {
+#week-summary-header {
   display: flex;
   flex-direction: column;
   width: 100%;

@@ -1,12 +1,14 @@
+const FULL_ATTRIBUTES = {
+  academics: 100,
+  socialLife: 100,
+  energy: 100,
+  mentalHealth: 100,
+};
+
 export default class Player {
-  constructor(name) {
-    this.name = name;
-    this.attributes = {
-      academics: 100,
-      socialLife: 100,
-      energy: 100,
-      mentalHealth: 100,
-    };
+  constructor(player) {
+    this.name = player?.name ?? "Lebron";
+    this.attributes = player?.attributes ?? FULL_ATTRIBUTES;
   }
 
   // Increases specified attribute by the given amount, ensuring it's within 0-100
@@ -19,6 +21,8 @@ export default class Player {
     } else {
       console.warn(`Attribute "${attribute}" does not exist.`);
     }
+
+    return new Player(this);
   }
 
   // Decreases specified attribute by the given amount, ensuring it's within 0-100
@@ -31,6 +35,19 @@ export default class Player {
     } else {
       console.warn(`Attribute "${attribute}" does not exist.`);
     }
+
+    return new Player(this);
+  }
+
+  // Decrements all attributes
+  //
+  // This is intended to be used in the game update cycle
+  decrementAttributes() {
+    this.attributes.academics -= 2;
+    this.attributes.socialLife -= 2;
+    this.attributes.energy -= 2;
+    this.attributes.mentalHealth -= 2;
+    return new Player(this);
   }
 
   // Resets all attributes to their default values
