@@ -88,10 +88,31 @@ export default class Logic {
     this.startGameLoop();
   }
 
+  // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED
+  logicPlanTask(task, index) {
+    const currentGameTime = this.time.getCurrentGameTime();
+    let newGameTime = new Date(currentGameTime);
+
+    this.currentDay.planTask(task, index, newGameTime);
+  }
+
+  // CALL THIS FOR MOVING PLANNED TASKS
+  logicMovePlannedTask(task, index) {
+    const currentGameTime = this.time.getCurrentGameTime();
+    let newGameTime = new Date(currentGameTime);
+
+    this.currentDay.movePlannedTask(task, index, newGameTime);
+  }
+
   startGameLoop() {
     if (this.gameLoopInterval) {
       return;
     }
+
+    this.logicPlanTask(this.currentDay.unplannedTasks[0], 5);
+    console.log("Tasks added to Day 1:", this.currentDay.tasks);
+    this.logicMovePlannedTask(this.currentDay.tasks[5], 7);
+    console.log("Tasks added to Day 1:", this.currentDay.tasks);
 
     this.gameLoopInterval = setInterval(() => {
       const currentGameTime = this.time.getCurrentGameTime();
@@ -132,58 +153,10 @@ export default class Logic {
     }, 1000);
   }
 
-  stopGameLoop() {
-    if (this.gameLoopInterval) {
-      clearInterval(this.gameLoopInterval);
-      this.gameLoopInterval = null;
-    }
-  }
-
-  endDay() {
-    this.stopGameLoop();
-    this.currentDay.updateCompleted();
-    console.log(`Day ${this.currentDayIndex + 1} ended.`);
-  }
-
-  startNewDay() {
-    if (this.currentDayIndex < this.days.length - 1) {
-      const previousDay = this.currentDay;
-      previousDay.updateRollover();
-      const rolloverTasks = previousDay.rollover;
-
-      this.currentDayIndex++;
-      this.currentDay = this.days[this.currentDayIndex];
-
-      rolloverTasks.forEach((task) => this.currentDay.addTask(task));
-      this.applyAttributeChanges(previousDay.attributeChanges);
-      console.log(`Day ${this.currentDayIndex + 1} started.`);
-    } else {
-      console.log("All days completed. Game over!");
-    }
-  }
-
   applyAttributeChanges(changes) {
     for (let [key, value] of Object.entries(changes)) {
       this.player.addPoints(key, value);
     }
-  }
-
-  addTaskToCurrentDay(task) {
-    if (!(task instanceof Task)) {
-      console.error("Invalid Task object.");
-      return;
-    }
-    this.currentDay.addTask(task);
-    console.log(
-      `Task "${task.name}" added to Day ${this.currentDayIndex + 1}.`,
-    );
-  }
-
-  deleteTaskFromCurrentDay(taskName) {
-    this.currentDay.deleteTask(taskName);
-    console.log(
-      `Task "${taskName}" removed from Day ${this.currentDayIndex + 1}.`,
-    );
   }
 
   completeTask(taskName) {
