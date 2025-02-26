@@ -1,8 +1,30 @@
 import React, { useState } from "react";
-import Gameplay from "pages/gameplay/Gameplay";
+import Calendar from "./components/Calendar";
+import Header from "./components/Header";
+import Sidebar from "./components/Sidebar";
+import NotificationsList from "./components/Notifications";
+import "./styles/Calendar.css";
+import "./styles/global.css";
+import "./styles/Header.css";
+import "./styles/PlayControls.css";
+import "./styles/Notification.css";
+import "./styles/Sidebar.css";
+import "./styles/Stats.css";
+import "./styles/TaskList.css";
 
 function App() {
-  return <Gameplay />;
+  const [currentDate, setCurrentDate] = useState("Tuesday");
+
+  return (
+    <div id="container">
+      <NotificationsList />
+      <div id="main">
+        <Header currentDate={currentDate} />
+        <Calendar />
+      </div>
+      <Sidebar />
+    </div>
+  );
 }
 
 export default App;

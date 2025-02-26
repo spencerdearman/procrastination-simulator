@@ -1,4 +1,5 @@
 import React from "react";
+import TimeIndicator from "./TimeIndicator";
 
 //when the user drags the task, it will be added to the slot
 const handleDragOver = (e) => {
@@ -39,6 +40,7 @@ function Calendar() {
 
   return (
     <div id="calendar-container">
+         <TimeIndicator/>
       <div id="calendar">
         {timeBlocks.map((hour) => (
           <TimeBlock key={hour} hour={hour} />
