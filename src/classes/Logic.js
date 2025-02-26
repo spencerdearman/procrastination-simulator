@@ -2,6 +2,7 @@ import Time from "./Time.js";
 import Day from "./Day.js";
 import Player from "./Player.js";
 import Task from "./Task.js";
+import Notification from "./Notification.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
@@ -13,6 +14,8 @@ export default class Logic {
     this.time = timeInstance || new Time();
     this.tasksCompleted = [];
     this.timeXSpeed = 1;
+    this.notificationsQueue = [];
+    this.currentNotification = null;
   }
 
   seedPlayer(playerAttributes) {
@@ -187,5 +190,93 @@ export default class Logic {
     this.currentDay.updateCompleted();
 
     console.log(`Updated Game Time after completing task: ${newGameTime}`);
+  }
+
+  // Load notifications from a JSON array
+  loadNotifications(notificationDataArray) {
+    this.notificationsQueue = notificationDataArray.map((data) => {
+      const notification = new Notification(
+        data.header,
+        data.notificationDuration,
+        data.forced,
+      );
+      notification.setDescription(data.description);
+      notification.setOptions(data.option1, data.option2);
+      notification.setImpacts(
+        data.impacts.option1Impact,
+        data.impacts.option2Impact,
+      );
+      notification.setNarrative(data.narrativeOutcome);
+
+      // Randomize the notification time (between 6 AM to 8 PM in-game time)
+      const randomHour = Math.floor(Math.random() * (20 - 6) + 6);
+      const randomMinute = Math.floor(Math.random() * 60);
+      const randomTime = new Date(
+        this.time.gameStartTime.getFullYear(),
+        this.time.gameStartTime.getMonth(),
+        this.time.gameStartTime.getDate(),
+        randomHour,
+        randomMinute,
+      );
+      notification.setNotificationTime(randomTime);
+
+      return notification;
+    });
+  }
+
+  // Check if it's time to trigger a notification
+  checkAndTriggerNotification(currentGameTime) {
+    if (this.currentNotification) return; // Wait until the current notification is resolved
+
+    for (let notification of this.notificationsQueue) {
+      if (
+        !notification.getCompleted() &&
+        notification.getNotificationTime() <= currentGameTime
+      ) {
+        console.log(`🔔 Notification triggered: ${notification.getHeader()}`);
+        this.triggerNotification(notification);
+        break;
+      }
+    }
+  }
+
+  // Handle the notification logic (pause tasks if forced)
+  triggerNotification(notification) {
+    if (notification.getForced() && this.currentRunningTask) {
+      notification.overrideActivity(this.currentRunningTask);
+    }
+    this.currentNotification = notification;
+    console.log(`📝 Description: ${notification.getDescription()}`);
+  }
+
+  // Accept the notification decision
+  acceptNotification() {
+    if (!this.currentNotification) return;
+    console.log(`✅ Accepted: ${this.currentNotification.getHeader()}`);
+    this.currentNotification.handleDecision(
+      this.currentNotification.getOptions().option1,
+      this.player.attributes,
+    );
+    this.resolveNotification();
+  }
+
+  // Reject the notification decision
+  rejectNotification() {
+    if (!this.currentNotification) return;
+    console.log(`❌ Rejected: ${this.currentNotification.getHeader()}`);
+    this.currentNotification.handleDecision(
+      this.currentNotification.getOptions().option2,
+      this.player.attributes,
+    );
+    this.resolveNotification();
+  }
+
+  // Reset notification and resume previous activity if forced
+  resolveNotification() {
+    if (this.currentNotification.getForced()) {
+      this.currentNotification.resumePreviousActivity();
+    }
+    console.log(`🎬 Resolved: ${this.currentNotification.getHeader()}`);
+    this.currentNotification = null;
   }
 }
