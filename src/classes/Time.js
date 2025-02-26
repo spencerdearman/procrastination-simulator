@@ -13,6 +13,19 @@ export default class Time {
     this.playerDefinedSpeed = 1;
   }
 
+  // Manually set the current game time
+  setCurrentGameTime(newTime) {
+    if (!(newTime instanceof Date) || isNaN(newTime.getTime())) {
+      console.error("Invalid game time provided. Must be a valid Date object.");
+      return;
+    }
+
+    this.lastGameRecordTime = newTime;
+    this.lastRealWorldCheckTime = Date.now();
+
+    console.log(`Game time manually set to: ${this.lastGameRecordTime}`);
+  }
+
   // Calculate current game time based on elapsed real seconds and the speed multiplier.
   getCurrentGameTime() {
     let realElapsedSeconds = (Date.now() - this.lastRealWorldCheckTime) / 1000;

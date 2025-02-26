@@ -23,6 +23,7 @@ body {
   height: 100vh;
   display: block;
   border: 4px solid rgba(128, 128, 128, 0.15);
+  z-index: 10;
 }
 
 #stats {
@@ -97,10 +98,32 @@ body {
 }
 
 .time-block {
-  height: 16vh;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.time-block.past {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.current-time-indicator {
+  position: absolute;
   width: 100%;
-  border-bottom: 1px dashed grey;
-  background-color: white;
+  height: 2px;
+  background-color: red;
+  z-index: 10;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+.current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -5px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
 }
 
 *,

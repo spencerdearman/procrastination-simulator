@@ -3,11 +3,12 @@
   height: 85vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  position: relative;
 }
 
 #calendar {
   width: 100%;
-  background-color: #e2dac7;
+  position: relative;
 }
 
 .time-block {
@@ -19,6 +20,10 @@
 }
 
 .time-block:hover {
+  background-color: #e9e9e9;
+}
+
+.time-block:past {
   background-color: #e9e9e9;
 }
 
@@ -48,4 +53,25 @@
 }
 .slot.disabled {
   cursor: not-allowed;
+}
+
+.current-time-indicator {
+  position: fixed;
+  width: calc(60vw - 74px);
+  left: 74px;
+  height: 2px;
+  background-color: red;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.current-time-indicator::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
 }
