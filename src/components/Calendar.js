@@ -40,7 +40,7 @@ function Calendar() {
 
   return (
     <div id="calendar-container">
-         <TimeIndicator/>
+      <TimeIndicator />
       <div id="calendar">
         {timeBlocks.map((hour) => (
           <TimeBlock key={hour} hour={hour} />
