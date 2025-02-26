@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div class="tutorial">
+      <button class="tutorial-button" id="tutorial-left">></button>
+      <img src="./Slide 1.png" alt="" id="tutorial-image" />
+      <button class="tutorial-button" id="tutorial-right">></button>
+
+      <script defer>
+        var height = document.body.clientHeight;
+        var width = document.body.clientWidth;
+
+        var image = document.getElementById("tutorial-image");
+        var buttonLeft = document.getElementById("tutorial-left");
+        var buttonRight = document.getElementById("tutorial-right");
+
+        function resize() {
+          image.style.width = `${width * 0.75 - 40 - buttonLeft.clientWidth * 2}px`;
+          image.style.height = "auto";
+
+          if (image.clientHeight > height * 0.75) {
+            image.style.height = `${height * 0.75}px`;
+            image.style.width = "auto";
+          }
+        }
+
+        resize();
+
+        window.addEventListener("resize", (event) => {
+          height = document.body.clientHeight;
+          width = document.body.clientWidth;
+
+          resize();
+        });
+
+        var images = [
+          "./images/slide1.png",
+          "./images/slide2.png",
+          "./images/slide3.png",
+          "./images/slide4.png",
+        ];
+        var idx = 0;
+
+        image.setAttribute("src", images[0]);
+
+        function updateButtons(event) {
+          if (idx == 0) buttonLeft.disabled = true;
+          else buttonLeft.disabled = false;
+          if (idx == images.length - 1) buttonRight.disabled = true;
+          else buttonRight.disabled = false;
+        }
+        buttonLeft.addEventListener("click", updateButtons);
+        buttonRight.addEventListener("click", updateButtons);
+      </script>
+    </div>
+  </body>
+</html>
