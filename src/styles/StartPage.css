@@ -8,12 +8,10 @@ body {
 }
 
 #header {
-  display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   position: fixed;
   top: 0;
   width: 100%;
-  height: 18vh;
   background-color: #5A2619;
   align-items: center;
   justify-content: center;
@@ -21,7 +19,6 @@ body {
 }
 
 #content {
-    display: flex;
     width: 100%;
     height: 60vh;
     justify-content: center;
@@ -32,19 +29,22 @@ body {
 
 #summary-text-box {
     position: absolute;
+    margin: 2% 20% 5% 20%;
     width: 60vw;
-    height: auto;
     position: relative;
     top: 10%;
     background-color: #FDF7DD;
-    border-radius: 5%;
+    border-radius: 20px;
     flex-direction: column;
     display: flex;
     border: 7px solid #C0B9A9;
 }
   
 #banner-text {
-  font-size: 72.5px;
+  padding-top: 5%;
+  padding-bottom: 5%;
+  margin: 0 5%;
+  font-size: max(6vw, 50px);
   font-family: "Pixelify Sans";
   color: FDF7DD;
 }
@@ -80,10 +80,11 @@ body {
 #enter-game {
   font-size: 25px;
   font-family: "Pixelify Sans";
+  color: white;
   border: 5px solid #C0B9A9;
-  border-radius: 20%;
+  border-radius: 20px;
   background-color: #D05147;
-  width: 8vw;
+  width: 10vw;
   height: 8vh;
   position: absolute;
   bottom: 2%;
