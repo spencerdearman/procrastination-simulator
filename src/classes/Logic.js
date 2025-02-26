@@ -208,13 +208,14 @@ export default class Logic {
       );
       notification.setNarrative(data.narrativeOutcome);
 
-      // Randomize the notification time (between 6 AM to 8 PM in-game time)
+      // Dynamic random time based on the current game day
+      const baseTime = this.time.getCurrentGameTime();
       const randomHour = Math.floor(Math.random() * (20 - 6) + 6);
       const randomMinute = Math.floor(Math.random() * 60);
       const randomTime = new Date(
-        this.time.gameStartTime.getFullYear(),
-        this.time.gameStartTime.getMonth(),
-        this.time.gameStartTime.getDate(),
+        baseTime.getFullYear(),
+        baseTime.getMonth(),
+        baseTime.getDate(),
         randomHour,
         randomMinute,
       );
@@ -270,7 +271,6 @@ export default class Logic {
     );
     this.resolveNotification();
   }
-
   // Reset notification and resume previous activity if forced
   resolveNotification() {
     if (this.currentNotification.getForced()) {
