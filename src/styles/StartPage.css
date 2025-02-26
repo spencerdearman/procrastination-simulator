@@ -31,6 +31,7 @@ body {
 }
 
 #summary-text-box {
+    position: absolute;
     width: 60vw;
     height: auto;
     position: relative;
@@ -69,12 +70,12 @@ body {
 
 }
 
-#bell-emoji {
+/* #bell-emoji {
   position: absolute;
   font-size: 35px;
   top: 1%;
   left: 5%;
-}
+} */
 
 #enter-game {
   font-size: 25px;
