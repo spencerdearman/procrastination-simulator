@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import NotificationsList from "./components/Notifications";
 import WeekSummary from "./components/WeekSummary";
+import StartPage from "./components/StartPage";
 import "./styles/Calendar.css";
 import "./styles/global.css";
 import "./styles/Header.css";
@@ -12,9 +13,7 @@ import "./styles/Notification.css";
 import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
-import "./styles/StartPage.css"
-import StartPage from "./components/StartPage";
-
+import "./styles/StartPage.css";
 
 function App() {
   const [currentDate, setCurrentDate] = useState("Tuesday");
@@ -28,7 +27,7 @@ function App() {
     //   </div>
     //   <Sidebar />
     // </div>
-    <StartPage/>
+    <StartPage />
   );
 }
 
