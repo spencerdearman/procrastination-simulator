@@ -1,11 +1,7 @@
 import React from "react";
 
 function NotificationsList() {
-  return (
-    <div className="notifications-list">
-      <Notification />
-    </div>
-  );
+  return <div className="notifications-list">{/* <Notification /> */}</div>;
 }
 
 function Notification({
