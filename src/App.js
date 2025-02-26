@@ -7,7 +7,6 @@
 
 // export default App;
 
-
 // DONT PUSH THIS SHIT PLS <3
 import React, { useState, useEffect } from "react";
 import Player from "./classes/Player";
@@ -16,6 +15,7 @@ import Logic from "./classes/Logic";
 import PlayerStats from "./components/PlayerStats";
 import TimeView from "./components/TimeView";
 import Time from "./classes/Time";
+import Gameplay from "pages/gameplay/Gameplay";
 
 // Dummy tasks for testing
 const dummyTaskData = [
@@ -85,24 +85,26 @@ export function App() {
     return () => clearInterval(interval);
   }, [time, logic]);
 
-  return (
-    <div className="App p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-2">Game - Day Test</h1>
-      <p className="text-lg font-semibold mb-4">Player Name: {player.name}</p>
-      <PlayerStats attributes={player.attributes} />
-      <TimeView time={time} currentGameTime={gameTime} />
-      <p className="text-lg font-semibold mt-4">Completed Tasks:</p>
-      {completedTasks.length > 0 ? (
-        completedTasks.map((task, index) => (
-          <p key={index} className="text-base">
-            - {task.name}
-          </p>
-        ))
-      ) : (
-        <p className="text-base text-gray-500">No tasks completed yet.</p>
-      )}
-    </div>
-  );
+  return <Gameplay />;
 }
+//   return (
+//     <div className="App p-6 max-w-md mx-auto bg-white shadow-lg rounded-lg">
+//       <h1 className="text-2xl font-bold mb-2">Game - Day Test</h1>
+//       <p className="text-lg font-semibold mb-4">Player Name: {player.name}</p>
+//       <PlayerStats attributes={player.attributes} />
+//       <TimeView time={time} currentGameTime={gameTime} />
+//       <p className="text-lg font-semibold mt-4">Completed Tasks:</p>
+//       {completedTasks.length > 0 ? (
+//         completedTasks.map((task, index) => (
+//           <p key={index} className="text-base">
+//             - {task.name}
+//           </p>
+//         ))
+//       ) : (
+//         <p className="text-base text-gray-500">No tasks completed yet.</p>
+//       )}
+//     </div>
+//   );
+// }
 
 export default App;

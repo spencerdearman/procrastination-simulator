@@ -93,7 +93,7 @@ export default function Gameplay() {
         <Header currentDate={currentDate} />
         <Calendar />
       </div>
-      <Sidebar />
+      <Sidebar attributes={player.attributes} />
     </div>
   );
 }
