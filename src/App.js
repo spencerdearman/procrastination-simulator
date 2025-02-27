@@ -100,6 +100,8 @@ import Calendar from "./components/Calendar";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import NotificationsList from "./components/Notifications";
+import WeekSummary from "./components/WeekSummary";
+import Tutorial from "./components/Tutorial";
 import "./styles/Calendar.css";
 import "./styles/global.css";
 import "./styles/Header.css";
@@ -108,7 +110,7 @@ import "./styles/Notification.css";
 import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
-import WeekSummary from "./components/WeekSummary";
+import "./styles/Tutorial.css";
 import "./styles/WeekSummary.css";
 import { Routes, Route } from "react-router-dom";
 import Gameplay from "pages/gameplay/Gameplay";
@@ -118,8 +120,8 @@ function App() {
   return (
     <GameProvider>
       <Routes>
-        <Route path="" element={<h1>Introduction</h1>} />
-        <Route path="/game/tutorial" element={<h1>Tutorial</h1>} />
+      <Route path="" element={<h1><a href="/game/tutorial">Introduction</a></h1>} />
+      <Route path="/game/tutorial" element={<Tutorial />} />
         <Route path="/game/calendar" element={<Gameplay />} />
         <Route path="/game/end-of-day" element={<h1>End of day</h1>} />
         <Route path="/game/end-of-week" element={<h1>End of week</h1>} />
