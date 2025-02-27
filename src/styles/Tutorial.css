@@ -60,3 +60,8 @@
 #tutorial-end:hover {
   cursor: pointer;
 }
+
+#tutorial-image,
+#tutorial-end {
+  box-shadow: 4px 4px 7px #606060;
+}
