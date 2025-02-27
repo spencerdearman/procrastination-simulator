@@ -101,6 +101,7 @@ import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import NotificationsList from "./components/Notifications";
 import WeekSummary from "./components/WeekSummary";
+import StartPage from "./components/StartPage";
 import Tutorial from "./components/Tutorial";
 import "./styles/Calendar.css";
 import "./styles/global.css";
@@ -120,7 +121,7 @@ function App() {
   return (
     <GameProvider>
       <Routes>
-      <Route path="" element={<h1><a href="/game/tutorial">Introduction</a></h1>} />
+      <Route path="" element={<StartPage />}/>
       <Route path="/game/tutorial" element={<Tutorial />} />
         <Route path="/game/calendar" element={<Gameplay />} />
         <Route path="/game/end-of-day" element={<h1>End of day</h1>} />
