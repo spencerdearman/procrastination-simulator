@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import 'scripts/tutorialScripting.js';
 
 function Tutorial() {
-  const [tutorialVisibility, setTutorialVisibility] = useState("visible");
+  const [tutorialVisibility, setTutorialVisibility] = useState("hidden");
   const [leftDisabled, setLeftDisabled] = useState(true);
   const [rightDisabled, setRightDisabled] = useState(false);
   const totalSlides = 4;
@@ -27,8 +27,14 @@ function Tutorial() {
     }
   };
 
-  const handleVisibility = () => {
+  // call this somewhere to start the tutorial
+  const tutorialStart = () => {
+    setTutorialVisibility("visible");
+  };
+
+  const tutorialEnd = () => {
     setTutorialVisibility("hidden");
+    // code to start game logic
   };
 
   return (
@@ -57,7 +63,7 @@ function Tutorial() {
         </button>
       </div>
       <div className="tutorial-bottom">
-        <button id="tutorial-end" onClick={handleVisibility}>
+        <button id="tutorial-end" onClick={tutorialEnd}>
           End Tutorial
         </button>
       </div>
