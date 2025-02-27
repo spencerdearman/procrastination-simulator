@@ -111,7 +111,6 @@ import "./styles/Sidebar.css";
 import "./styles/Stats.css";
 import "./styles/TaskList.css";
 import "./styles/Tutorial.css";
-import WeekSummary from "./components/WeekSummary";
 import "./styles/WeekSummary.css";
 import { Routes, Route } from "react-router-dom";
 import Gameplay from "pages/gameplay/Gameplay";
