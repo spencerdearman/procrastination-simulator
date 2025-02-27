@@ -5,6 +5,11 @@ import TaskBlock from "./TaskBlock";
 export default function Calendar() {
   const gameContext = useGame();
   const plannedTasks = gameContext.getPlannedTasks();
+  const formatHour = (hour) => {
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+    return `${displayHour}${period}`;
+  };
 
   return (
     <div id="calendar-container" className="calendar">
@@ -14,7 +19,7 @@ export default function Calendar() {
             key={i}
             className="time-block"
             
-          ><div className="hours">{`${i}:00`}</div>
+          ><div className="hours">{formatHour(i)}</div>
            <div 
            className="slot"
            onDragOver={(e) => e.preventDefault()}
