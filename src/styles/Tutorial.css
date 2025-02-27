@@ -1,5 +1,6 @@
 .tutorial {
   position: absolute;
+  top:0px;
   z-index: 9999;
 
   width: 100vw;
@@ -31,11 +32,18 @@
 
   color: white;
   font-family: "Pixelify Sans", sans-serif;
-  font-size: 2rem;
+  font-size: 3rem;
+  opacity: 0.8;
+  transition: transform 0.1s ease-in-out;
 }
 
 .tutorial-button:hover {
   cursor: pointer;
+  transform: scale(1.2);
+  opacity: 1;
+}
+.tutorial-button:active {
+  transform: scale(0.98);
 }
 
 .tutorial-button:disabled {
@@ -43,9 +51,9 @@
 }
 
 #tutorial-image {
-  width: 65vw;
-  height: auto;
+  max-width: 80vw;
   max-height: 80vh;
+  object-fit: contain;
 }
 
 #tutorial-end {
@@ -55,13 +63,20 @@
   background-color: #a0bfd7;
   font-family: "Pixelify Sans", sans-serif;
   font-size: 2rem;
+  transition: transform 0.1s ease-in-out;
 }
 
 #tutorial-end:hover {
   cursor: pointer;
+  border-color: white;
+  transform: scale(1.05);
 }
 
-#tutorial-image,
+#tutorial-end:active {
+  transform: scale(.99);
+}
+
+
 #tutorial-end {
   box-shadow: 4px 4px 7px #606060;
 }

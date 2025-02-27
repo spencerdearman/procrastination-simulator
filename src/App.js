@@ -118,8 +118,8 @@ import Gameplay from "pages/gameplay/Gameplay";
 function App() {
   return (
     <Routes>
-      <Route path="" element={<h1>Introduction</h1>} />
-      <Route path="/game/tutorial" element={<h1>Tutorial</h1>} />
+      <Route path="" element={<h1><a href="/game/tutorial">Introduction</a></h1>} />
+      <Route path="/game/tutorial" element={<Tutorial />} />
       <Route path="/game/calendar" element={<Gameplay />} />
       <Route path="/game/end-of-day" element={<h1>End of day</h1>} />
       <Route path="/game/end-of-week" element={<h1>End of week</h1>} />

@@ -1,29 +1,31 @@
+import { useNavigate } from 'react-router-dom';
 import React, { useState } from "react";
+import slide1 from '../images/slide1.png';
+import slide2 from '../images/slide2.png';
+import slide3 from '../images/slide3.png';
+import slide4 from '../images/slide4.png';
 // import 'scripts/tutorialScripting.js';
 
 function Tutorial() {
+  const navigate = useNavigate();
   const [tutorialVisibility, setTutorialVisibility] = useState("hidden");
   const [leftDisabled, setLeftDisabled] = useState(true);
   const [rightDisabled, setRightDisabled] = useState(false);
   const totalSlides = 4;
   const [currentSlide, setCurrentSlide] = useState(1);
+
+  // Create an array of imported slides
+  const slides = [slide1, slide2, slide3, slide4]; // add all your slides here
+
   const handlePreviousSlide = () => {
-    setCurrentSlide((prev) => Math.max(prev - 1, 1));
-    if (currentSlide <= 2) {
-      setLeftDisabled(true);
-    } else {
-      setLeftDisabled(false);
-      setRightDisabled(false);
+    if (currentSlide > 1) {
+      setCurrentSlide(currentSlide - 1);
     }
   };
 
   const handleNextSlide = () => {
-    setCurrentSlide((prev) => Math.min(totalSlides, prev + 1));
-    if (currentSlide >= totalSlides - 1) {
-      setRightDisabled(true);
-    } else {
-      setLeftDisabled(false);
-      setRightDisabled(false);
+    if (currentSlide < totalSlides) {
+      setCurrentSlide(currentSlide + 1);
     }
   };
 
@@ -33,38 +35,37 @@ function Tutorial() {
   };
 
   const tutorialEnd = () => {
-    setTutorialVisibility("hidden");
-    // code to start game logic
+    navigate("/game/calendar");
   };
 
   return (
-    <div className="tutorial" style={{ visibility: `${tutorialVisibility}` }}>
+    <div className="tutorial">
       <div className="tutorial-top">
         <button
-          disabled={leftDisabled}
           className="tutorial-button"
           id="tutorial-left"
           onClick={handlePreviousSlide}
+          style={{ visibility: currentSlide === 1 ? 'hidden' : 'visible' }}
         >
           &lt;
         </button>
         <img
-          src={`./images/slide${currentSlide}.png`}
-          alt=""
+          alt={`Tutorial slide ${currentSlide}`}
+          src={slides[currentSlide - 1]}
           id="tutorial-image"
         />
         <button
-          disabled={rightDisabled}
           className="tutorial-button"
           id="tutorial-right"
           onClick={handleNextSlide}
+          style={{ visibility: currentSlide === totalSlides ? 'hidden' : 'visible' }}
         >
           &gt;
         </button>
       </div>
       <div className="tutorial-bottom">
         <button id="tutorial-end" onClick={tutorialEnd}>
-          End Tutorial
+          Start Scheduling!
         </button>
       </div>
     </div>
