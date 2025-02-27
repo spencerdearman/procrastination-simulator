@@ -8,6 +8,7 @@ export default class Task {
   });
 
   constructor(name) {
+    this.id = null; // Will be set when task is created
     this.name = name;
     this.category = Task.Category.MANDATORY;
     this.description = "";
@@ -24,6 +25,7 @@ export default class Task {
       energy: 0,
       mentalHealth: 0,
     };
+    this.reusable = false; // Add reusable property
   }
 
   setCategory(value) {

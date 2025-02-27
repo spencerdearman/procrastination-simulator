@@ -11,8 +11,8 @@ const handleDragStart = (ev) => {
 
 //this is the task list that will be used to display the tasks
 export default function TaskList() {
-  const { day } = useGame();
-  const unplannedTasks = day.unplannedTasks;
+  const { getUnplannedTasks } = useGame();
+  const unplannedTasks = getUnplannedTasks();
 
   return (
     <div className="task-list">

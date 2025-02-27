@@ -1,217 +1,199 @@
-// GameContext.js
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Task from "../classes/Task";
-import Notification from "../classes/Notification";
-import Day from "../classes/Day";
-import taskData from '../data/taskData'; // Import your task data
+import taskData from '../data/taskData';
 
 const GameContext = createContext();
 
-export const useGame = () => useContext(GameContext);
+export const useGame = () => {
+  const context = useContext(GameContext);
+  if (!context) {
+    throw new Error('useGame must be used within a GameProvider');
+  }
+  return context;
+};
 
 export const GameProvider = ({ children }) => {
-  const [player, setPlayer] = useState(new Player("Player1"));
-  const [time, setTime] = useState(new Time());
-  const [day, setDay] = useState(new Day());
+  const [player] = useState(new Player());
+  const [time] = useState(new Time());
+  const [currentTime, setCurrentTime] = useState(time.getCurrentGameTime());
+  const [gameDay, setGameDay] = useState(1);
   const [tasks, setTasks] = useState([]);
   const [notifications, setNotifications] = useState([]);
-  const [currentTime, setCurrentTime] = useState(time.getCurrentGameTime());
 
-  // Initialize tasks from task data
   useEffect(() => {
     const initializeTasks = () => {
-      // Check if tasks are already initialized
-      if (day.unplannedTasks.length > 0) {
+      if (tasks.length > 0) {
         console.log("Tasks already initialized, skipping...");
         return;
       }
 
-      // Shuffle the task data
       const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
 
       const parsedTasks = shuffledTaskData.map(data => {
         const task = new Task(data.name);
+        task.id = data.id;
         task.setCategory(data.category);
         task.description = data.description;
         task.icon = data.icon;
         task.duration = data.duration;
+        task.reusable = data.reusable || false;
         
-        // Set attribute impacts
         for (let key in data.attributeImpacts) {
           task.setAttributeImpacts(key, data.attributeImpacts[key]);
         }
 
+        //console.log('Created task:', task.name, 'reusable:', task.reusable);
         return task;
       });
 
       setTasks(parsedTasks);
-      // Add tasks to the current day
-      parsedTasks.forEach(task => day.addTask(task));
-      
-      // Debug logs
-      console.log("All tasks:", parsedTasks);
-      console.log("Unplanned tasks:", day.unplannedTasks);
+      console.log("Tasks initialized:", parsedTasks.length);
     };
 
     initializeTasks();
-  }, []); // Empty dependency array - run once on mount
+  }, []);
 
-  // === Game Loop: Update Game Time Every Second ===
-  useEffect(() => {
-    const timer = setInterval(() => {
-      const updatedTime = time.getCurrentGameTime();
-      setCurrentTime(updatedTime);
-      checkForOverdueTasks(updatedTime);
-    }, 1000);
+  const logicPlanTask = useCallback((taskData, hourIndex) => {
+    console.log('logicPlanTask called with:', taskData, hourIndex);
+    if (!taskData || hourIndex === undefined) {
+      console.error('Invalid task or hour index');
+      return;
+    }
 
-    return () => clearInterval(timer);
-  }, [time, tasks]);
+    // Find task by ID
+    const originalTask = tasks.find(t => t.id === taskData.id);
+    
+    if (!originalTask) {
+      console.error('Could not find matching task with ID:', taskData.id);
+      return;
+    }
 
-  // === Task Management ===
-  const addTask = (taskName) => {
-    const newTask = new Task(taskName);
-    day.addTask(newTask);
-    setTasks([...day.tasks]);
-  };
-
-  const startNewDay = () => {
-    const newDay = new Day();
-    setDay(newDay);
-    setTasks([]);
-    setNotifications([]);
-  };
-
-  const completeTask = (task) => {
-    task.completeTask(player.attributes);
-    day.updateCompleted();
-    setPlayer(new Player(player.name));
-    setTasks([...day.tasks]);
-  };
-
-  const abortTask = (task) => {
-    task.abortTask();
-    setTasks([...day.tasks]);
-  };
-
-  const updatePlayerAttribute = (attribute, value) => {
-    const updatedPlayer = new Player({
-      ...player,
-      attributes: { ...player.attributes }
-    });
-    updatedPlayer.addPoints(attribute, value);
-    setPlayer(updatedPlayer);
-  };
-
-  const resetPlayerAttributes = () => {
-    const updatedPlayer = new Player({
-      ...player,
-      attributes: { ...player.attributes }
-    });
-    updatedPlayer.resetAttributes();
-    setPlayer(updatedPlayer);
-  };
-
-  // === Notification Management ===
-  const addNotification = (notification) => {
-    day.addNotification(notification);
-    setNotifications([...day.notifications]);
-  };
-
-  const dismissNotification = (id) => {
-    setNotifications((prev) => prev.filter((n) => n.id !== id));
-  };
-
-  const handleNotificationDecision = (notification, decision) => {
-    notification.handleDecision(decision, player.attributes);
-    setPlayer(new Player(player.name));
-    dismissNotification(notification.id);
-  };
-
-  const rescheduleTask = (task, newStartTime) => {
-    task.changeTime(newStartTime);
-    setTasks([...day.tasks]);
-  };
-
-  const setTaskOptional = (task, isOptional) => {
-    task.setOptional(isOptional);
-    setTasks([...day.tasks]);
-  };
-
-  const setTaskMovable = (task, isMovable) => {
-    task.setMovable(isMovable);
-    setTasks([...day.tasks]);
-  };
-
-  // === Check for Overdue Tasks ===
-  const checkForOverdueTasks = (currentTime) => {
-    tasks.forEach((task) => {
-      if (task.isOverdue(currentTime) && task.getStatus() !== "COMPLETE") {
-        const overdueNotification = new Notification(
-          "Task Overdue!",
-          `The task \"${task.name}\" is overdue.`,
-          "⏰",
-        );
-        addNotification(overdueNotification);
+    let taskToSchedule;
+    if (originalTask.reusable) {
+      // Create a new instance for reusable tasks
+      taskToSchedule = new Task(originalTask.name);
+      taskToSchedule.id = `${originalTask.id}-${Date.now()}`; // Unique ID
+      taskToSchedule.setCategory(originalTask.category);
+      taskToSchedule.description = originalTask.description;
+      taskToSchedule.icon = originalTask.icon;
+      taskToSchedule.duration = originalTask.duration;
+      taskToSchedule.reusable = false; // The copy isn't reusable
+      
+      // Copy attribute impacts
+      for (let key in originalTask.attributeImpacts) {
+        taskToSchedule.setAttributeImpacts(key, originalTask.attributeImpacts[key]);
       }
+    } else {
+      taskToSchedule = originalTask;
+    }
+
+    const startTime = new Date(time.getCurrentGameTime());
+    startTime.setHours(hourIndex, 0, 0, 0);
+    
+    const endTime = new Date(startTime);
+    endTime.setHours(startTime.getHours() + taskToSchedule.duration);
+
+    taskToSchedule.setStartTime(startTime);
+    taskToSchedule.setEndTime(endTime);
+
+    if (originalTask.reusable) {
+      // Add the new instance to the tasks array
+      setTasks(prevTasks => {
+        const newTasks = [...prevTasks, taskToSchedule];
+        
+        // Log task lists after update
+        console.group('Task Lists After Assignment');
+        console.log('Planned Tasks:', newTasks
+          .filter(t => t.startTime)
+          .map(t => ({
+            id: t.id,
+            name: t.name,
+            startTime: t.startTime,
+            reusable: t.reusable
+          }))
+        );
+        console.log('Unplanned Tasks:', newTasks
+          .filter(t => !t.startTime || t.reusable)
+          .map(t => ({
+            id: t.id,
+            name: t.name,
+            reusable: t.reusable
+          }))
+        );
+        console.groupEnd();
+        
+        return newTasks;
+      });
+    } else {
+      // Update the original task
+      setTasks(prevTasks => {
+        const newTasks = [...prevTasks];
+        
+        // Log task lists after update
+        console.group('Task Lists After Assignment');
+        console.log('Planned Tasks:', newTasks
+          .filter(t => t.startTime)
+          .map(t => ({
+            id: t.id,
+            name: t.name,
+            startTime: t.startTime,
+            reusable: t.reusable
+          }))
+        );
+        console.log('Unplanned Tasks:', newTasks
+          .filter(t => !t.startTime || t.reusable)
+          .map(t => ({
+            id: t.id,
+            name: t.name,
+            reusable: t.reusable
+          }))
+        );
+        console.groupEnd();
+        
+        return newTasks;
+      });
+    }
+    
+    console.log('Task planned:', taskToSchedule.name, 'Start:', startTime, 'End:', endTime);
+  }, [tasks, time]);
+
+  const getUnplannedTasks = useCallback(() => {
+    const unplannedTasks = tasks.filter(task => {
+      const shouldShow = !task.startTime || task.reusable;
+      //console.log('Task:', task.name, 'startTime:', task.startTime, 'reusable:', task.reusable, 'showing:', shouldShow);
+      return shouldShow;
     });
-  };
+    console.log('Unplanned tasks:', unplannedTasks.length);
+    return unplannedTasks;
+  }, [tasks]);
 
-  // === Day-End Logic ===
-  const endDay = () => {
-    day.updateCompleted();
-    day.updateRollover();
-    setTasks([...day.rollover]);
-    setPlayer(new Player(player.name));
-  };
+  const getPlannedTasks = useCallback(() => {
+    return tasks.filter(task => task.startTime);
+  }, [tasks]);
 
-  // === Time control ===
-  const setGameTime = (newGameTime) => {
-    time.setCurrentGameTime(newGameTime);
-    setCurrentTime(time.getCurrentGameTime());
-  };
-
-  const resetGameTime = () => {
-    time.resetGameTime();
-    setCurrentTime(time.getCurrentGameTime());
-  };
-
-  const changeGameSpeed = (newSpeed) => {
-    time.setSpeedMultiplier(newSpeed);
-    setCurrentTime(time.getCurrentGameTime());
-  };
-
-  const updateTimeScale = (newScale) => {
-    time.setScale(newScale);
-    setCurrentTime(time.getCurrentGameTime());
-  };
-
-  const value = {
+  const value = useMemo(() => ({
     player,
     time,
     currentTime,
-    day,
+    gameDay,
     tasks,
     notifications,
-    addTask,
-    completeTask,
-    abortTask,
-    addNotification,
-    dismissNotification,
-    handleNotificationDecision,
-    endDay,
-    setGameTime,
-    resetGameTime,
-    changeGameSpeed,
-    updateTimeScale,
-    rescheduleTask,
-    setTaskOptional,
-    setTaskMovable,
-    updatePlayerAttribute,
-    resetPlayerAttributes,
-    startNewDay,
-  };
+    logicPlanTask,
+    getUnplannedTasks,
+    getPlannedTasks,
+  }), [
+    player,
+    time,
+    currentTime,
+    gameDay,
+    tasks,
+    notifications,
+    logicPlanTask,
+    getUnplannedTasks,
+    getPlannedTasks
+  ]);
 
   return (
     <GameContext.Provider value={value}>
@@ -219,3 +201,5 @@ export const GameProvider = ({ children }) => {
     </GameContext.Provider>
   );
 };
+
+export default GameProvider;
