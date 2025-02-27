@@ -195,7 +195,7 @@ export default class Task {
 
   isOverdue(currentGameTime) {
     if (!this.getEndTime()) {
-      console.error(`End time for task "${this.name}" is not set.`);
+      //console.error(`End time for task "${this.name}" is not set.`);
       return false;
     }
     const overdue = currentGameTime > this.getEndTime();

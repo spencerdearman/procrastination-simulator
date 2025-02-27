@@ -1,4 +1,4 @@
-export const availableTasks = [
+export const taskData = [
   {
     name: "Chores",
     category: "Mental",
@@ -219,7 +219,7 @@ export const availableTasks = [
 {
     name: "Reading",
     category: "Mental",
-    description: "Read for fun and remember that books don’t have to come with analysis questions.",
+    description: "Read for fun and remember that books don't have to come with analysis questions.",
     icon:"📖",
     startTime: null,
     endTime: null,
@@ -796,7 +796,7 @@ export const availableTasks = [
 },
 {
     name: "Study Biology",
-    category: "academics",
+    category: "academic",
     description: "Your midterm is next week and you know how that last one went...",
     icon: "📖",
     startTime: null,
@@ -814,7 +814,7 @@ export const availableTasks = [
 },
 {
     name: "Memorize Spanish -ar Verbs",
-    category: "academics",
+    category: "academic",
     description: "Verbs are pretty easy but you never know when the next pop quiz will be.",
     icon: "📖",
     startTime: null,
@@ -832,7 +832,7 @@ export const availableTasks = [
 },
 {
     name: "Memorize Formulas",
-    category: "academics",
+    category: "academic",
     description: "Math is made up anyway....",
     icon: "📖",
     startTime: null,
@@ -850,7 +850,7 @@ export const availableTasks = [
 },
 {
     name: "Study Shakesperean Terminology",
-    category: "academics",
+    category: "academic",
     description: "Alack... Wilt thou... Thy... Why can't this just be in regular english?",
     icon: "📖",
     startTime: null,
@@ -868,7 +868,7 @@ export const availableTasks = [
 },
 {
     name: "Make Art History Note Cards",
-    category: "academics",
+    category: "academic",
     description: "Who thought a class about memorizing thousands of artworks was a good idea?",
     icon: "📖",
     startTime: null,
@@ -889,7 +889,7 @@ export const availableTasks = [
 
 {
     name: "Biology Pre-Lab",
-    category: "academics",
+    category: "academic",
     description: "Review your lab instructions to make sure you're prepared!",
     icon: "📝",
     startTime: null,
@@ -907,7 +907,7 @@ export const availableTasks = [
 },
 {
     name: "Complete Spanish Worksheet",
-    category: "academics",
+    category: "academic",
     description: "1. Donde esta el gato? 2. Quieres....",
     icon: "📝",
     startTime: null,
@@ -925,7 +925,7 @@ export const availableTasks = [
 },
 {
     name:"Complete MATH 152 Pset",
-    category: "academics",
+    category: "academic",
     description: "You barely understood it in class...",
     icon: "📝",
     startTime: null,
@@ -943,7 +943,7 @@ export const availableTasks = [
 },
 {
     name: "Read A Play",
-    category: "academics",
+    category: "academic",
     description: "You better read this before tomorrow's in class discussion.",
     icon: "📝",
     startTime: null,
@@ -961,7 +961,7 @@ export const availableTasks = [
 },
 {
     name: "Review an Art Crticism Article",
-    category: "academics",
+    category: "academic",
     description: "Artists really love yapping...",
     icon: "📝",
     startTime: null,
@@ -981,7 +981,7 @@ export const availableTasks = [
 // Office Hours
 {
     name: "BIOS OFFICE HOURS",
-    category: "academics",
+    category: "academic",
     description: "Time to pretend like I started on the problem set to get some answers from the TA",
     icon: "⏰",
     startTime: null,
@@ -999,7 +999,7 @@ export const availableTasks = [
 },
 {
     name: "SPAN OFFICE HOURS",
-    category: "academics",
+    category: "academic",
     description: "Can\'t wait to sit for three hours just to be more confused then when I started.",
     icon: "⏰",
     startTime: null,
@@ -1017,7 +1017,7 @@ export const availableTasks = [
 },
 {
     name: "MATH OFFICE HOURS",
-    category: "academics",
+    category: "academic",
     description: "I love this TA they give the answers to the entire PSET.. I might be screwed for finals though.",
     icon: "⏰",
     startTime: null,
@@ -1035,7 +1035,7 @@ export const availableTasks = [
 },
 {
     name: "ENGL OFFICE HOURS",
-    category: "academics",
+    category: "academic",
     description: "This is my last chance to pass this class...",
     icon: "⏰",
     startTime: null,
@@ -1053,7 +1053,7 @@ export const availableTasks = [
 },
 {
     name: "ARTV OFFICE HOURS",
-    category: "academics",
+    category: "academic",
     description: "Don\'t you love it when the TA makes more sense than the professor",
     icon: "⏰",
     startTime: null,
@@ -1074,7 +1074,7 @@ export const availableTasks = [
 
 {
     name: "LAB",
-    category: "academics",
+    category: "academic",
     description: "Something something \"powerhouse of the cell\" is what this one's about",
     icon: "⏰",
     startTime: null,
@@ -1092,7 +1092,7 @@ export const availableTasks = [
 },
 {
     name: "LAB",
-    category: "academics",
+    category: "academic",
     description: "Art Institute field trip? As a requirement?? In this economy???",
     icon: "⏰",
     startTime: null,
@@ -1110,7 +1110,7 @@ export const availableTasks = [
 },
 {
     name: "LAB",
-    category: "academics",
+    category: "academic",
     description: "Why do they have a set class schedule if they\'re just going to add additional labs anyway??",
     icon: "⏰",
     startTime: null,
@@ -1128,7 +1128,7 @@ export const availableTasks = [
 },
 {
     name: "LAB",
-    category: "academics",
+    category: "academic",
     description: "Don\'t you love it when the TA makes more sense than the professor",
     icon: "⏰",
     startTime: null,
@@ -1146,7 +1146,7 @@ export const availableTasks = [
 },
 {
     name: "LAB",
-    category: "academics",
+    category: "academic",
     description: "Don\'t you love it when the TA makes more sense than the professor",
     icon: "⏰",
     startTime: null,
@@ -1163,3 +1163,5 @@ export const availableTasks = [
     },
 }
 ];
+
+export default taskData;

@@ -1,6 +1,10 @@
-#tasks-container {
+.tasks-container {
   height: 57vh;
   overflow-y: auto;
+}
+
+.task-list {
+ 
 }
 
 .task-block {
@@ -46,7 +50,7 @@
   display: none;
 }
 
-.type-academics {
+.type-academic {
   border-color: #314d65;
   background-color: #9fbfd6;
 }
