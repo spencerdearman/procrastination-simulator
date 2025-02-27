@@ -1,13 +1,7 @@
 import React from "react";
 
-function NotificationsList(){
-  return (
-    <div className="notifications-list">
-      <Notification/>
-   
-   
-    </div>
-  );
+function NotificationsList() {
+  return <div className="notifications-list">{/* <Notification /> */}</div>;
 }
 
 function Notification({
@@ -17,11 +11,11 @@ function Notification({
   icon = "🥳",
   dismissButton = "Dismiss",
   acceptButton = "Accept",
-  rejectButton = "Reject"
+  rejectButton = "Reject",
 }) {
   const randomPosition = {
-    top: `${Math.floor(Math.random() * 80)}vh`,  // Random value between 0-80% of viewport height
-    left: `${Math.floor(Math.random() * 80)}vw`  // Random value between 0-80% of viewport width
+    top: `${Math.floor(Math.random() * 80)}vh`, // Random value between 0-80% of viewport height
+    left: `${Math.floor(Math.random() * 80)}vw`, // Random value between 0-80% of viewport width
   };
 
   if (isMandatory) {
