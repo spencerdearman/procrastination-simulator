@@ -1,8 +1,16 @@
-import React from "react";
+import { useGame } from "game-context/GameContext";
+import React, { useEffect } from "react";
 
 const Stats = ({ attributes }) => {
+  const { player, currentTime } = useGame();
+
+  useEffect(() => {
+    player.decrementAttributes();
+  }, [currentTime]);
+
   if (!attributes) {
-    console.log("Attributes missing");
+    console.error("Attributes missing");
+    return <></>;
   }
 
   return (
