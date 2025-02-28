@@ -48,6 +48,29 @@
   height: 100%;
   width: 100%;
 }
+.slot .task-block:hover {
+  transform: scale(1);
+}
+.slot .type-academic:hover {
+  border-color: #314d65;
+  background-color: #9fbfd6;
+}
+
+.slot .type-social:hover {
+  border-color: #a1544a;
+  background-color: #e7c5ce;
+}
+
+.slot .type-energy:hover {
+  border-color: #b98d35;
+  background-color: #f6e36b;
+}
+
+.slot .type-mental:hover {
+  border-color: #4d675c;
+  background-color: #d3e5d7;
+}
+
 .slot .task-block p {
   display: none;
 }

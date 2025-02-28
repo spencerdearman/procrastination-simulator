@@ -3,10 +3,10 @@ import "../styles/Header.css";
 import TimeDisplay from "./TimeDisplay";
 import PlayControls from "./PlayControls";
 
-function Header({ currentDate }) {
+function Header() {
   return (
     <div id="header">
-      <TimeDisplay currentDate={currentDate} />
+      <TimeDisplay />
       <PlayControls />
     </div>
   );

@@ -1,4 +1,4 @@
-#tasks-container {
+.tasks-container {
   height: 57vh;
   overflow-y: auto;
 }
@@ -46,7 +46,7 @@
   display: none;
 }
 
-.type-academics {
+.type-academic {
   border-color: #314d65;
   background-color: #9fbfd6;
 }

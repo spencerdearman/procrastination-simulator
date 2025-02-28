@@ -8,6 +8,7 @@ export default class Task {
   });
 
   constructor(name) {
+    this.id = null; // Will be set when task is created
     this.name = name;
     this.category = Task.Category.MANDATORY;
     this.description = "";
@@ -24,6 +25,7 @@ export default class Task {
       energy: 0,
       mentalHealth: 0,
     };
+    this.reusable = false; // Add reusable property
   }
 
   setCategory(value) {
@@ -195,7 +197,7 @@ export default class Task {
 
   isOverdue(currentGameTime) {
     if (!this.getEndTime()) {
-      console.error(`End time for task "${this.name}" is not set.`);
+      //console.error(`End time for task "${this.name}" is not set.`);
       return false;
     }
     const overdue = currentGameTime > this.getEndTime();

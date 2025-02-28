@@ -1,0 +1,97 @@
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#start-page #header {
+  /* flex-direction: column; */
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: #5a2619;
+  align-items: center;
+  justify-content: center;
+  color: #fdf7dd;
+}
+
+#start-page-content {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  background-color: none !important;
+}
+
+#start-page #summary-text-box {
+  width: 75vw;
+  height: 60vh;
+  background-color: #fdf7dd;
+  border-radius: 20px;
+  flex-direction: column;
+  display: flex;
+  border: 4px solid #c0b9a9;
+}
+
+#start-page #banner-text {
+  padding-top: 5%;
+  padding-bottom: 5%;
+  margin: 0 5%;
+  font-size: max(6vw, 50px);
+  font-family: "Pixelify Sans";
+  color: FDF7DD;
+}
+
+#start-page-text-header {
+  font-size: 40px;
+  font-family: "Pixelify Sans";
+  color: #5a2619;
+  /* position: absolute;
+  top: 2%;
+  left: 20%; */
+  text-align: center;
+  width: 100%;
+}
+
+#start-page #text-position {
+  font-size: 25px;
+  font-family: "Open Sans";
+  color: black;
+  margin: 0 5%;
+  margin-bottom: 10%;
+}
+
+/* #bell-emoji {
+  position: absolute;
+  font-size: 35px;
+  top: 1%;
+  left: 5%;
+} */
+
+#enter-game {
+  width: fit-content;
+  padding: 5px 10px;
+  border: 4px solid #304c64;
+  border-radius: 7px;
+  background-color: #a0bfd7;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 2rem;
+  transition: transform 0.1s ease-in-out;
+  margin: auto;
+  transition: transform 0.1s ease-in-out;
+}
+
+#enter-game:hover {
+  cursor: pointer;
+  border-color: white;
+  transform: scale(1.05);
+}
+
+#enter-game:active {
+  transform: scale(0.98);
+}
