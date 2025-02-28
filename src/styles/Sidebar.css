@@ -3,7 +3,7 @@
   height: 100vh;
   display: block;
   border: 4px solid rgba(128, 128, 128, 0.15);
-  background-color: #E2DAC7;
+  background-color: #e2dac7;
 }
 
 .side-bar-header {
@@ -11,10 +11,10 @@
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
-  font-size: 20px;
+  font-size: 30px;
   position: relative;
   margin: 0px 0px 10px 0px;
-  padding: 0px;  
+  padding: 0px;
 }
 
 .side-bar-subheading {
@@ -25,5 +25,3 @@
   font-size: 20px;
   margin: 0px;
 }
-
-
