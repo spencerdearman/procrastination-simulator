@@ -187,16 +187,6 @@ export const GameProvider = ({ children }) => {
     [tasks, time],
   );
 
-  const getUnplannedTasks = useCallback(() => {
-    const unplannedTasks = tasks.filter((task) => {
-      const shouldShow = !task.startTime || task.reusable;
-      //console.log('Task:', task.name, 'startTime:', task.startTime, 'reusable:', task.reusable, 'showing:', shouldShow);
-      return shouldShow;
-    });
-    console.log("Unplanned tasks:", unplannedTasks.length);
-    return unplannedTasks;
-  }, [tasks]);
-
   const getPlannedTasks = useCallback(() => {
     return tasks.filter((task) => task.startTime);
   }, [tasks]);
@@ -210,7 +200,6 @@ export const GameProvider = ({ children }) => {
       tasks,
       notifications,
       logicPlanTask,
-      getUnplannedTasks,
       getPlannedTasks,
     }),
     [
@@ -221,7 +210,6 @@ export const GameProvider = ({ children }) => {
       tasks,
       notifications,
       logicPlanTask,
-      getUnplannedTasks,
       getPlannedTasks,
     ],
   );
