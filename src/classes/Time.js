@@ -1,16 +1,20 @@
+const DEFAULT_SPEED = 60;
+
 export default class Time {
-  constructor(scale = 60) {
-    this.realSecondsPerGameHour = scale; /* Note, 60 real seconds = 1 game hr */
-
-    this.startTime = Date.now(); // Store the real-world start time
-
-    this.lastGameRecordTime = new Date(2025, 0, 1, 0, 0, 0); // Arbitrary in-game start time
-
-    this.totalMinutesElapsed = 0;
-
-    this.lastRealWorldCheckTime = Date.now();
-
-    this.playerDefinedSpeed = 1;
+  constructor(time = null) {
+    if (time) {
+      this.realSecondsPerGameHour = time.realSecondsPerGameHour;
+      this.startTime = time.startTime;
+      this.lastGameRecordTime = time.lastGameRecordTime;
+      this.lastRealWorldCheckTime = time.lastRealWorldCheckTime;
+      this.playerDefinedSpeed = time.playerDefinedSpeed;
+    } else {
+      this.realSecondsPerGameHour = DEFAULT_SPEED;
+      this.startTime = Date.now();
+      this.lastGameRecordTime = new Date(2025, 0, 1, 0, 0, 0);
+      this.lastRealWorldCheckTime = Date.now();
+      this.playerDefinedSpeed = 1;
+    }
   }
 
   // Manually set the current game time
@@ -26,11 +30,16 @@ export default class Time {
     console.log(`Game time manually set to: ${this.lastGameRecordTime}`);
   }
 
-  // Calculate current game time based on elapsed real seconds and the speed multiplier.
   getCurrentGameTime() {
+    return this.lastGameRecordTime;
+  }
+
+  // Calculate current game time based on elapsed real seconds and the speed multiplier.
+  tick() {
+    const newTimeInstance = new Time(this);
     let realElapsedSeconds = (Date.now() - this.lastRealWorldCheckTime) / 1000;
 
-    this.lastRealWorldCheckTime = Date.now();
+    newTimeInstance.lastRealWorldCheckTime = Date.now();
 
     let newGameTime = new Date(
       this.lastGameRecordTime.getTime() +
@@ -40,9 +49,9 @@ export default class Time {
           1000,
     );
 
-    this.lastGameRecordTime = newGameTime;
+    newTimeInstance.lastGameRecordTime = newGameTime;
 
-    return newGameTime;
+    return newTimeInstance;
   }
 
   compareTwoTime() {}
