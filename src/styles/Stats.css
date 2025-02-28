@@ -25,22 +25,10 @@
   padding: 20px 0px;
 }
 
-.div-academics,
-.div-social-life,
-.div-energy,
-.div-mental-health {
+.stats-bar {
   width: 100%;
   position: relative;
   padding: 0px 20px;
-}
-
-.stats-bar {
-  height: 3vh;
-  width: 25vw;
-  border-style: solid;
-  border-color: #ebe8d4;
-  background-color: #ebe8d4;
-  border-radius: 5px;
 }
 
 .stats-bar-fill {
@@ -213,4 +201,20 @@ progress::-moz-progress-value {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+}
+
+@keyframes flash-red {
+  0% {
+    color: initial;
+  }
+  50% {
+    color: red;
+  }
+  100% {
+    color: initial;
+  }
+}
+
+.flash-warning {
+  animation: flash-red 1.5s infinite ease-in-out;
 }
