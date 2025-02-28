@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Task from "../classes/Task";
@@ -26,39 +27,31 @@ export const GameProvider = ({ children }) => {
   const [currentTime, setCurrentTime] = useState(new Time());
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const initializeTasks = () => {
-      if (tasks.length > 0) {
-        console.log("Tasks already initialized, skipping...");
-        return;
-      }
+    if (tasks.length !== 0) return;
 
-      const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
+    const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
 
-      const parsedTasks = shuffledTaskData.map((data) => {
-        const task = new Task(data.name);
-        task.id = data.id;
-        task.setCategory(data.category);
-        task.description = data.description;
-        task.icon = data.icon;
-        task.duration = data.duration;
-        task.reusable = data.reusable || false;
+    const parsedTasks = shuffledTaskData.map((data) => {
+      const task = new Task(data.name);
+      task.id = data.id;
+      task.setCategory(data.category);
+      task.description = data.description;
+      task.icon = data.icon;
+      task.duration = data.duration;
+      task.reusable = data.reusable || false;
 
-        for (let key in data.attributeImpacts) {
-          task.setAttributeImpacts(key, data.attributeImpacts[key]);
-        }
-
-        //console.log('Created task:', task.name, 'reusable:', task.reusable);
-        return task;
+      Object.entries(data.attributeImpacts).forEach(([key, value]) => {
+        task.setAttributeImpacts(key, value);
       });
 
-      setTasks(parsedTasks);
-      console.log("Tasks initialized:", parsedTasks.length);
-    };
+      return task;
+    });
 
-    initializeTasks();
-  }, []);
+    setTasks(parsedTasks);
+  }, [tasks.length]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -138,6 +131,14 @@ export const GameProvider = ({ children }) => {
     },
     [tasks, currentTime],
   );
+
+  useEffect(() => {
+    const isGameOver = Object.values(attributes).some((stat) => stat <= 0);
+    if (isGameOver) {
+      // TODO: Might have to update internal `Player` state before navigating to fail screen
+      navigate("/game/game-over");
+    }
+  }, [attributes, navigate]);
 
   const getPlannedTasks = useCallback(() => {
     return tasks.filter((task) => task.startTime);
