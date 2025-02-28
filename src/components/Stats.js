@@ -1,12 +1,8 @@
 import { useGame } from "game-context/GameContext";
-import React, { useEffect } from "react";
+import React from "react";
 
-const Stats = ({ attributes }) => {
-  const { player, currentTime } = useGame();
-
-  useEffect(() => {
-    player.decrementAttributes();
-  }, [currentTime]);
+const Stats = () => {
+  const { attributes } = useGame();
 
   if (!attributes) {
     console.error("Attributes missing");

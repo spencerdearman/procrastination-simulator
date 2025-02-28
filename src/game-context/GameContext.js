@@ -22,7 +22,7 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [player] = useState(new Player());
+  const [attributes, setAttributes] = useState(Player.getInitialAttributes());
   const [currentTime, setCurrentTime] = useState(new Time());
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
@@ -62,7 +62,13 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentTime((prevTime) => prevTime.tick());
+      setCurrentTime((prevTime) => {
+        const newTime = prevTime.tick();
+        return newTime;
+      });
+      setAttributes((prevAttributes) =>
+        Player.decrementAttributes(prevAttributes),
+      );
     }, 1000);
     return () => {
       clearInterval(timer);
@@ -139,14 +145,21 @@ export const GameProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      player,
+      attributes,
       currentTime,
       tasks,
       notifications,
       logicPlanTask,
       getPlannedTasks,
     }),
-    [player, currentTime, tasks, notifications, logicPlanTask, getPlannedTasks],
+    [
+      attributes,
+      currentTime,
+      tasks,
+      notifications,
+      logicPlanTask,
+      getPlannedTasks,
+    ],
   );
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

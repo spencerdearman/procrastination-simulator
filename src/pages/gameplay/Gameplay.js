@@ -2,11 +2,8 @@ import Calendar from "components/Calendar";
 import Header from "components/Header";
 import NotificationsList from "components/Notifications";
 import Sidebar from "components/Sidebar";
-import { useGame } from "../../game-context/GameContext";
 
 export default function Gameplay() {
-  const { player } = useGame();
-
   return (
     <div id="container">
       <NotificationsList />
@@ -14,7 +11,7 @@ export default function Gameplay() {
         <Header />
         <Calendar />
       </div>
-      <Sidebar attributes={player.attributes} />
+      <Sidebar />
     </div>
   );
 }
