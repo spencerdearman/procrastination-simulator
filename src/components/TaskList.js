@@ -3,12 +3,6 @@ import { useGame } from "../game-context/GameContext";
 import TaskBlock from "./TaskBlock";
 import "../styles/TaskList.css";
 
-
-//when the user drags the task, it will be added to the slot
-const handleDragStart = (ev) => {
-  ev.dataTransfer.setData("text", ev.target.id);
-};
-
 //this is the task list that will be used to display the tasks
 export default function TaskList() {
   const { getUnplannedTasks } = useGame();

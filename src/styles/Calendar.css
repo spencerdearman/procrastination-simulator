@@ -48,7 +48,7 @@
   height: 100%;
   width: 100%;
 }
-.slot .task-block:hover{
+.slot .task-block:hover {
   transform: scale(1);
 }
 .slot .type-academic:hover {
@@ -70,7 +70,6 @@
   border-color: #4d675c;
   background-color: #d3e5d7;
 }
-
 
 .slot .task-block p {
   display: none;

@@ -5,7 +5,7 @@ import Sidebar from "components/Sidebar";
 import { useGame } from "../../game-context/GameContext";
 
 export default function Gameplay() {
-  const { player, currentTime, gameDay } = useGame();
+  const { player } = useGame();
 
   return (
     <div id="container">

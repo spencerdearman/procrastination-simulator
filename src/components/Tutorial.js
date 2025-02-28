@@ -1,16 +1,12 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import slide1 from '../images/slide1.png';
-import slide2 from '../images/slide2.png';
-import slide3 from '../images/slide3.png';
-import slide4 from '../images/slide4.png';
-// import 'scripts/tutorialScripting.js';
+import slide1 from "../images/slide1.png";
+import slide2 from "../images/slide2.png";
+import slide3 from "../images/slide3.png";
+import slide4 from "../images/slide4.png";
 
 function Tutorial() {
   const navigate = useNavigate();
-  const [tutorialVisibility, setTutorialVisibility] = useState("hidden");
-  const [leftDisabled, setLeftDisabled] = useState(true);
-  const [rightDisabled, setRightDisabled] = useState(false);
   const totalSlides = 4;
   const [currentSlide, setCurrentSlide] = useState(1);
 
@@ -29,11 +25,6 @@ function Tutorial() {
     }
   };
 
-  // call this somewhere to start the tutorial
-  const tutorialStart = () => {
-    setTutorialVisibility("visible");
-  };
-
   const tutorialEnd = () => {
     navigate("/game/calendar");
   };
@@ -45,7 +36,7 @@ function Tutorial() {
           className="tutorial-button"
           id="tutorial-left"
           onClick={handlePreviousSlide}
-          style={{ visibility: currentSlide === 1 ? 'hidden' : 'visible' }}
+          style={{ visibility: currentSlide === 1 ? "hidden" : "visible" }}
         >
           &lt;
         </button>
@@ -58,7 +49,9 @@ function Tutorial() {
           className="tutorial-button"
           id="tutorial-right"
           onClick={handleNextSlide}
-          style={{ visibility: currentSlide === totalSlides ? 'hidden' : 'visible' }}
+          style={{
+            visibility: currentSlide === totalSlides ? "hidden" : "visible",
+          }}
         >
           &gt;
         </button>

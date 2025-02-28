@@ -4,8 +4,8 @@ import Stats from "./Stats";
 
 function WeekSummary() {
   const [summary, setSummary] = useState("");
-  const [log, setLog] = useState(null);
-  const [name, setName] = useState("Lebron");
+  const [log] = useState(null);
+  const [name] = useState("Lebron");
   const stats = {
     academics: 20,
     social: 95,

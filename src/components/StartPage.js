@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Typed from "typed.js";
 import "../styles/StartPage.css";
 function StartPage() {
@@ -46,7 +46,11 @@ function StartPage() {
           </h3>
           <p className="blurb-text" id="text-position" ref={blurbRef}></p>
           {/* Only show the button when typing is complete */}
-          {showButton && <button id="enter-game" onClick={introEnd}>Enter Game!</button>}
+          {showButton && (
+            <button id="enter-game" onClick={introEnd}>
+              Enter Game!
+            </button>
+          )}
         </div>
       </div>
     </div>

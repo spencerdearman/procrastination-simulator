@@ -2,14 +2,22 @@ import React from "react";
 import { useGame } from "../game-context/GameContext";
 
 export default function TimeDisplay() {
-  const { time, gameDay } = useGame();
-  
+  const { time } = useGame();
+
   const getDayOfWeek = () => {
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
     const currentDay = time.getCurrentGameTime().getDay();
     return days[currentDay];
   };
-  
+
   return (
     <div id="time">
       <button className="time-button">&lt;</button>
@@ -21,4 +29,3 @@ export default function TimeDisplay() {
     </div>
   );
 }
-

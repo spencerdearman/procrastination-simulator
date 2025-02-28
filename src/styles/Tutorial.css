@@ -1,6 +1,6 @@
 .tutorial {
   position: absolute;
-  top:0px;
+  top: 0px;
   z-index: 9999;
 
   width: 100vw;
@@ -11,8 +11,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  
 }
 
 .tutorial-top {
@@ -75,9 +73,8 @@
 }
 
 #tutorial-end:active {
-  transform: scale(.99);
+  transform: scale(0.99);
 }
-
 
 #tutorial-end {
   box-shadow: 4px 4px 7px #606060;

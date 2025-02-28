@@ -5,9 +5,9 @@ export default function TaskBlock({ task, draggable }) {
       id: task.id,
       name: task.name,
       category: task.category,
-      duration: task.duration
+      duration: task.duration,
     };
-    e.dataTransfer.setData('application/json', JSON.stringify(dragData));
+    e.dataTransfer.setData("application/json", JSON.stringify(dragData));
   };
 
   return (
@@ -23,4 +23,4 @@ export default function TaskBlock({ task, draggable }) {
       <p>{task.description}</p>
     </div>
   );
-} 
+}
