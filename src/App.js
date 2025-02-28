@@ -15,6 +15,7 @@ import "./styles/WeekSummary.css";
 import { Routes, Route } from "react-router-dom";
 import Gameplay from "pages/gameplay/Gameplay";
 import { GameProvider } from "./game-context/GameContext";
+import GameOver from "pages/GameOver";
 
 function App() {
   return (
@@ -25,11 +26,12 @@ function App() {
         <Route path="/game/calendar" element={<Gameplay />} />
         <Route path="/game/end-of-day" element={<h1>End of day</h1>} />
         <Route path="/game/end-of-week" element={<h1>End of week</h1>} />
+        <Route path="/game/game-over" element={<GameOver />} />
+        <Route path="/game/week-summary" element={<WeekSummary />} />
         <Route
           path="*"
           element={<h1>Make sure this redirects to introduction</h1>}
         />
-        <Route path="/game/week-summary" element={<WeekSummary />} />
       </Routes>
     </GameProvider>
   );
