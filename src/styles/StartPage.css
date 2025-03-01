@@ -1,11 +1,3 @@
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 #start-page #header {
   /* flex-direction: column; */
   position: fixed;

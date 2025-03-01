@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Task from "../classes/Task";
@@ -22,44 +23,49 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [player] = useState(new Player());
-  const [time] = useState(new Time());
-  const [currentTime] = useState(time.getCurrentGameTime());
-  const [gameDay] = useState(1);
+  const [attributes, setAttributes] = useState(Player.getInitialAttributes());
+  const [currentTime, setCurrentTime] = useState(new Time());
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const initializeTasks = () => {
-      if (tasks.length > 0) {
-        console.log("Tasks already initialized, skipping...");
-        return;
-      }
+    if (tasks.length !== 0) return;
 
-      const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
+    const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
 
-      const parsedTasks = shuffledTaskData.map((data) => {
-        const task = new Task(data.name);
-        task.id = data.id;
-        task.setCategory(data.category);
-        task.description = data.description;
-        task.icon = data.icon;
-        task.duration = data.duration;
-        task.reusable = data.reusable || false;
+    const parsedTasks = shuffledTaskData.map((data) => {
+      const task = new Task(data.name);
+      task.id = data.id;
+      task.setCategory(data.category);
+      task.description = data.description;
+      task.icon = data.icon;
+      task.duration = data.duration;
+      task.reusable = data.reusable || false;
 
-        for (let key in data.attributeImpacts) {
-          task.setAttributeImpacts(key, data.attributeImpacts[key]);
-        }
-
-        //console.log('Created task:', task.name, 'reusable:', task.reusable);
-        return task;
+      Object.entries(data.attributeImpacts).forEach(([key, value]) => {
+        task.setAttributeImpacts(key, value);
       });
 
-      setTasks(parsedTasks);
-      console.log("Tasks initialized:", parsedTasks.length);
-    };
+      return task;
+    });
 
-    initializeTasks();
+    setTasks(parsedTasks);
+  }, [tasks.length]);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime((prevTime) => {
+        const newTime = prevTime.tick();
+        return newTime;
+      });
+      setAttributes((prevAttributes) =>
+        Player.decrementAttributes(prevAttributes),
+      );
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
   }, []);
 
   const logicPlanTask = useCallback(
@@ -100,7 +106,7 @@ export const GameProvider = ({ children }) => {
         taskToSchedule = originalTask;
       }
 
-      const startTime = new Date(time.getCurrentGameTime());
+      const startTime = new Date(currentTime.getCurrentGameTime());
       startTime.setHours(hourIndex, 0, 0, 0);
 
       const endTime = new Date(startTime);
@@ -113,89 +119,26 @@ export const GameProvider = ({ children }) => {
         // Add the new instance to the tasks array
         setTasks((prevTasks) => {
           const newTasks = [...prevTasks, taskToSchedule];
-
-          // Log task lists after update
-          console.group("Task Lists After Assignment");
-          console.log(
-            "Planned Tasks:",
-            newTasks
-              .filter((t) => t.startTime)
-              .map((t) => ({
-                id: t.id,
-                name: t.name,
-                startTime: t.startTime,
-                reusable: t.reusable,
-              })),
-          );
-          console.log(
-            "Unplanned Tasks:",
-            newTasks
-              .filter((t) => !t.startTime || t.reusable)
-              .map((t) => ({
-                id: t.id,
-                name: t.name,
-                reusable: t.reusable,
-              })),
-          );
-          console.groupEnd();
-
           return newTasks;
         });
       } else {
         // Update the original task
         setTasks((prevTasks) => {
           const newTasks = [...prevTasks];
-
-          // Log task lists after update
-          console.group("Task Lists After Assignment");
-          console.log(
-            "Planned Tasks:",
-            newTasks
-              .filter((t) => t.startTime)
-              .map((t) => ({
-                id: t.id,
-                name: t.name,
-                startTime: t.startTime,
-                reusable: t.reusable,
-              })),
-          );
-          console.log(
-            "Unplanned Tasks:",
-            newTasks
-              .filter((t) => !t.startTime || t.reusable)
-              .map((t) => ({
-                id: t.id,
-                name: t.name,
-                reusable: t.reusable,
-              })),
-          );
-          console.groupEnd();
-
           return newTasks;
         });
       }
-
-      console.log(
-        "Task planned:",
-        taskToSchedule.name,
-        "Start:",
-        startTime,
-        "End:",
-        endTime,
-      );
     },
-    [tasks, time],
+    [tasks, currentTime],
   );
 
-  const getUnplannedTasks = useCallback(() => {
-    const unplannedTasks = tasks.filter((task) => {
-      const shouldShow = !task.startTime || task.reusable;
-      //console.log('Task:', task.name, 'startTime:', task.startTime, 'reusable:', task.reusable, 'showing:', shouldShow);
-      return shouldShow;
-    });
-    console.log("Unplanned tasks:", unplannedTasks.length);
-    return unplannedTasks;
-  }, [tasks]);
+  useEffect(() => {
+    const isGameOver = Object.values(attributes).some((stat) => stat <= 0);
+    if (isGameOver) {
+      // TODO: Might have to update internal `Player` state before navigating to fail screen
+      navigate("/game/game-over");
+    }
+  }, [attributes, navigate]);
 
   const getPlannedTasks = useCallback(() => {
     return tasks.filter((task) => task.startTime);
@@ -203,25 +146,19 @@ export const GameProvider = ({ children }) => {
 
   const value = useMemo(
     () => ({
-      player,
-      time,
+      attributes,
       currentTime,
-      gameDay,
       tasks,
       notifications,
       logicPlanTask,
-      getUnplannedTasks,
       getPlannedTasks,
     }),
     [
-      player,
-      time,
+      attributes,
       currentTime,
-      gameDay,
       tasks,
       notifications,
       logicPlanTask,
-      getUnplannedTasks,
       getPlannedTasks,
     ],
   );

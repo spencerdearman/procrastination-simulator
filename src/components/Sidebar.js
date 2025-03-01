@@ -2,10 +2,10 @@ import React from "react";
 import Stats from "./Stats";
 import TaskList from "./TaskList";
 
-function Sidebar({ attributes }) {
+function Sidebar() {
   return (
     <div id="sidebar">
-      <Stats attributes={attributes} />
+      <Stats />
       <TaskList />
     </div>
   );

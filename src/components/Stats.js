@@ -1,8 +1,12 @@
+import { useGame } from "game-context/GameContext";
 import React from "react";
 
-const Stats = ({ attributes }) => {
+const Stats = () => {
+  const { attributes } = useGame();
+
   if (!attributes) {
-    console.log("Attributes missing");
+    console.error("Attributes missing");
+    return <></>;
   }
 
   return (
@@ -11,22 +15,18 @@ const Stats = ({ attributes }) => {
       <div id="stats-block">
         <StatBar
           title="Academics"
-          colorClass="academics-color"
+          colorClass="academics"
           score={attributes.academics}
         />
         <StatBar
           title="Social Life"
-          colorClass="social-life-color"
+          colorClass="social-life"
           score={attributes.socialLife}
         />
-        <StatBar
-          title="Energy"
-          colorClass="energy-color"
-          score={attributes.energy}
-        />
+        <StatBar title="Energy" colorClass="energy" score={attributes.energy} />
         <StatBar
           title="Mental Health"
-          colorClass="mental-health-color"
+          colorClass="mental-health"
           score={attributes.mentalHealth}
         />
       </div>
@@ -35,16 +35,18 @@ const Stats = ({ attributes }) => {
 };
 
 function StatBar({ title, colorClass, score }) {
+  const isLow = score < 10;
+
   return (
-    <div className={`div-${title.toLowerCase().replace(" ", "-")}`}>
+    <div className="stats-bar">
       <p className="side-bar-subheading">{title}</p>
       <div className="progress-container">
         <progress
-          className={`stats-bar-fill ${colorClass} sb-${title.toLowerCase().replace(" ", "-")}`}
+          className={`stats-bar-fill ${colorClass} sb-${title.toLowerCase().replace(" ", "-")} ${isLow ? "flash-warning" : ""}`}
           value={score}
           max="100"
         ></progress>
-        <label>{score}/100</label>
+        <label className={isLow ? "flash-warning" : ""}>{score}/100</label>
       </div>
     </div>
   );
