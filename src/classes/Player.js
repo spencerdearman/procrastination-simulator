@@ -41,7 +41,8 @@ export default class Player {
 
   decrementAttributes() {
     Object.keys(this.attributes).forEach((key) => {
-      this.attributes[key] = Math.max(0, this.attributes[key] - 2);
+      const decrement = Math.floor(Math.random() * 3) + 1;
+      this.attributes[key] = Math.max(0, this.attributes[key] - decrement);
     });
     return this.getAttributes();
   }
