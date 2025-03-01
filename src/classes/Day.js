@@ -116,7 +116,6 @@ export default class Day {
     }
 
     if (!task.startTime) {
-      console.log(`Unplanned task "${task.name}" added to unplannedTasks.`);
       this.unplannedTasks.push(task);
       return;
     }
