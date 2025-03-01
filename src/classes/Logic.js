@@ -1,13 +1,11 @@
 import Time from "./Time.js";
-import Player from "./Player.js";
 import Task from "./Task.js";
 import Notification from "./Notification.js";
 import { DayUtils } from "./Day.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
-  constructor(player, days, timeInstance) {
-    this.player = player;
+  constructor(days, timeInstance) {
     this.days = days;
     this.currentDayIndex = 0;
     this.currentDay = days[0];
@@ -16,10 +14,6 @@ export default class Logic {
     this.timeXSpeed = 1;
     this.notificationsQueue = [];
     this.currentNotification = null;
-  }
-
-  seedPlayer(playerAttributes) {
-    Object.assign(this.player.attributes, playerAttributes);
   }
 
   parseTasks(taskDataArray) {
@@ -56,13 +50,6 @@ export default class Logic {
   }
 
   startGame(taskDataArray) {
-    this.seedPlayer({
-      academics: 100,
-      socialLife: 100,
-      energy: 100,
-      mentalHealth: 100,
-    });
-
     const parsedTasks = this.parseTasks(taskDataArray);
     // now we have all the tasks in a third party list
 
