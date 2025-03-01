@@ -40,6 +40,7 @@ export class DayUtils {
 
 export default class Day {
   constructor() {
+    this.id = Math.random().toString(36).substring(2, 15); // Generate random ID
     this.notifications = []; // Stores the list of notification class objects
     // Stores the list of task class objects ACTUALLY ON CALENDAR
     this.tasks = [
@@ -91,6 +92,8 @@ export default class Day {
       energy: 0,
       mentalHealth: 0,
     };
+
+    this.isCompleted = false;
   }
 
   // Adds a notification to the notification list of the day
@@ -144,19 +147,19 @@ export default class Day {
     let taskToSchedule = task;
     if (!(task instanceof Task)) {
       console.error("Invalid task. Must be an instance of Task.");
-      return;
+      return false;
     }
 
     if (index < 0 || index >= this.tasks.length) {
       console.error(`Invalid task index for "${task.name}":`, index);
-      return;
+      return false;
     }
 
     if (this.tasks[index] !== null) {
       console.error(
         `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
       );
-      return;
+      return false;
     }
 
     if (task.reusable) {
@@ -180,6 +183,7 @@ export default class Day {
     if (!task.reusable) {
       this.unplannedTasks = this.unplannedTasks.filter((t) => t.id !== task.id);
     }
+    return true;
   }
 
   // DONT CALL THIS
@@ -234,6 +238,8 @@ export default class Day {
         this.completedTasks.push(task);
       }
     }
+
+    this.isCompleted = true;
   }
 
   // Updates the tasks that will rollover to the next day

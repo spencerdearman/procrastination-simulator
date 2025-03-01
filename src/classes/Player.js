@@ -5,6 +5,13 @@ const FULL_ATTRIBUTES = {
   mentalHealth: 100,
 };
 
+export const ATTRIBUTE_BITS = {
+  academics: 1, // 0001
+  socialLife: 2, // 0010
+  energy: 4, // 0100
+  mentalHealth: 8, // 1000
+};
+
 export default class Player {
   constructor(name = "Lebron") {
     this.name = name;
@@ -39,10 +46,13 @@ export default class Player {
     return this.getAttributes();
   }
 
-  decrementAttributes() {
+  decrementAttributes(updatedAttributesBitmap = 0) {
     Object.keys(this.attributes).forEach((key) => {
-      const decrement = Math.floor(Math.random() * 3) + 1;
-      this.attributes[key] = Math.max(0, this.attributes[key] - decrement);
+      // Skip decrementing if the attribute was updated this tick
+      if (!(updatedAttributesBitmap & ATTRIBUTE_BITS[key])) {
+        const decrement = Math.floor(Math.random() * 3) + 1;
+        this.attributes[key] = Math.max(0, this.attributes[key] - decrement);
+      }
     });
     return this.getAttributes();
   }

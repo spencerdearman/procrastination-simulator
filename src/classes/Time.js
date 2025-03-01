@@ -1,4 +1,4 @@
-const DEFAULT_SPEED = 60;
+const DEFAULT_SPEED = 5;
 
 export default class Time {
   constructor(time = null) {
@@ -9,15 +9,16 @@ export default class Time {
       this.lastRealWorldCheckTime = time.lastRealWorldCheckTime;
       this.playerDefinedSpeed = time.playerDefinedSpeed;
       this.subscribers = [...time.subscribers];
+      this.gameLoopInterval = time.gameLoopInterval;
     } else {
       this.realSecondsPerGameHour = DEFAULT_SPEED;
       this.startTime = Date.now();
-      this.lastGameRecordTime = new Date(2025, 0, 1, 0, 0, 0);
+      this.lastGameRecordTime = new Date(2025, 0, 1, 23, 0, 0);
       this.lastRealWorldCheckTime = Date.now();
       this.playerDefinedSpeed = 1;
       this.subscribers = [];
+      this.gameLoopInterval = null;
     }
-    this.gameLoopInterval = null;
   }
 
   // Manually set the current game time
@@ -92,9 +93,9 @@ export default class Time {
   }
 
   stopGameLoop() {
-    if (this.gameLoopInterval) {
-      clearInterval(this.gameLoopInterval);
-      this.gameLoopInterval = null;
-    }
+    if (!this.gameLoopInterval) return;
+
+    clearInterval(this.gameLoopInterval);
+    this.gameLoopInterval = null;
   }
 }
