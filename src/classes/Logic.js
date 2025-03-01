@@ -5,7 +5,7 @@ import { DayUtils } from "./Day.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
-  constructor(days, timeInstance) {
+  constructor(days, timeInstance, player) {
     this.days = days;
     this.currentDayIndex = 0;
     this.currentDay = days[0];
@@ -14,6 +14,8 @@ export default class Logic {
     this.timeXSpeed = 1;
     this.notificationsQueue = [];
     this.currentNotification = null;
+    this.player = player;
+    this.attributesUpdatedThisTick = false;
   }
 
   parseTasks(taskDataArray) {
@@ -110,7 +112,7 @@ export default class Logic {
     }
 
     this.checkDayEnd(currentGameTime);
-    return this.player.getAttributes();
+    return this.getAttributes();
   }
 
   getAttributes() {

@@ -141,6 +141,7 @@ export default class Day {
 
   // THIS GETS CALLED BY LOGIC ONLY
   planTask(task, index, date) {
+    let taskToSchedule = task;
     if (!(task instanceof Task)) {
       console.error("Invalid task. Must be an instance of Task.");
       return;
@@ -158,17 +159,27 @@ export default class Day {
       return;
     }
 
+    if (task.reusable) {
+      taskToSchedule = new Task(task.name);
+      taskToSchedule.initializeFromData(task.toJSON());
+      taskToSchedule.id = `${task.id}-${Date.now()}`; // Unique ID
+      taskToSchedule.reusable = false; // The copy isn't reusable
+    }
+
     // Create a new startTime based on the given index and date
     const plannedStartTime = new Date(date);
     plannedStartTime.setHours(index, 0, 0, 0); // Set hour to match index, reset minutes/seconds
 
     // Set task time values
-    task.setStartTime(plannedStartTime);
-    task.setEndTime(); // Auto-calculates end time based on duration
+    taskToSchedule.setStartTime(plannedStartTime);
+    taskToSchedule.setEndTime(); // Auto-calculates end time based on duration
 
     // Move task to planned tasks
-    this.tasks[index] = task;
-    this.unplannedTasks = this.unplannedTasks.filter((t) => t !== task);
+    this.tasks[index] = taskToSchedule;
+
+    if (!task.reusable) {
+      this.unplannedTasks = this.unplannedTasks.filter((t) => t.id !== task.id);
+    }
   }
 
   // DONT CALL THIS

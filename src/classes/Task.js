@@ -316,6 +316,8 @@ export default class Task {
     this.locked = true; // Ensuring all tasks are locked
     this.current = data.current;
     this.duration = data.duration;
+    this.reusable = data.reusable;
+    this.attributeImpacts = data.attributeImpacts;
     return this;
   }
 }

@@ -75,66 +75,27 @@ export const GameProvider = ({ children }) => {
 
   const logicPlanTask = useCallback(
     (taskData, hourIndex) => {
-      console.log("logicPlanTask called with:", taskData, hourIndex);
-      if (!taskData || hourIndex === undefined) {
-        console.error("Invalid task or hour index");
+      if (!gameLogic || !taskData || hourIndex === undefined) {
+        console.error("Invalid game logic, task or hour index");
         return;
       }
 
-      // Find task by ID
-      const originalTask = tasks.find((t) => t.id === taskData.id);
-
-      if (!originalTask) {
+      const task = tasks.find((t) => t.id === taskData.id);
+      if (!task) {
         console.error("Could not find matching task with ID:", taskData.id);
         return;
       }
 
-      let taskToSchedule;
-      if (originalTask.reusable) {
-        // Create a new instance for reusable tasks
-        taskToSchedule = new Task(originalTask.name);
-        taskToSchedule.id = `${originalTask.id}-${Date.now()}`; // Unique ID
-        taskToSchedule.setCategory(originalTask.category);
-        taskToSchedule.description = originalTask.description;
-        taskToSchedule.icon = originalTask.icon;
-        taskToSchedule.duration = originalTask.duration;
-        taskToSchedule.reusable = false; // The copy isn't reusable
+      // Let the game logic handle task planning
+      gameLogic.logicPlanTask(task, hourIndex);
 
-        // Copy attribute impacts
-        for (let key in originalTask.attributeImpacts) {
-          taskToSchedule.setAttributeImpacts(
-            key,
-            originalTask.attributeImpacts[key],
-          );
-        }
-      } else {
-        taskToSchedule = originalTask;
-      }
-
-      const startTime = new Date(currentTime.getCurrentGameTime());
-      startTime.setHours(hourIndex, 0, 0, 0);
-
-      const endTime = new Date(startTime);
-      endTime.setHours(startTime.getHours() + taskToSchedule.duration);
-
-      taskToSchedule.setStartTime(startTime);
-      taskToSchedule.setEndTime(endTime);
-
-      if (originalTask.reusable) {
-        // Add the new instance to the tasks array
-        setTasks((prevTasks) => {
-          const newTasks = [...prevTasks, taskToSchedule];
-          return newTasks;
-        });
-      } else {
-        // Update the original task
-        setTasks((prevTasks) => {
-          const newTasks = [...prevTasks];
-          return newTasks;
-        });
-      }
+      // Update React state to reflect changes
+      setTasks([
+        ...gameLogic.currentDay.tasks.filter(Boolean),
+        ...gameLogic.currentDay.unplannedTasks,
+      ]);
     },
-    [tasks, currentTime],
+    [gameLogic, tasks],
   );
 
   useEffect(() => {

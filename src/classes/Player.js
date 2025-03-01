@@ -8,49 +8,46 @@ const FULL_ATTRIBUTES = {
 export default class Player {
   constructor(name = "Lebron") {
     this.name = name;
+    this.attributes = { ...FULL_ATTRIBUTES };
   }
 
-  static getInitialAttributes() {
-    return { ...FULL_ATTRIBUTES };
+  getAttributes() {
+    return { ...this.attributes };
   }
 
-  static addPoints(attributes, attribute, amount) {
-    if (attributes.hasOwnProperty(attribute)) {
-      const newAttributes = { ...attributes };
-      newAttributes[attribute] = Math.min(
+  addPoints(attribute, amount) {
+    if (this.attributes.hasOwnProperty(attribute)) {
+      this.attributes[attribute] = Math.min(
         100,
-        Math.max(0, attributes[attribute] + amount),
+        Math.max(0, this.attributes[attribute] + amount),
       );
-      return newAttributes;
     } else {
       console.warn(`Attribute "${attribute}" does not exist.`);
-      return attributes;
     }
+    return this.getAttributes();
   }
 
-  static reducePoints(attributes, attribute, amount) {
-    if (attributes.hasOwnProperty(attribute)) {
-      const newAttributes = { ...attributes };
-      newAttributes[attribute] = Math.min(
+  reducePoints(attribute, amount) {
+    if (this.attributes.hasOwnProperty(attribute)) {
+      this.attributes[attribute] = Math.min(
         100,
-        Math.max(0, attributes[attribute] - amount),
+        Math.max(0, this.attributes[attribute] - amount),
       );
-      return newAttributes;
     } else {
       console.warn(`Attribute "${attribute}" does not exist.`);
-      return attributes;
     }
+    return this.getAttributes();
   }
 
-  static decrementAttributes(attributes) {
-    const newAttributes = { ...attributes };
-    Object.keys(newAttributes).forEach((key) => {
-      newAttributes[key] = Math.max(0, attributes[key] - 2);
+  decrementAttributes() {
+    Object.keys(this.attributes).forEach((key) => {
+      this.attributes[key] = Math.max(0, this.attributes[key] - 2);
     });
-    return newAttributes;
+    return this.getAttributes();
   }
 
-  static resetAttributes() {
-    return { ...FULL_ATTRIBUTES };
+  resetAttributes() {
+    this.attributes = { ...FULL_ATTRIBUTES };
+    return this.getAttributes();
   }
 }
