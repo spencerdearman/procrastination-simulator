@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useGame } from "../game-context/GameContext";
 import TaskBlock from "./TaskBlock";
-import "../styles/TaskList.css";
+import '../styles/TaskList.css';
 
 //this is the task list that will be used to display the tasks
 export default function TaskList() {

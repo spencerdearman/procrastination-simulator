@@ -1,5 +1,6 @@
 import { useGame } from "game-context/GameContext";
 import React from "react";
+import '../styles/Stats.css';
 
 const Stats = () => {
   const { attributes } = useGame();

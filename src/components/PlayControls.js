@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/PlayControls.css';
 
 function PlayControls() {
   return (
