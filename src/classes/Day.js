@@ -1,6 +1,42 @@
 import Task from "./Task.js";
-import Time from "./Time.js";
-// import Notification from './Notification';
+
+export class DayUtils {
+  static isSameDay(date1, date2) {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  }
+
+  static isWithinTimeWindow(task, currentGameTime) {
+    if (!task.startTime || !task.endTime) return true;
+
+    if (!(currentGameTime instanceof Date)) {
+      console.error(
+        "currentGameTime is not a valid Date object:",
+        currentGameTime,
+      );
+      return false;
+    }
+
+    return task.startTime <= currentGameTime && currentGameTime <= task.endTime;
+  }
+
+  static getCurrentGameHour(time) {
+    if (!(time instanceof Date) && typeof time !== "string") {
+      throw new Error("Time must be a string or a Date object");
+    }
+
+    const dateTime = new Date(time);
+
+    if (isNaN(dateTime.getTime())) {
+      throw new Error(`Invalid date format: ${time}`);
+    }
+
+    return dateTime.getHours();
+  }
+}
 
 export default class Day {
   constructor() {
@@ -70,17 +106,7 @@ export default class Day {
   }
 
   getCurrentGameHour(time) {
-    if (!(time instanceof Date) && typeof time !== "string") {
-      throw new Error("Time must be a string or a Date object");
-    }
-
-    const dateTime = new Date(time);
-
-    if (isNaN(dateTime.getTime())) {
-      throw new Error(`Invalid date format: ${time}`);
-    }
-
-    return dateTime.getHours();
+    return DayUtils.getCurrentGameHour(time);
   }
 
   addTask(task) {

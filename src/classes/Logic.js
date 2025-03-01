@@ -1,8 +1,8 @@
 import Time from "./Time.js";
-import Day from "./Day.js";
 import Player from "./Player.js";
 import Task from "./Task.js";
 import Notification from "./Notification.js";
+import { DayUtils } from "./Day.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
@@ -52,17 +52,7 @@ export default class Logic {
   }
 
   isWithinTimeWindow(task, currentGameTime) {
-    if (!task.startTime || !task.endTime) return true;
-
-    if (!(currentGameTime instanceof Date)) {
-      console.error(
-        "currentGameTime is not a valid Date object:",
-        currentGameTime,
-      );
-      return false;
-    }
-
-    return task.startTime <= currentGameTime && currentGameTime <= task.endTime;
+    return DayUtils.isWithinTimeWindow(task, currentGameTime);
   }
 
   startGame(taskDataArray) {
@@ -77,8 +67,14 @@ export default class Logic {
     // now we have all the tasks in a third party list
 
     //filter to the corresponding days/unplanned list and tasks
-    // todo: filter for each day
-    parsedTasks.forEach((task) => this.currentDay.addTask(task));
+    parsedTasks.forEach((task) => {
+      if (
+        !task.startTime ||
+        DayUtils.isSameDay(this.time.lastGameRecordTime, task.startTime)
+      ) {
+        this.currentDay.addTask(task);
+      }
+    });
     console.log("Tasks added to Day 1:", this.currentDay.tasks);
 
     this.startGameLoop();
@@ -148,11 +144,13 @@ export default class Logic {
           }
         }
       }
+    }
+  }
 
-      if (currentGameTime >= new Date("2025-01-01T23:59:59")) {
-        this.completeDay();
-      }
-    }, 1000);
+  checkDayEnd(currentGameTime) {
+    if (currentGameTime >= new Date("2025-01-01T23:59:59")) {
+      this.completeDay();
+    }
   }
 
   applyAttributeChanges(changes) {
