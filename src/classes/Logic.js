@@ -24,14 +24,7 @@ export default class Logic {
 
   parseTasks(taskDataArray) {
     return taskDataArray.map((data) => {
-      const task = new Task(data.name);
-      task.setCategory(data.category);
-      task.description = data.description;
-      task.icon = data.icon;
-      task.completed = data.completed;
-      task.locked = true; // Ensuring all tasks are locked
-      task.current = data.current;
-      task.duration = data.duration;
+      const task = new Task(data.name).initializeFromData(data);
 
       // Set start and end time conditionally
       if (data.locked && data.startTime && data.endTime) {
