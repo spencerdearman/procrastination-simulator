@@ -1,12 +1,3 @@
-body {
-  display: flex;
-  flex-direction: column;
-  font-family: 'Pixelify Sans';
-  justify-content: flex-start;
-  align-items: center;
-  background-color: #D05147;
-}
-
 #death-box {
   display: flex;
   flex-direction: column;

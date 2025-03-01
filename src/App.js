@@ -15,7 +15,7 @@ import "./styles/WeekSummary.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Gameplay from "pages/gameplay/Gameplay";
 import { GameProvider } from "./game-context/GameContext";
-import GameOver from "pages/GameOver";
+import GameOver from "pages/gameOver.js";
 
 function App() {
   return (
