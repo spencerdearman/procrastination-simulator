@@ -9,7 +9,8 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
-import Task from "../classes/Task";
+import Logic from "../classes/Logic";
+import Day from "../classes/Day";
 import taskData from "../data/taskData";
 
 const GameContext = createContext();
@@ -23,50 +24,54 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [attributes, setAttributes] = useState(Player.getInitialAttributes());
+  const [gameLogic, setGameLogic] = useState(null);
+  const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(new Time());
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
   const navigate = useNavigate();
 
+  // Initialize game logic
   useEffect(() => {
-    if (tasks.length !== 0) return;
+    const days = [new Day()]; // Start with one day, can add more as needed
+    const player = new Player();
+    const logic = new Logic(days, currentTime, player);
+    setAttributes(logic.getAttributes());
+    setGameLogic(logic);
+  }, []);
+
+  useEffect(() => {
+    if (!gameLogic) return;
 
     const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
-
-    const parsedTasks = shuffledTaskData.map((data) => {
-      const task = new Task(data.name);
-      task.id = data.id;
-      task.setCategory(data.category);
-      task.description = data.description;
-      task.icon = data.icon;
-      task.duration = data.duration;
-      task.reusable = data.reusable || false;
-
-      Object.entries(data.attributeImpacts).forEach(([key, value]) => {
-        task.setAttributeImpacts(key, value);
-      });
-
-      return task;
-    });
-
+    const parsedTasks = gameLogic.parseTasks(shuffledTaskData);
     setTasks(parsedTasks);
-  }, [tasks.length]);
+
+    // Initialize the game with the parsed tasks
+    gameLogic.startGame(shuffledTaskData);
+    return () => {
+      gameLogic.time.stopGameLoop();
+    };
+  }, [gameLogic]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime((prevTime) => {
-        const newTime = prevTime.tick();
-        return newTime;
-      });
-      setAttributes((prevAttributes) =>
-        Player.decrementAttributes(prevAttributes),
-      );
-    }, 1000);
+    if (!gameLogic) return;
+
+    // Subscribe to time updates from the game logic
+    const unsubscribe = gameLogic.time.subscribe((newTime) => {
+      setCurrentTime(newTime);
+
+      // Get updated attributes from game logic
+      setAttributes(gameLogic.getAttributes());
+
+      // Check for notifications
+      gameLogic.checkAndTriggerNotification(newTime.getCurrentGameTime());
+    });
+
     return () => {
-      clearInterval(timer);
+      unsubscribe();
     };
-  }, []);
+  }, [gameLogic]);
 
   const logicPlanTask = useCallback(
     (taskData, hourIndex) => {

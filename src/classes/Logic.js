@@ -84,52 +84,78 @@ export default class Logic {
   }
 
   startGameLoop() {
-    if (this.gameLoopInterval) {
-      return;
+    // Subscribe to time updates
+    this.timeUnsubscribe = this.time.subscribe((newTime) => {
+      this.time = newTime;
+      this.handleGameTick(newTime);
+    });
+
+    // Start the game loop
+    this.time.startGameLoop();
+  }
+
+  handleGameTick() {
+    const currentGameTime = this.time.getCurrentGameTime();
+    const currentHourIndex =
+      this.currentDay.getCurrentGameHour(currentGameTime);
+
+    this.attributesUpdatedThisTick = false;
+    this.handleRunningTask(currentGameTime);
+    this.handleTaskStart(currentGameTime, currentHourIndex);
+    this.checkAndTriggerNotification();
+
+    // Only decrement attributes if no task was completed this tick
+    if (!this.attributesUpdatedThisTick) {
+      return this.player.decrementAttributes();
     }
 
-    this.time.setCurrentGameTime(new Date("2025-01-01T00:00:00"));
+    this.checkDayEnd(currentGameTime);
+    return this.player.getAttributes();
+  }
 
-    this.logicPlanTask(this.currentDay.unplannedTasks[0], 5);
-    console.log("Tasks added to Day 1:", this.currentDay.tasks);
-    this.logicMovePlannedTask(this.currentDay.tasks[5], 7);
-    console.log("Tasks added to Day 1:", this.currentDay.tasks);
+  getAttributes() {
+    return this.player.getAttributes();
+  }
 
-    this.gameLoopInterval = setInterval(() => {
-      const currentGameTime = this.time.getCurrentGameTime();
-      const currentHourIndex =
-        this.currentDay.getCurrentGameHour(currentGameTime);
+  handleRunningTask(currentGameTime) {
+    if (
+      this.currentRunningTask &&
+      currentGameTime >= this.currentRunningTask.endTime
+    ) {
+      console.log(`Completing Task: ${this.currentRunningTask.name}`);
 
-      console.log(
-        `Checking game time: ${currentGameTime.toLocaleTimeString()}, Hour Index: ${currentHourIndex}`,
+      // Apply task's attribute impacts
+      Object.entries(this.currentRunningTask.attributeImpacts).forEach(
+        ([attribute, impact]) => {
+          this.player.addPoints(attribute, impact);
+        },
       );
 
-      if (this.currentRunningTask) {
-        if (currentGameTime >= this.currentRunningTask.endTime) {
-          console.log(`Completing Task: ${this.currentRunningTask.name}`);
-          this.currentRunningTask.completeTask(this.player.attributes);
-          this.currentDay.updateCompleted();
-          this.currentRunningTask = null;
-        }
-      } else {
-        if (
-          currentHourIndex >= 0 &&
-          currentHourIndex < this.currentDay.tasks.length
-        ) {
-          const task = this.currentDay.tasks[currentHourIndex];
+      this.currentRunningTask.completeTask(this.player.attributes);
+      this.currentDay.updateCompleted();
+      this.currentRunningTask = null;
+      this.attributesUpdatedThisTick = true;
+    }
+  }
 
-          if (
-            task &&
-            !task.completed &&
-            this.isWithinTimeWindow(task, currentGameTime)
-          ) {
-            console.log(
-              `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
-            );
-            task.startTask();
-            this.currentRunningTask = task;
-          }
-        }
+  handleTaskStart(currentGameTime, currentHourIndex) {
+    if (
+      !this.currentRunningTask &&
+      currentHourIndex >= 0 &&
+      currentHourIndex < this.currentDay.tasks.length
+    ) {
+      const task = this.currentDay.tasks[currentHourIndex];
+
+      if (
+        task &&
+        !task.completed &&
+        this.isWithinTimeWindow(task, currentGameTime)
+      ) {
+        console.log(
+          `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
+        );
+        task.startTask();
+        this.currentRunningTask = task;
       }
     }
   }
