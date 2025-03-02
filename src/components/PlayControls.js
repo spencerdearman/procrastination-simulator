@@ -1,6 +1,6 @@
 import { GameState, useGame } from "game-context/GameContext";
 import React from "react";
-import '../styles/PlayControls.css';
+import "../styles/PlayControls.css";
 
 function PlayControls() {
   const { setMode } = useGame();
