@@ -2,12 +2,13 @@ import React from "react";
 import "../styles/Header.css";
 import TimeDisplay from "./TimeDisplay";
 import PlayControls from "./PlayControls";
+import { GameState } from "game-context/GameContext";
 
-function Header() {
+function Header({ mode }) {
   return (
     <div id="header">
       <TimeDisplay />
-      <PlayControls />
+      {mode === GameState.PAUSED && <PlayControls />}
     </div>
   );
 }

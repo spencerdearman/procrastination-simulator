@@ -796,8 +796,8 @@ export const taskData = [
     description:
       "Como estas! Necesita attender su clase para mantener buenas notas.",
     icon: "👩‍🏫",
-    startTime: "2025-01-01T13:00:00",
-    endTime: "2025-01-01T14:00:00",
+    startTime: "2025-01-02T13:00:00",
+    endTime: "2025-01-02T14:00:00",
     completed: false,
     locked: true, // NOTE MAKE ALL CLASSES LOCKED = TRUE
     current: false,
@@ -815,8 +815,8 @@ export const taskData = [
     category: "academic",
     description: "Remember that last quiz... Yea get to class.",
     icon: "👩‍🏫",
-    startTime: "2025-01-01T13:00:00",
-    endTime: "2025-01-01T14:00:00",
+    startTime: "2025-01-03T13:00:00",
+    endTime: "2025-01-03T14:00:00",
     completed: false,
     locked: true, // NOTE MAKE ALL CLASSES LOCKED = TRUE
     current: false,
@@ -834,8 +834,8 @@ export const taskData = [
     category: "academic",
     description: "Its a graduate class. No explanation necessary.",
     icon: "👩‍🏫",
-    startTime: "2025-01-01T13:00:00",
-    endTime: "2025-01-01T14:00:00",
+    startTime: "2025-01-04T13:00:00",
+    endTime: "2025-01-04T14:00:00",
     completed: false,
     locked: true, // NOTE MAKE ALL CLASSES LOCKED = TRUE
     current: false,
@@ -854,8 +854,8 @@ export const taskData = [
     description:
       "A class about old paintings from a place you don't care about.",
     icon: "👩‍🏫",
-    startTime: "2025-01-01T13:00:00",
-    endTime: "2025-01-01T14:00:00",
+    startTime: "2025-01-05T13:00:00",
+    endTime: "2025-01-05T14:00:00",
     completed: false,
     locked: true, // NOTE MAKE ALL CLASSES LOCKED = TRUE
     current: false,

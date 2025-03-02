@@ -5,7 +5,7 @@ import '../styles/TaskList.css';
 
 //this is the task list that will be used to display the tasks
 export default function TaskList() {
-  const { tasks } = useGame();
+  const { tasks, mode } = useGame();
   const [unplannedTasks, setUnplannedTasks] = useState(tasks);
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export default function TaskList() {
             key={`${task.name}-${index}`}
             task={task}
             draggable={true}
+            mode={mode}
           />
         ))}
       </div>

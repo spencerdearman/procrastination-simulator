@@ -1,5 +1,6 @@
 import React from "react";
 import { useGame } from "../game-context/GameContext";
+import "styles/Calendar.css";
 import TaskBlock from "./TaskBlock";
 import '../styles/Calendar.css';
 import '../styles/Notification.css';
