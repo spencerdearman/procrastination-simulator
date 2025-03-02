@@ -9,8 +9,15 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
-import Task from "../classes/Task";
+import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
+import ToastNofication from "components/ToastNotification";
+
+export const GameState = Object.freeze({
+  PAUSED: "paused",
+  PLAY: "play",
+  COMPLETE: "COMPLETE",
+});
 
 const GameContext = createContext();
 
@@ -23,113 +30,100 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [attributes, setAttributes] = useState(Player.getInitialAttributes());
-  const [currentTime, setCurrentTime] = useState(new Time());
+  const [mode, setMode] = useState(GameState.PAUSED);
+  const [gameLogic, setGameLogic] = useState(null);
+  const [attributes, setAttributes] = useState({});
+  const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
+  const [day, setDay] = useState(null);
   const navigate = useNavigate();
 
+  // Initialize game logic
   useEffect(() => {
-    if (tasks.length !== 0) return;
+    const time = new Time();
+    const player = new Player();
+    const logic = new Logic(3, time, player);
+    setCurrentTime(time);
+    setAttributes(logic.getAttributes());
+    setGameLogic(logic);
+  }, []);
+
+  useEffect(() => {
+    setMode(GameState.PAUSED);
+  }, [day]);
+
+  useEffect(() => {
+    if (!gameLogic) return;
 
     const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
-
-    const parsedTasks = shuffledTaskData.map((data) => {
-      const task = new Task(data.name);
-      task.id = data.id;
-      task.setCategory(data.category);
-      task.description = data.description;
-      task.icon = data.icon;
-      task.duration = data.duration;
-      task.reusable = data.reusable || false;
-
-      Object.entries(data.attributeImpacts).forEach(([key, value]) => {
-        task.setAttributeImpacts(key, value);
-      });
-
-      return task;
-    });
-
+    const parsedTasks = gameLogic.startGame(shuffledTaskData);
     setTasks(parsedTasks);
-  }, [tasks.length]);
+
+    return () => {
+      gameLogic.endGame();
+    };
+  }, [gameLogic]);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime((prevTime) => {
-        const newTime = prevTime.tick();
-        return newTime;
-      });
-      setAttributes((prevAttributes) =>
-        Player.decrementAttributes(prevAttributes),
-      );
-    }, 1000);
+    if (!gameLogic) return;
+    if (mode === GameState.PAUSED) {
+      // Do nothing since state is driven elsewhere (pausing inside of Logic.js and playing within <PlayControls />)
+    } else if (mode === GameState.PLAY) {
+      // Initialize the game with the parsed tasks
+      gameLogic.beginDay();
+    } else {
+      // TODO: may have to navigate to another page here
+    }
+  }, [mode, gameLogic]);
+
+  useEffect(() => {
+    if (!gameLogic) return;
+    setDay(gameLogic.getCurrentDay());
+
+    // Subscribe to time updates from the game logic
+    const unsubscribe = gameLogic.time.subscribe((newTime) => {
+      setCurrentTime(newTime);
+
+      // Get updated attributes from game logic
+      setAttributes(gameLogic.getAttributes());
+
+      const currentDay = gameLogic.getCurrentDay();
+      if (currentDay === null) {
+        navigate("/game/end-of-week");
+        return;
+      }
+      setDay((prev) => (prev?.id === currentDay?.id ? prev : currentDay));
+    });
+
     return () => {
-      clearInterval(timer);
+      unsubscribe();
     };
-  }, []);
+  }, [gameLogic, navigate]);
 
   const logicPlanTask = useCallback(
     (taskData, hourIndex) => {
-      console.log("logicPlanTask called with:", taskData, hourIndex);
-      if (!taskData || hourIndex === undefined) {
-        console.error("Invalid task or hour index");
+      if (!gameLogic || !taskData || hourIndex === undefined) {
+        console.error("Invalid game logic, task or hour index");
         return;
       }
 
-      // Find task by ID
-      const originalTask = tasks.find((t) => t.id === taskData.id);
-
-      if (!originalTask) {
+      const task = tasks.find((t) => t.id === taskData.id);
+      if (!task) {
         console.error("Could not find matching task with ID:", taskData.id);
         return;
       }
 
-      let taskToSchedule;
-      if (originalTask.reusable) {
-        // Create a new instance for reusable tasks
-        taskToSchedule = new Task(originalTask.name);
-        taskToSchedule.id = `${originalTask.id}-${Date.now()}`; // Unique ID
-        taskToSchedule.setCategory(originalTask.category);
-        taskToSchedule.description = originalTask.description;
-        taskToSchedule.icon = originalTask.icon;
-        taskToSchedule.duration = originalTask.duration;
-        taskToSchedule.reusable = false; // The copy isn't reusable
+      // Let the game logic handle task planning
+      gameLogic.logicPlanTask(task, hourIndex);
 
-        // Copy attribute impacts
-        for (let key in originalTask.attributeImpacts) {
-          taskToSchedule.setAttributeImpacts(
-            key,
-            originalTask.attributeImpacts[key],
-          );
-        }
-      } else {
-        taskToSchedule = originalTask;
-      }
-
-      const startTime = new Date(currentTime.getCurrentGameTime());
-      startTime.setHours(hourIndex, 0, 0, 0);
-
-      const endTime = new Date(startTime);
-      endTime.setHours(startTime.getHours() + taskToSchedule.duration);
-
-      taskToSchedule.setStartTime(startTime);
-      taskToSchedule.setEndTime(endTime);
-
-      if (originalTask.reusable) {
-        // Add the new instance to the tasks array
-        setTasks((prevTasks) => {
-          const newTasks = [...prevTasks, taskToSchedule];
-          return newTasks;
-        });
-      } else {
-        // Update the original task
-        setTasks((prevTasks) => {
-          const newTasks = [...prevTasks];
-          return newTasks;
-        });
-      }
+      // Update React state to reflect changes
+      setTasks([
+        ...gameLogic.currentDay.tasks.filter(Boolean),
+        ...gameLogic.currentDay.unplannedTasks,
+      ]);
     },
-    [tasks, currentTime],
+    [gameLogic, tasks],
   );
 
   useEffect(() => {
@@ -152,6 +146,8 @@ export const GameProvider = ({ children }) => {
       notifications,
       logicPlanTask,
       getPlannedTasks,
+      mode,
+      setMode,
     }),
     [
       attributes,
@@ -160,10 +156,20 @@ export const GameProvider = ({ children }) => {
       notifications,
       logicPlanTask,
       getPlannedTasks,
+      setMode,
+      mode,
     ],
   );
 
-  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
+  // Don't render child components until this component is set up
+  if (currentTime === null) return <></>;
+
+  return (
+    <>
+      {mode === GameState.PAUSED && <ToastNofication text="Plan your day!" />}
+      <GameContext.Provider value={value}>{children}</GameContext.Provider>
+    </>
+  );
 };
 
 export default GameProvider;

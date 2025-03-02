@@ -306,4 +306,18 @@ export default class Task {
   debug() {
     console.log(this.toJSON());
   }
+
+  initializeFromData(data) {
+    this.id = data.id;
+    this.setCategory(data.category);
+    this.description = data.description;
+    this.icon = data.icon;
+    this.completed = data.completed;
+    this.locked = true; // Ensuring all tasks are locked
+    this.current = data.current;
+    this.duration = data.duration;
+    this.reusable = data.reusable;
+    this.attributeImpacts = data.attributeImpacts;
+    return this;
+  }
 }

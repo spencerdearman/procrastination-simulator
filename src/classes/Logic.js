@@ -1,37 +1,39 @@
 import Time from "./Time.js";
-import Day from "./Day.js";
-import Player from "./Player.js";
 import Task from "./Task.js";
 import Notification from "./Notification.js";
+import Day, { DayUtils } from "./Day.js";
+import { ATTRIBUTE_BITS } from "./Player.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
-  constructor(player, days, timeInstance) {
-    this.player = player;
-    this.days = days;
+  constructor(numDays, timeInstance, player) {
+    this.days = [];
+    for (let i = 0; i < numDays; i++) {
+      this.days.push(new Day());
+    }
+
     this.currentDayIndex = 0;
-    this.currentDay = days[0];
+    this.currentDay = this.days[0];
     this.time = timeInstance || new Time();
     this.tasksCompleted = [];
     this.timeXSpeed = 1;
     this.notificationsQueue = [];
     this.currentNotification = null;
+    this.player = player;
+    this.availableTasks = [];
   }
 
-  seedPlayer(playerAttributes) {
-    Object.assign(this.player.attributes, playerAttributes);
+  getAttributes() {
+    return this.player.getAttributes();
+  }
+
+  getCurrentDay() {
+    return this.currentDay;
   }
 
   parseTasks(taskDataArray) {
     return taskDataArray.map((data) => {
-      const task = new Task(data.name);
-      task.setCategory(data.category);
-      task.description = data.description;
-      task.icon = data.icon;
-      task.completed = data.completed;
-      task.locked = true; // Ensuring all tasks are locked
-      task.current = data.current;
-      task.duration = data.duration;
+      const task = new Task(data.name).initializeFromData(data);
 
       // Set start and end time conditionally
       if (data.locked && data.startTime && data.endTime) {
@@ -59,36 +61,41 @@ export default class Logic {
   }
 
   isWithinTimeWindow(task, currentGameTime) {
-    if (!task.startTime || !task.endTime) return true;
+    return DayUtils.isWithinTimeWindow(task, currentGameTime);
+  }
 
-    if (!(currentGameTime instanceof Date)) {
-      console.error(
-        "currentGameTime is not a valid Date object:",
-        currentGameTime,
-      );
-      return false;
-    }
-
-    return task.startTime <= currentGameTime && currentGameTime <= task.endTime;
+  initializeCurrentDay() {
+    //filter to the corresponding days/unplanned list and tasks
+    this.availableTasks.forEach((task) => {
+      if (
+        !task.startTime ||
+        DayUtils.isSameDay(this.time.lastGameRecordTime, task.startTime)
+      ) {
+        this.currentDay.addTask(task);
+      }
+    });
   }
 
   startGame(taskDataArray) {
-    this.seedPlayer({
-      academics: 100,
-      socialLife: 100,
-      energy: 100,
-      mentalHealth: 100,
-    });
-
     const parsedTasks = this.parseTasks(taskDataArray);
+    this.availableTasks = parsedTasks;
     // now we have all the tasks in a third party list
 
-    //filter to the corresponding days/unplanned list and tasks
-    // todo: filter for each day
-    parsedTasks.forEach((task) => this.currentDay.addTask(task));
+    this.initializeCurrentDay();
     console.log("Tasks added to Day 1:", this.currentDay.tasks);
 
-    this.startGameLoop();
+    // Subscribe to time updates
+    this.timeUnsubscribe = this.time.subscribe((newTime) => {
+      this.handleGameTick(this.time, newTime);
+      this.time = newTime;
+    });
+
+    return parsedTasks;
+  }
+
+  endGame() {
+    this.time.stopGameLoop();
+    this.currentDay = null;
   }
 
   // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED
@@ -96,7 +103,9 @@ export default class Logic {
     const currentGameTime = this.time.getCurrentGameTime();
     let newGameTime = new Date(currentGameTime);
 
-    this.currentDay.planTask(task, index, newGameTime);
+    if (this.currentDay.planTask(task, index, newGameTime) && !task.reusable) {
+      this.availableTasks = this.availableTasks.filter((t) => t.id !== task);
+    }
   }
 
   // CALL THIS FOR MOVING PLANNED TASKS
@@ -107,59 +116,82 @@ export default class Logic {
     this.currentDay.movePlannedTask(task, index, newGameTime);
   }
 
-  startGameLoop() {
-    if (this.gameLoopInterval) {
-      return;
-    }
+  handleGameTick(oldTime, newTime) {
+    const currentGameTime = newTime.getCurrentGameTime();
+    const currentHourIndex =
+      this.currentDay.getCurrentGameHour(currentGameTime);
 
-    this.time.setCurrentGameTime(new Date("2025-01-01T00:00:00"));
+    const updatedAttributesBitmap = this.handleRunningTask(currentGameTime);
+    this.handleTaskStart(currentGameTime, currentHourIndex);
+    this.checkAndTriggerNotification();
 
-    this.logicPlanTask(this.currentDay.unplannedTasks[0], 5);
-    console.log("Tasks added to Day 1:", this.currentDay.tasks);
-    this.logicMovePlannedTask(this.currentDay.tasks[5], 7);
-    console.log("Tasks added to Day 1:", this.currentDay.tasks);
+    // Decrement attributes, passing the bitmap of updated attributes
+    const attributes = this.player.decrementAttributes(updatedAttributesBitmap);
 
-    this.gameLoopInterval = setInterval(() => {
-      const currentGameTime = this.time.getCurrentGameTime();
-      const currentHourIndex =
-        this.currentDay.getCurrentGameHour(currentGameTime);
+    this.checkDayEnd(oldTime, newTime);
+    return attributes;
+  }
 
-      console.log(
-        `Checking game time: ${currentGameTime.toLocaleTimeString()}, Hour Index: ${currentHourIndex}`,
+  handleRunningTask(currentGameTime) {
+    let updatedAttributesBitmap = 0;
+    if (
+      this.currentRunningTask &&
+      currentGameTime >= this.currentRunningTask.endTime
+    ) {
+      console.log(`Completing Task: ${this.currentRunningTask.name}`);
+
+      // Apply task's attribute impacts and update bitmap
+      Object.entries(this.currentRunningTask.attributeImpacts).forEach(
+        ([attribute, impact]) => {
+          if (impact !== 0) {
+            this.player.addPoints(attribute, impact);
+            // Update bitmap for non-zero impacts
+            updatedAttributesBitmap |= ATTRIBUTE_BITS[attribute];
+          }
+        },
       );
 
-      if (this.currentRunningTask) {
-        if (currentGameTime >= this.currentRunningTask.endTime) {
-          console.log(`Completing Task: ${this.currentRunningTask.name}`);
-          this.currentRunningTask.completeTask(this.player.attributes);
-          this.currentDay.updateCompleted();
-          this.currentRunningTask = null;
-        }
-      } else {
-        if (
-          currentHourIndex >= 0 &&
-          currentHourIndex < this.currentDay.tasks.length
-        ) {
-          const task = this.currentDay.tasks[currentHourIndex];
+      this.currentRunningTask.completeTask(this.player.attributes);
+      this.currentDay.updateCompleted();
+      this.currentRunningTask = null;
+      return updatedAttributesBitmap;
+    }
+  }
 
-          if (
-            task &&
-            !task.completed &&
-            this.isWithinTimeWindow(task, currentGameTime)
-          ) {
-            console.log(
-              `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
-            );
-            task.startTask();
-            this.currentRunningTask = task;
-          }
-        }
-      }
+  handleTaskStart(currentGameTime, currentHourIndex) {
+    if (
+      !this.currentRunningTask &&
+      currentHourIndex >= 0 &&
+      currentHourIndex < this.currentDay.tasks.length
+    ) {
+      const task = this.currentDay.tasks[currentHourIndex];
 
-      if (currentGameTime >= new Date("2025-01-01T23:59:59")) {
-        this.completeDay();
+      if (
+        task &&
+        !task.completed &&
+        this.isWithinTimeWindow(task, currentGameTime)
+      ) {
+        console.log(
+          `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
+        );
+        task.startTask();
+        this.currentRunningTask = task;
       }
-    }, 1000);
+    }
+  }
+
+  checkDayEnd(oldTime, newTime) {
+    if (
+      !DayUtils.isSameDay(
+        oldTime.getCurrentGameTime(),
+        newTime.getCurrentGameTime(),
+      )
+    ) {
+      // End the current day
+      newTime.stopGameLoop();
+
+      this.completeDay();
+    }
   }
 
   applyAttributeChanges(changes) {
@@ -168,22 +200,22 @@ export default class Logic {
     }
   }
 
+  beginDay() {
+    this.time.startGameLoop();
+  }
+
   // FOR THE NEXT DAY: call startGameLoop() again
   completeDay() {
-    // End the current day
-    clearInterval(this.gameLoopInterval);
-    this.gameLoopInterval = null;
-
     // Move to the next day
     this.currentDayIndex++;
     if (this.currentDayIndex >= this.days.length) {
-      console.log("Game Over!");
+      this.endGame();
       return;
     }
 
     this.currentDay = this.days[this.currentDayIndex];
     this.currentDay.updateCompleted();
-    this.time.stopTimer();
+    this.initializeCurrentDay();
   }
 
   completeTask(taskName) {
