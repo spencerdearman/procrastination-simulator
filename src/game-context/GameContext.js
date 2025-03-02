@@ -14,9 +14,10 @@ import taskData from "../data/taskData";
 import ToastNofication from "components/ToastNotification";
 
 export const GameState = Object.freeze({
+  TUTORIAL: "tutorial",
   PAUSED: "paused",
   PLAY: "play",
-  COMPLETE: "COMPLETE",
+  COMPLETE: "complete",
 });
 
 const GameContext = createContext();
@@ -30,23 +31,28 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [mode, setMode] = useState(GameState.PAUSED);
+  const [mode, setMode] = useState(GameState.TUTORIAL);
   const [gameLogic, setGameLogic] = useState(null);
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
   const [day, setDay] = useState(null);
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // Initialize game logic
-  useEffect(() => {
+  const initializeGameState = () => {
     const time = new Time();
     const player = new Player();
     const logic = new Logic(3, time, player);
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
+  };
+
+  // Initialize game logic
+  useEffect(() => {
+    initializeGameState();
   }, []);
 
   useEffect(() => {
@@ -163,13 +169,16 @@ export const GameProvider = ({ children }) => {
       mode,
     ],
   );
+  const shouldShowToast = () => {
+    return location.pathname === "/game/calendar" && mode === GameState.PAUSED;
+  };
 
   // Don't render child components until this component is set up
   if (currentTime === null) return <></>;
 
   return (
     <>
-      {mode === GameState.PAUSED && <ToastNofication text="Plan your day!" />}
+      {shouldShowToast() && <ToastNofication text="Plan your day!" />}
       <GameContext.Provider value={value}>{children}</GameContext.Provider>
     </>
   );
