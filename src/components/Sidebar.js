@@ -1,7 +1,7 @@
 import React from "react";
 import Stats from "./Stats";
 import TaskList from "./TaskList";
-import '../styles/Sidebar.css';
+import "../styles/Sidebar.css";
 
 function Sidebar() {
   return (

@@ -1,7 +1,7 @@
 import Groq from "groq-sdk";
 import { useEffect, useState } from "react";
 import Stats from "./Stats";
-import '../styles/WeekSummary.css';
+import "../styles/WeekSummary.css";
 
 function WeekSummary() {
   const [summary, setSummary] = useState("");

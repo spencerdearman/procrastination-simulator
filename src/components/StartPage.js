@@ -1,5 +1,5 @@
-import {useEffect,useRef,useState} from "react";
-import {useNavigate} from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Typed from "typed.js";
 import "../styles/StartPage.css";
 
@@ -26,9 +26,10 @@ function StartPage() {
     audioRef.current.volume = 0.5;
 
     // Try to play audio (now allowed after user interaction)
-    audioRef.current.play()
+    audioRef.current
+      .play()
       .then(() => console.log("Audio playing successfully"))
-      .catch(e => console.log("Audio play failed:", e));
+      .catch((e) => console.log("Audio play failed:", e));
 
     // Initialize Typed.js
     typedInstanceRef.current = new Typed(blurbRef.current, {
@@ -45,8 +46,8 @@ function StartPage() {
       onComplete: () => {
         setShowButton(true);
         if (audioRef.current) {
-            audioRef.current.pause();
-            audioRef.current = null; // Stop sound effect
+          audioRef.current.pause();
+          audioRef.current = null; // Stop sound effect
         }
       },
       onStop: () => {
@@ -56,7 +57,10 @@ function StartPage() {
         if (audioRef.current) audioRef.current.pause();
       },
       onTypingResumed: () => {
-        if (audioRef.current) audioRef.current.play().catch(e => console.log("Audio play failed:", e));
+        if (audioRef.current)
+          audioRef.current
+            .play()
+            .catch((e) => console.log("Audio play failed:", e));
       },
     });
   };
@@ -77,7 +81,7 @@ function StartPage() {
     <div
       id="start-page"
       onClick={startTyping}
-      style={{ cursor: hasInteracted ? 'default' : 'pointer' }}
+      style={{ cursor: hasInteracted ? "default" : "pointer" }}
     >
       {/* <div id="header">
         <h3 id="banner-text">Procrastination Simulator</h3>
@@ -87,7 +91,9 @@ function StartPage() {
           <h3 id="start-page-text-header">
             {" "}
             Welcome to Procrastination Simulator
-            {!hasInteracted && <div id="click-title">Click anywhere to start</div>}
+            {!hasInteracted && (
+              <div id="click-title">Click anywhere to start</div>
+            )}
           </h3>
 
           <p className="blurb-text" id="text-position" ref={blurbRef}></p>

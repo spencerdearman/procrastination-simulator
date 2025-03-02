@@ -9,28 +9,28 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 600px;
-  background-color: #FDF7DD;
-  border: 2px solid #5A2619;
+  background-color: #fdf7dd;
+  border: 2px solid #5a2619;
   border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 #death-title {
   margin-top: 30px;
   font-size: 70px;
-  color: #D05147;
+  color: #d05147;
 }
 
 #death-message {
-  margin-top:30px;
+  margin-top: 30px;
   font-size: 24px;
-  color: #5A2619;
-  margin-bottom:30px;
+  color: #5a2619;
+  margin-bottom: 30px;
 }
 
 .restart-button {
-  background-color: #5A2619;
-  color: #FBF2BC;
+  background-color: #5a2619;
+  color: #fbf2bc;
   border: none;
   border-radius: 10px;
   padding: 15px 30px;
@@ -42,7 +42,6 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 40px;
-
 }
 
 .restart-button:hover {
