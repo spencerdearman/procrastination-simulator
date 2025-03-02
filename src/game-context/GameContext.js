@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Logic from "../classes/Logic";
@@ -127,10 +127,13 @@ export const GameProvider = ({ children }) => {
   );
 
   useEffect(() => {
-    const isGameOver = Object.values(attributes).some((stat) => stat <= 0);
-    if (isGameOver) {
+    const deficiency = Object.keys(attributes).find(
+      (stat) => attributes[stat] <= 0,
+    );
+    if (deficiency) {
       // TODO: Might have to update internal `Player` state before navigating to fail screen
-      navigate("/game/game-over");
+      initializeGameState();
+      navigate("/game/game-over", { state: { deathCause: deficiency } });
     }
   }, [attributes, navigate]);
 

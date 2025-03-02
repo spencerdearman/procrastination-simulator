@@ -1,9 +1,11 @@
-import {useEffect,useRef} from "react";
+import { useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import DeathScreen from "../components/DeathScreen";
-import "../styles/DeathScreen.css";
+import "styles/DeathScreen.css";
 
 export default function GameOver() {
   const audioRef = useRef(null);
+  const { state } = useLocation();
 
   useEffect(() => {
     audioRef.current = new Audio("/sound/gameover.mp3");
@@ -21,5 +23,5 @@ export default function GameOver() {
     };
   }, []);
 
-  return <DeathScreen deathCause="procrastination" />;
+  return <DeathScreen deathCause={state.deathCause} />;
 }
