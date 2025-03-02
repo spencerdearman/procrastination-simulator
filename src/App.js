@@ -3,17 +3,10 @@ import WeekSummary from "./components/WeekSummary";
 import StartPage from "./components/StartPage";
 import Tutorial from "./components/Tutorial";
 import "./styles/global.css";
-import "./styles/Header.css";
-import "./styles/PlayControls.css";
-import "./styles/Notification.css";
-import "./styles/Sidebar.css";
-import "./styles/Stats.css";
-import "./styles/Tutorial.css";
-import "./styles/WeekSummary.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Gameplay from "pages/gameplay/Gameplay";
 import { GameProvider } from "./game-context/GameContext";
-import GameOver from "pages/GameOver";
+import GameOver from "pages/gameOver.js";
 
 function App() {
   return (

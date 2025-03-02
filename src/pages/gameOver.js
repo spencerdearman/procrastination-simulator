@@ -1,7 +1,8 @@
+import DeathScreen from "../components/DeathScreen";
+import "../styles/DeathScreen.css";
+
 export default function GameOver() {
-  return (
-    <>
-      <h1 className="text-3xl text-center">You lost!</h1>;
-    </>
-  );
+  
+return <DeathScreen deathCause="procrastination" />;
+
 }
