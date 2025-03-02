@@ -13,7 +13,7 @@ export default class Time {
     } else {
       this.realSecondsPerGameHour = DEFAULT_SPEED;
       this.startTime = Date.now();
-      this.lastGameRecordTime = new Date(2025, 0, 1, 23, 0, 0);
+      this.lastGameRecordTime = new Date(2025, 0, 1, 0, 0, 0);
       this.lastRealWorldCheckTime = Date.now();
       this.playerDefinedSpeed = 1;
       this.subscribers = [];
