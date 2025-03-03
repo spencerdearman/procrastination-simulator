@@ -10,6 +10,7 @@ function NotificationsList({ notifications, onAccept, onReject }) {
       {notifications.map((notification, index) => (
         <Notification
           key={index}
+          notification={notification}
           title={notification.header}
           message={notification.getDescription()}
           isMandatory={notification.getForced()}
@@ -24,6 +25,7 @@ function NotificationsList({ notifications, onAccept, onReject }) {
 }
 
 function Notification({
+  notification,
   isMandatory = false,
   title,
   message,
@@ -46,11 +48,17 @@ function Notification({
       </div>
       <div className="notification-options">
         {!isMandatory && (
-          <button className="reject-button" onClick={onReject}>
+          <button
+            className="reject-button"
+            onClick={() => onReject(notification)}
+          >
             {rejectButton}
           </button>
         )}
-        <button className="accept-button" onClick={onAccept}>
+        <button
+          className="accept-button"
+          onClick={() => onAccept(notification)}
+        >
           {acceptButton}
         </button>
       </div>

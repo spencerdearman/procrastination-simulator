@@ -312,6 +312,19 @@ export default class Logic {
     }
   }
 
+  resolveNotification() {
+    console.log("🛑 Resolving notification...");
+    this.notificationsQueue.shift(); // Remove the notification from the queue
+    this.currentNotification =
+      this.notificationsQueue.length > 0 ? this.notificationsQueue[0] : null; //Assign next notification or null
+
+    // Resume previous activity if any
+    if (this.currentNotification === null && this.currentRunningTask) {
+      console.log("▶ Resuming previous task:", this.currentRunningTask.header);
+      this.currentRunningTask.resumePreviousActivity();
+    }
+  }
+
   // Accept the notification decision
   acceptNotification() {
     if (!this.currentNotification) return;
