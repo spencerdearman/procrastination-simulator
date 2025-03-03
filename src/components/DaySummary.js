@@ -25,11 +25,11 @@ function DaySummary({ currentDate = "Tuesday" }) {
           messages: [
             {
               role: "user",
-              content: `Write 50-word summary of ${name}'s day, based on their status and schedule. Their status is made up of 4 values (each out of 100), Academics, Social Life, Energy, and Mental Health. Here are the status values: Academics: ${stats.academics}, Social Life: ${stats.social}, Energy: ${stats.energy}, Mental Health: ${stats.mentalHealth}. Adjust the tone and description of their day based on how high each of these values are, assuming 100=best and 0=worst. Write it in first-person and do not specifically reference the stats. Their schedule was: ${log}.`,
+              content: `Write 50-word summary of ${name}'s day, based on their status and schedule. Their status is made up of 4 values (each out of 100), Academics, Social Life, Energy, and Mental Health.  Write it in first-person and do not specifically reference the stats. Their schedule was: ${JSON.stringify(currentDay.logs)}.`,
             },
           ],
           model: "llama-3.1-8b-instant", // Smallest Model Available
-          temperature: 1.5,
+          temperature: 0.5,
         });
 
         setSummary(

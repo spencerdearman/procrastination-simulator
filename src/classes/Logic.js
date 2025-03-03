@@ -153,7 +153,12 @@ export default class Logic {
         },
       );
 
-      this.currentRunningTask.completeTask(this.player.attributes);
+      if (this.currentRunningTask.completeTask(this.player.attributes)) {
+        this.currentDay.logTaskCompleted(
+          this.currentRunningTask,
+          playerAttributesBeforeUpdate,
+        );
+      }
       this.currentDay.updateCompleted();
       this.currentRunningTask = null;
       return updatedAttributesBitmap;

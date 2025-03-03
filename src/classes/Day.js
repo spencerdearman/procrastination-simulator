@@ -160,6 +160,40 @@ export default class Day {
     this.tasks[index] = task;
   }
 
+  logTaskPlanning(task) {
+    if (!this.logs || !Array.isArray(this.logs)) {
+      console.error("logs not available");
+      return;
+    }
+
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      taskName: task.name,
+      taskDescription: task.description,
+      taskStartTime: task.startTime.toISOString(),
+    };
+
+    this.logs.push(logEntry);
+  }
+
+  // Intended to be called after the task is completed
+  logTaskCompleted(task, playerAttributes) {
+    if (!this.logs || !Array.isArray(this.logs)) {
+      console.error("logs not available");
+      return;
+    }
+
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      taskName: task.name,
+      taskDescription: task.description,
+      taskAttributes: task.attributeImpacts,
+      playerStatsBeforeUpdate: playerAttributes,
+    };
+
+    this.logs.push(logEntry);
+  }
+
   // THIS GETS CALLED BY LOGIC ONLY
   planTask(task, index, date) {
     let taskToSchedule = task;
@@ -201,6 +235,10 @@ export default class Day {
     if (!task.reusable) {
       this.unplannedTasks = this.unplannedTasks.filter((t) => t.id !== task.id);
     }
+
+    // Log the successful task planning
+    this.logTaskPlanning(taskToSchedule);
+
     return true;
   }
 
@@ -249,7 +287,7 @@ export default class Day {
   }
 
   // Updates the list of completed tasks (ideally at the end of the day)
-  updateCompleted() {
+  updateCompleted(endAttributes) {
     this.completedTasks = [];
     for (let task of this.tasks) {
       if (task && task.completed) {
@@ -257,7 +295,11 @@ export default class Day {
       }
     }
 
-    this.isCompleted = true;
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      endingAttributes: endAttributes,
+    };
+    this.logs.push(logEntry);
   }
 
   // Updates the tasks that will rollover to the next day
