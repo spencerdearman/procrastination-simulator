@@ -308,11 +308,24 @@ export default class Logic {
   // Accept the notification decision
   acceptNotification() {
     if (!this.currentNotification) return;
+
     console.log(`✅ Accepted: ${this.currentNotification.getHeader()}`);
+
     this.currentNotification.handleDecision(
       this.currentNotification.getOptions().option1,
       this.player.attributes,
     );
+
+    // If the notification has a follow-up task, add it to the current day's schedule
+    if (this.currentNotification.getFollowUp()) {
+      const newTask = new Task(this.currentNotification.getFollowUp());
+      newTask.setCategory("NOTIFICATION");
+      newTask.setStartTime(this.time.getCurrentGameTime());
+      newTask.setDuration(1); // Default to 1 hour for follow-ups
+      this.currentDay.addTask(newTask);
+      console.log(`📌 New Task Added: ${newTask.name}`);
+    }
+
     this.resolveNotification();
   }
 
