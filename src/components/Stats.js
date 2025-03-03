@@ -64,7 +64,7 @@ function StatBar({ icon, title, colorClass, score }) {
           value={score}
           max="100"
         ></progress>
-        <label className={`ml-2 ${isLow ? "flash-warning" : ""}`}>
+        <label className={`min-w-[30px] ml-2 ${isLow ? "flash-warning" : ""}`}>
           {score}
         </label>
       </div>
