@@ -6,7 +6,7 @@ function NotificationsList({ notifications, onAccept, onReject }) {
       {notifications.map((notification, index) => (
         <Notification
           key={index}
-          title={notification.name} // Header is passed as name in constructor
+          title={notification.header}
           message={notification.getDescription()}
           isMandatory={notification.getForced()}
           acceptButton="Accept"

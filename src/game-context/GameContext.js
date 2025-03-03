@@ -58,14 +58,14 @@ export const GameProvider = ({ children }) => {
   const handleAcceptNotification = useCallback(() => {
     if (!gameLogic) return;
     gameLogic.acceptNotification();
-    setNotifications([...gameLogic.notificationsQueue]);
+    setNotifications((prev) => [...gameLogic.notificationsQueue]);
   }, [gameLogic]);
 
   // Update state when a notification is rejected
   const handleRejectNotification = useCallback(() => {
     if (!gameLogic) return;
     gameLogic.rejectNotification();
-    setNotifications([...gameLogic.notificationsQueue]);
+    setNotifications((prev) => [...gameLogic.notificationsQueue]);
   }, [gameLogic]);
 
   useEffect(() => {
@@ -112,7 +112,7 @@ export const GameProvider = ({ children }) => {
       const currentDay = gameLogic.getCurrentDay();
 
       // Check for new notifications
-      setNotifications([...gameLogic.notificationsQueue]);
+      setNotifications((prev) => [...gameLogic.notificationsQueue]);
 
       if (currentDay === null) {
         navigate("/game/end-of-week");

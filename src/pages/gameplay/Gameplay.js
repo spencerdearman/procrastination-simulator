@@ -60,7 +60,12 @@ const dummyTaskData = [
 ];
 
 export default function Gameplay() {
-  const { mode } = useGame();
+  const {
+    mode,
+    notifications,
+    handleAcceptNotification,
+    handleRejectNotification,
+  } = useGame();
   const [currentDate, setCurrentDate] = useState("Tuesday");
   const [time] = useState(new Time(60));
   const [player] = useState(new Player("Player 1"));
@@ -68,17 +73,6 @@ export default function Gameplay() {
   const [logic] = useState(new Logic(player, [day], time));
   const [completedTasks, setCompletedTasks] = useState([]);
   const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
-  const [notifications, setNotifications] = useState([]);
-
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const response = await fetch("/notifications.json");
-      const data = await response.json();
-      logic.loadNotifications(data.notifications);
-      setNotifications(logic.notificationsQueue);
-    };
-    fetchNotifications();
-  }, [logic]);
 
   useEffect(() => {
     if (day.tasks.length === 0) {
@@ -93,27 +87,16 @@ export default function Gameplay() {
       setGameTime(updatedTime);
       setCompletedTasks([...logic.currentDay.completedTasks]);
       logic.checkAndTriggerNotification(updatedTime);
-      setNotifications([...logic.notificationsQueue]);
     }, 1000);
     return () => clearInterval(interval);
   }, [time, logic]);
-
-  const handleAccept = () => {
-    logic.acceptNotification();
-    setNotifications([...logic.notificationsQueue]);
-  };
-
-  const handleReject = () => {
-    logic.rejectNotification();
-    setNotifications([...logic.notificationsQueue]);
-  };
 
   return (
     <div id="container">
       <NotificationsList
         notifications={notifications}
-        onAccept={handleAccept}
-        onReject={handleReject}
+        onAccept={handleAcceptNotification}
+        onReject={handleRejectNotification}
       />
       <TickingSound />
       <div id="main">
