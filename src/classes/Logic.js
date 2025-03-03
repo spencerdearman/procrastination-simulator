@@ -3,6 +3,7 @@ import Task from "./Task.js";
 import Notification from "./Notification.js";
 import Day, { DayUtils } from "./Day.js";
 import { ATTRIBUTE_BITS } from "./Player.js";
+import Player from "./Player.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
@@ -19,7 +20,7 @@ export default class Logic {
     this.timeXSpeed = 1;
     this.notificationsQueue = [];
     this.currentNotification = null;
-    this.player = player;
+    this.player = player instanceof Player ? player : new Player();
     this.availableTasks = [];
   }
 
@@ -95,7 +96,7 @@ export default class Logic {
 
   endGame() {
     this.time.stopGameLoop();
-    this.currentDay = null;
+    console.log("Game ended, but currentDay is retained for debugging.");
   }
 
   // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED
@@ -244,6 +245,11 @@ export default class Logic {
 
   // Load notifications from a JSON array
   loadNotifications(notificationDataArray) {
+    if (!notificationDataArray || !Array.isArray(notificationDataArray)) {
+      console.error("❌ Invalid notificationDataArray in Logic.js");
+      return;
+    }
+
     this.notificationsQueue = notificationDataArray.map((data) => {
       const notification = new Notification(
         data.header,
@@ -258,7 +264,17 @@ export default class Logic {
       );
       notification.setNarrative(data.narrativeOutcome);
 
+      // Ensure notifications are always scheduled in the future
+      let baseTime = new Date(this.time.getCurrentGameTime().getTime());
+      baseTime.setHours(6 + Math.floor(Math.random() * 14), Math.random() * 60);
+
+      // If the time is still before the game's start time, push it forward
+      if (baseTime <= this.time.getCurrentGameTime()) {
+        baseTime.setDate(baseTime.getDate() + 1);
+      }
+
       // Dynamic random time based on the current game day
+      /*
       const baseTime = this.time.getCurrentGameTime();
       const randomHour = Math.floor(Math.random() * (20 - 6) + 6);
       const randomMinute = Math.floor(Math.random() * 60);
@@ -270,9 +286,12 @@ export default class Logic {
         randomMinute,
       );
       notification.setNotificationTime(randomTime);
+      */
 
+      notification.setNotificationTime(baseTime);
       return notification;
     });
+    console.log(`📢 Loaded ${this.notificationsQueue.length} notifications.`);
   }
 
   // Check if it's time to trigger a notification
@@ -298,16 +317,49 @@ export default class Logic {
     }
     this.currentNotification = notification;
     console.log(`📝 Description: ${notification.getDescription()}`);
+
+    // If the notification has a follow-up task, schedule it upon acceptance
+    if (notification.getFollowUp()) {
+      console.log(
+        `📌 Follow-up task will be scheduled: ${notification.getFollowUp()}`,
+      );
+    }
+  }
+
+  resolveNotification() {
+    console.log("🛑 Resolving notification...");
+    this.notificationsQueue.shift(); // Remove the notification from the queue
+    this.currentNotification =
+      this.notificationsQueue.length > 0 ? this.notificationsQueue[0] : null; //Assign next notification or null
+
+    // Resume previous activity if any
+    if (this.currentNotification === null && this.currentRunningTask) {
+      console.log("▶ Resuming previous task:", this.currentRunningTask.header);
+      this.currentRunningTask.resumePreviousActivity();
+    }
   }
 
   // Accept the notification decision
   acceptNotification() {
     if (!this.currentNotification) return;
+
     console.log(`✅ Accepted: ${this.currentNotification.getHeader()}`);
+
     this.currentNotification.handleDecision(
       this.currentNotification.getOptions().option1,
       this.player.attributes,
     );
+
+    // If the notification has a follow-up task, add it to the current day's schedule
+    if (this.currentNotification.getFollowUp()) {
+      const newTask = new Task(this.currentNotification.getFollowUp());
+      newTask.setCategory("NOTIFICATION");
+      newTask.setStartTime(this.time.getCurrentGameTime());
+      newTask.setDuration(1); // Default to 1 hour for follow-ups
+      this.currentDay.addTask(newTask);
+      console.log(`📌 New Task Added: ${newTask.name}`);
+    }
+
     this.resolveNotification();
   }
 
@@ -320,13 +372,5 @@ export default class Logic {
       this.player.attributes,
     );
     this.resolveNotification();
-  }
-  // Reset notification and resume previous activity if forced
-  resolveNotification() {
-    if (this.currentNotification.getForced()) {
-      this.currentNotification.resumePreviousActivity();
-    }
-    console.log(`🎬 Resolved: ${this.currentNotification.getHeader()}`);
-    this.currentNotification = null;
   }
 }

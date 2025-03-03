@@ -12,6 +12,7 @@ import Player from "../classes/Player";
 import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
 import ToastNofication from "components/ToastNotification";
+import { notificationData } from "../data/notificationData";
 
 export const GameState = Object.freeze({
   PAUSED: "paused",
@@ -35,7 +36,7 @@ export const GameProvider = ({ children }) => {
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [notifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [day, setDay] = useState(null);
   const navigate = useNavigate();
 
@@ -47,7 +48,39 @@ export const GameProvider = ({ children }) => {
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
+
+    //Load notifications into the game logic
+    if (notificationData && Array.isArray(notificationData)) {
+      logic.loadNotifications(notificationData);
+      setNotifications([...logic.notificationsQueue]);
+    } else {
+      console.error("❌ notificationData is not an array!");
+    }
   }, []);
+
+  // Update state when a notification is accepted
+  const handleAcceptNotification = useCallback(() => {
+    if (!gameLogic) return;
+    gameLogic.acceptNotification();
+
+    // Force state update
+    setNotifications([]);
+    setTimeout(() => {
+      setNotifications([...gameLogic.notificationsQueue]);
+    }, 0);
+  }, [gameLogic]);
+
+  // Update state when a notification is rejected
+  const handleRejectNotification = useCallback(() => {
+    if (!gameLogic) return;
+    gameLogic.rejectNotification();
+
+    // Force state update
+    setNotifications([]);
+    setTimeout(() => {
+      setNotifications([...gameLogic.notificationsQueue]);
+    }, 0);
+  }, [gameLogic]);
 
   useEffect(() => {
     setMode(GameState.PAUSED);
@@ -55,6 +88,8 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     if (!gameLogic) return;
+
+    gameLogic.loadNotifications(notificationData);
 
     const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
     const parsedTasks = gameLogic.startGame(shuffledTaskData);
@@ -89,6 +124,10 @@ export const GameProvider = ({ children }) => {
       setAttributes(gameLogic.getAttributes());
 
       const currentDay = gameLogic.getCurrentDay();
+
+      // Check for new notifications
+      setNotifications((prev) => [...gameLogic.notificationsQueue]);
+
       if (currentDay === null) {
         navigate("/game/end-of-week");
         return;
@@ -148,6 +187,8 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       mode,
       setMode,
+      handleAcceptNotification,
+      handleRejectNotification,
     }),
     [
       attributes,
@@ -158,6 +199,8 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       setMode,
       mode,
+      handleAcceptNotification,
+      handleRejectNotification,
     ],
   );
 
