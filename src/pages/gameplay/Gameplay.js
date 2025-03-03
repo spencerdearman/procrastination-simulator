@@ -1,7 +1,15 @@
+import { useState, useEffect } from "react";
+import { useGame } from "game-context/GameContext";
 import Calendar from "components/Calendar";
 import Header from "components/Header";
 import NotificationsList from "components/Notifications";
 import Sidebar from "components/Sidebar";
+import TickingSound from "components/TickingSound";
+import PlayerStats from "components/PlayerStats";
+import Time from "classes/Time";
+import Player from "classes/Player";
+import Day from "classes/Day";
+import Logic from "classes/Logic";
 import "styles/Calendar.css";
 import "styles/global.css";
 import "styles/Header.css";
@@ -10,12 +18,6 @@ import "styles/Notification.css";
 import "styles/Sidebar.css";
 import "styles/Stats.css";
 import "styles/TaskList.css";
-import { useState, useEffect } from "react";
-import Time from "classes/Time";
-import Player from "classes/Player";
-import Day from "classes/Day";
-import Logic from "classes/Logic";
-import PlayerStats from "components/PlayerStats";
 
 // Dummy tasks for testing
 const dummyTaskData = [
@@ -32,7 +34,7 @@ const dummyTaskData = [
     duration: 1,
     attributeImpacts: {
       academics: 0,
-      socialLife: 10, // if you eat with people idk up to you
+      socialLife: 10,
       energy: 40,
       mentalHealth: 0,
     },
@@ -45,7 +47,7 @@ const dummyTaskData = [
     startTime: "2025-01-01T13:00:00",
     endTime: "2025-01-01T14:00:00",
     completed: false,
-    locked: true, // NOTE MAKE ALL CLASSES LOCKED = TRUE
+    locked: true,
     current: false,
     duration: 1,
     attributeImpacts: {
@@ -58,29 +60,26 @@ const dummyTaskData = [
 ];
 
 export default function Gameplay() {
+  const { mode } = useGame();
   const [currentDate, setCurrentDate] = useState("Tuesday");
-  // Create a single shared Time instance.
   const [time] = useState(new Time(60));
   const [player] = useState(new Player("Player 1"));
   const [day] = useState(new Day());
-  // Pass the shared Time instance into Logic.
   const [logic] = useState(new Logic(player, [day], time));
   const [completedTasks, setCompletedTasks] = useState([]);
   const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
   const [notifications, setNotifications] = useState([]);
 
-  // Load notifications from JSON
   useEffect(() => {
     const fetchNotifications = async () => {
       const response = await fetch("/notifications.json");
       const data = await response.json();
       logic.loadNotifications(data.notifications);
-      setNotifications(logic.notificationsQueue); // 🆕 Sync state
+      setNotifications(logic.notificationsQueue);
     };
     fetchNotifications();
   }, [logic]);
 
-  // Start game on initial render if no tasks are present.
   useEffect(() => {
     if (day.tasks.length === 0) {
       logic.startGame(dummyTaskData);
@@ -88,27 +87,25 @@ export default function Gameplay() {
     }
   }, [day, logic]);
 
-  // Poll for updated game time and completed tasks every second.
   useEffect(() => {
     const interval = setInterval(() => {
       const updatedTime = time.getCurrentGameTime();
-      console.log("Updated Game Time:", updatedTime);
       setGameTime(updatedTime);
       setCompletedTasks([...logic.currentDay.completedTasks]);
-      logic.checkAndTriggerNotification(updatedTime); // Check notifications
-      setNotifications([...logic.notificationsQueue]); // Update notification list
+      logic.checkAndTriggerNotification(updatedTime);
+      setNotifications([...logic.notificationsQueue]);
     }, 1000);
     return () => clearInterval(interval);
   }, [time, logic]);
 
   const handleAccept = () => {
     logic.acceptNotification();
-    setNotifications([...logic.notificationsQueue]); // 🆕 Refresh after accept
+    setNotifications([...logic.notificationsQueue]);
   };
 
   const handleReject = () => {
     logic.rejectNotification();
-    setNotifications([...logic.notificationsQueue]); // 🆕 Refresh after reject
+    setNotifications([...logic.notificationsQueue]);
   };
 
   return (
@@ -118,8 +115,9 @@ export default function Gameplay() {
         onAccept={handleAccept}
         onReject={handleReject}
       />
+      <TickingSound />
       <div id="main">
-        <Header currentDate={currentDate} />
+        <Header mode={mode} />
         <Calendar />
       </div>
       <Sidebar />

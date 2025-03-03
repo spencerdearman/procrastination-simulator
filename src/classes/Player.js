@@ -1,15 +1,27 @@
+const FULL_ATTRIBUTES = {
+  academics: 100,
+  socialLife: 100,
+  energy: 100,
+  mentalHealth: 100,
+};
+
+export const ATTRIBUTE_BITS = {
+  academics: 1, // 0001
+  socialLife: 2, // 0010
+  energy: 4, // 0100
+  mentalHealth: 8, // 1000
+};
+
 export default class Player {
-  constructor(name) {
+  constructor(name = "Lebron") {
     this.name = name;
-    this.attributes = {
-      academics: 100,
-      socialLife: 100,
-      energy: 100,
-      mentalHealth: 100,
-    };
+    this.attributes = { ...FULL_ATTRIBUTES };
   }
 
-  // Increases specified attribute by the given amount, ensuring it's within 0-100
+  getAttributes() {
+    return { ...this.attributes };
+  }
+
   addPoints(attribute, amount) {
     if (this.attributes.hasOwnProperty(attribute)) {
       this.attributes[attribute] = Math.min(
@@ -19,9 +31,9 @@ export default class Player {
     } else {
       console.warn(`Attribute "${attribute}" does not exist.`);
     }
+    return this.getAttributes();
   }
 
-  // Decreases specified attribute by the given amount, ensuring it's within 0-100
   reducePoints(attribute, amount) {
     if (this.attributes.hasOwnProperty(attribute)) {
       this.attributes[attribute] = Math.min(
@@ -31,29 +43,22 @@ export default class Player {
     } else {
       console.warn(`Attribute "${attribute}" does not exist.`);
     }
+    return this.getAttributes();
   }
 
-  // Resets all attributes to their default values
+  decrementAttributes(updatedAttributesBitmap = 0) {
+    Object.keys(this.attributes).forEach((key) => {
+      // Skip decrementing if the attribute was updated this tick
+      if (!(updatedAttributesBitmap & ATTRIBUTE_BITS[key])) {
+        const decrement = Math.floor(Math.random() * 3) + 1;
+        this.attributes[key] = Math.max(0, this.attributes[key] - decrement);
+      }
+    });
+    return this.getAttributes();
+  }
+
   resetAttributes() {
-    this.attributes = {
-      academics: 100,
-      socialLife: 100,
-      energy: 100,
-      mentalHealth: 100,
-    };
-  }
-
-  // Gets the value of a specific attribute
-  getAttribute(attribute) {
-    if (this.attributes.hasOwnProperty(attribute)) {
-      return this.attributes[attribute];
-    }
-    console.warn(`Attribute "${attribute}" does not exist.`);
-    return null;
-  }
-
-  // Returns all attributes as an object
-  getAllAttributes() {
-    return { ...this.attributes };
+    this.attributes = { ...FULL_ATTRIBUTES };
+    return this.getAttributes();
   }
 }

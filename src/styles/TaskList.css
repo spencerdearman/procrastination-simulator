@@ -1,11 +1,10 @@
-#tasks-container {
+.tasks-container {
   height: 57vh;
   overflow-y: auto;
 }
 
-.task-block {
+.task-block-container {
   margin: 20px;
-  padding: 20px;
   border-radius: 10px;
   height: auto;
   min-height: 80px;
@@ -14,6 +13,11 @@
   transition:
     transform 0.1s ease-in-out,
     border-color 0.1s ease-in-out;
+}
+
+.task-block {
+  border-radius: 5px;
+  padding: 20px;
 }
 
 .task-block h2 {
@@ -32,13 +36,13 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.task-block:hover {
+.task-block-container:hover {
   transform: scale(0.98);
   cursor: grab;
   border-color: white;
 }
 
-.task-block:active {
+.task-block-container:active {
   transform: scale(1.02);
   cursor: grabbing;
 }
@@ -46,7 +50,7 @@
   display: none;
 }
 
-.type-academics {
+.type-academic {
   border-color: #314d65;
   background-color: #9fbfd6;
 }
@@ -64,4 +68,20 @@
 .type-mental {
   border-color: #4d675c;
   background-color: #d3e5d7;
+}
+
+@keyframes flashing {
+  0% {
+    background-color: inherit;
+  }
+  50% {
+    @apply bg-white/75;
+  }
+  100% {
+    background-color: inherit;
+  }
+}
+
+.task-block.flashing {
+  animation: flashing 2.1s infinite ease-in-out;
 }

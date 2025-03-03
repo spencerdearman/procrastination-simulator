@@ -1,0 +1,49 @@
+#death-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background-color: #fdf7dd;
+  border: 2px solid #5a2619;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#death-title {
+  margin-top: 30px;
+  font-size: 70px;
+  color: #d05147;
+}
+
+#death-message {
+  margin-top: 30px;
+  font-size: 24px;
+  color: #5a2619;
+  margin-bottom: 30px;
+}
+
+.restart-button {
+  background-color: #5a2619;
+  color: #fbf2bc;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-family: "Pixelify Sans";
+  font-size: 24px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 40px;
+}
+
+.restart-button:hover {
+  background-color: #6f2e1f;
+}
