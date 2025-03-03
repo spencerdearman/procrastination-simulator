@@ -50,8 +50,12 @@ export const GameProvider = ({ children }) => {
     setGameLogic(logic);
 
     //Load notifications into the game logic
-    logic.loadNotifications(notificationData);
-    setNotifications([...logic.notificationsQueue]);
+    if (notificationData && Array.isArray(notificationData)) {
+      logic.loadNotifications(notificationData);
+      setNotifications([...logic.notificationsQueue]);
+    } else {
+      console.error("❌ notificationData is not an array!");
+    }
   }, []);
 
   // Update state when a notification is accepted

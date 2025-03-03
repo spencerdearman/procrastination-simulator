@@ -242,6 +242,11 @@ export default class Logic {
 
   // Load notifications from a JSON array
   loadNotifications(notificationDataArray) {
+    if (!notificationDataArray || !Array.isArray(notificationDataArray)) {
+      console.error("❌ Invalid notificationDataArray in Logic.js");
+      return;
+    }
+
     this.notificationsQueue = notificationDataArray.map((data) => {
       const notification = new Notification(
         data.header,
@@ -271,6 +276,7 @@ export default class Logic {
 
       return notification;
     });
+    console.log(`📢 Loaded ${this.notificationsQueue.length} notifications.`);
   }
 
   // Check if it's time to trigger a notification
