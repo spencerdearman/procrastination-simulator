@@ -77,7 +77,10 @@ export default function Gameplay() {
   useEffect(() => {
     if (day.tasks.length === 0) {
       logic.startGame(dummyTaskData);
-      setCompletedTasks([...logic.currentDay.completedTasks]);
+      if (logic.currentDay) {
+        // Ensure `currentDay` exists before accessing
+        setCompletedTasks([...logic.currentDay.completedTasks]);
+      }
     }
   }, [day, logic]);
 
@@ -85,7 +88,12 @@ export default function Gameplay() {
     const interval = setInterval(() => {
       const updatedTime = time.getCurrentGameTime();
       setGameTime(updatedTime);
-      setCompletedTasks([...logic.currentDay.completedTasks]);
+
+      if (logic.currentDay) {
+        //Prevent crash by checking if `currentDay` exists
+        setCompletedTasks([...logic.currentDay.completedTasks]);
+      }
+
       logic.checkAndTriggerNotification(updatedTime);
     }, 1000);
     return () => clearInterval(interval);
@@ -104,7 +112,7 @@ export default function Gameplay() {
         <Calendar />
       </div>
       <Sidebar />
-      <PlayerStats attributes={player.getAllAttributes()} />
+      <PlayerStats attributes={logic.getAttributes()} />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import Task from "./Task.js";
 import Notification from "./Notification.js";
 import Day, { DayUtils } from "./Day.js";
 import { ATTRIBUTE_BITS } from "./Player.js";
+import Player from "./Player.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
@@ -19,7 +20,7 @@ export default class Logic {
     this.timeXSpeed = 1;
     this.notificationsQueue = [];
     this.currentNotification = null;
-    this.player = player;
+    this.player = player instanceof Player ? player : new Player();
     this.availableTasks = [];
   }
 
@@ -95,7 +96,7 @@ export default class Logic {
 
   endGame() {
     this.time.stopGameLoop();
-    this.currentDay = null;
+    console.log("Game ended, but currentDay is retained for debugging.");
   }
 
   // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED

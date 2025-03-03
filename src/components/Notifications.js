@@ -1,6 +1,10 @@
 import React from "react";
 
 function NotificationsList({ notifications, onAccept, onReject }) {
+  if (!notifications || notifications.length === 0) {
+    return null; // Hide if no notifications
+  }
+
   return (
     <div className="notifications-list">
       {notifications.map((notification, index) => (
