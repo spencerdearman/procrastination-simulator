@@ -9,7 +9,7 @@ export default function TaskStats({ attributes }) {
   };
 
   return (
-    <div className="inline-block bg-gray-800/50 rounded-lg pl-4 py-1 shadow-md">
+    <div className="inline-block bg-gray-700 rounded-md pl-4 py-1 shadow-md">
       {Object.keys(attributes).map((key, i) => {
         const isNegative = attributes[key] < 0;
         if (attributes[key] !== 0)
