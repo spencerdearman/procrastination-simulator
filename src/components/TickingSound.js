@@ -1,4 +1,4 @@
-import {useEffect,useRef} from "react";
+import { useEffect, useRef } from "react";
 
 function TickingSound() {
   const audioRef = useRef(null);
@@ -8,9 +8,10 @@ function TickingSound() {
     audioRef.current.loop = true;
     audioRef.current.volume = 0.5;
 
-    audioRef.current.play()
+    audioRef.current
+      .play()
       .then(() => console.log("Ticking sound playing"))
-      .catch(e => console.log("Ticking sound failed to play:", e));
+      .catch((e) => console.log("Ticking sound failed to play:", e));
 
     return () => {
       if (audioRef.current) {
@@ -21,10 +22,10 @@ function TickingSound() {
   }, []);
 
   // Optional: Adjust volume based on game speed
-//   useEffect(() => {
-//     if (!audioRef.current) return;
+  //   useEffect(() => {
+  //     if (!audioRef.current) return;
 
-//   }, [currentTime]);
+  //   }, [currentTime]);
 
   return null; // This component doesn't render anything
 }
