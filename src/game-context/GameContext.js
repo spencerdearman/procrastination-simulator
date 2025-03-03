@@ -48,7 +48,25 @@ export const GameProvider = ({ children }) => {
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
+
+    //Load notifications into the game logic
+    logic.loadNotifications(notificationData);
+    setNotifications([...logic.notificationsQueue]);
   }, []);
+
+  // Update state when a notification is accepted
+  const handleAcceptNotification = useCallback(() => {
+    if (!gameLogic) return;
+    gameLogic.acceptNotification();
+    setNotifications([...gameLogic.notificationsQueue]);
+  }, [gameLogic]);
+
+  // Update state when a notification is rejected
+  const handleRejectNotification = useCallback(() => {
+    if (!gameLogic) return;
+    gameLogic.rejectNotification();
+    setNotifications([...gameLogic.notificationsQueue]);
+  }, [gameLogic]);
 
   useEffect(() => {
     setMode(GameState.PAUSED);
@@ -155,6 +173,8 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       mode,
       setMode,
+      handleAcceptNotification,
+      handleRejectNotification,
     }),
     [
       attributes,
@@ -165,6 +185,8 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       setMode,
       mode,
+      handleAcceptNotification,
+      handleRejectNotification,
     ],
   );
 
