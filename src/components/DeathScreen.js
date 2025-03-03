@@ -54,7 +54,7 @@ const getDeathDescription = (cause) => {
 function DeathScreen({ deathCause }) {
   const navigate = useNavigate();
   const restartGame = () => {
-    navigate("/");
+    navigate("/game/calendar");
   };
   return (
     <div id="death-box">
