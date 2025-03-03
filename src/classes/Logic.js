@@ -118,6 +118,8 @@ export default class Logic {
 
   handleGameTick(oldTime, newTime) {
     const currentGameTime = newTime.getCurrentGameTime();
+    this.currentDay.removeCompletedNotifications();
+
     const currentHourIndex =
       this.currentDay.getCurrentGameHour(currentGameTime);
 

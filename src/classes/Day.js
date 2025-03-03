@@ -242,6 +242,12 @@ export default class Day {
     this.isCompleted = true;
   }
 
+  removeCompletedNotifications() {
+    this.notifications = this.notifications.filter(
+      (notification) => !notification.getCompleted(),
+    );
+  }
+
   // Updates the tasks that will rollover to the next day
   updateRollover() {
     this.rollover = [];
