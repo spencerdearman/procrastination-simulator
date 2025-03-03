@@ -15,6 +15,7 @@ import Time from "classes/Time";
 import Player from "classes/Player";
 import Day from "classes/Day";
 import Logic from "classes/Logic";
+import PlayerStats from "components/PlayerStats";
 
 // Dummy tasks for testing
 const dummyTaskData = [
@@ -66,6 +67,18 @@ export default function Gameplay() {
   const [logic] = useState(new Logic(player, [day], time));
   const [completedTasks, setCompletedTasks] = useState([]);
   const [gameTime, setGameTime] = useState(time.getCurrentGameTime());
+  const [notifications, setNotifications] = useState([]);
+
+  // Load notifications from JSON
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const response = await fetch("/notifications.json");
+      const data = await response.json();
+      logic.loadNotifications(data.notifications);
+      setNotifications(logic.notificationsQueue); // 🆕 Sync state
+    };
+    fetchNotifications();
+  }, [logic]);
 
   // Start game on initial render if no tasks are present.
   useEffect(() => {
@@ -82,18 +95,35 @@ export default function Gameplay() {
       console.log("Updated Game Time:", updatedTime);
       setGameTime(updatedTime);
       setCompletedTasks([...logic.currentDay.completedTasks]);
+      logic.checkAndTriggerNotification(updatedTime); // Check notifications
+      setNotifications([...logic.notificationsQueue]); // Update notification list
     }, 1000);
     return () => clearInterval(interval);
   }, [time, logic]);
 
+  const handleAccept = () => {
+    logic.acceptNotification();
+    setNotifications([...logic.notificationsQueue]); // 🆕 Refresh after accept
+  };
+
+  const handleReject = () => {
+    logic.rejectNotification();
+    setNotifications([...logic.notificationsQueue]); // 🆕 Refresh after reject
+  };
+
   return (
     <div id="container">
-      <NotificationsList />
+      <NotificationsList
+        notifications={notifications}
+        onAccept={handleAccept}
+        onReject={handleReject}
+      />
       <div id="main">
         <Header currentDate={currentDate} />
         <Calendar />
       </div>
       <Sidebar />
+      <PlayerStats attributes={player.getAllAttributes()} />
     </div>
   );
 }

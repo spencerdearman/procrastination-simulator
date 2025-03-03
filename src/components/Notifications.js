@@ -1,9 +1,20 @@
 import React from "react";
 
-function NotificationsList() {
+function NotificationsList({ notifications, onAccept, onReject }) {
   return (
     <div className="notifications-list">
-      <Notification />
+      {notifications.map((notification, index) => (
+        <Notification
+          key={index}
+          title={notification.name} // Header is passed as name in constructor
+          message={notification.getDescription()}
+          isMandatory={notification.getForced()}
+          acceptButton="Accept"
+          rejectButton="Reject"
+          onAccept={onAccept}
+          onReject={onReject}
+        />
+      ))}
     </div>
   );
 }
@@ -16,6 +27,8 @@ function Notification({
   dismissButton = "Dismiss",
   acceptButton = "Accept",
   rejectButton = "Reject",
+  onAccept,
+  onReject,
 }) {
   const randomPosition = {
     top: `${Math.floor(Math.random() * 80)}vh`, // Random value between 0-80% of viewport height
