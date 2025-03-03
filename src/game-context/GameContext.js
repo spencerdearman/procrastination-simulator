@@ -12,6 +12,7 @@ import Player from "../classes/Player";
 import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
 import ToastNofication from "components/ToastNotification";
+import notificationData from "../data/notificationData";
 
 export const GameState = Object.freeze({
   PAUSED: "paused",
@@ -55,6 +56,8 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     if (!gameLogic) return;
+
+    gameLogic.loadNotifications(notificationData);
 
     const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
     const parsedTasks = gameLogic.startGame(shuffledTaskData);
