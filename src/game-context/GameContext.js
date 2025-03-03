@@ -12,7 +12,7 @@ import Player from "../classes/Player";
 import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
 import ToastNofication from "components/ToastNotification";
-import notificationData from "../data/notificationData";
+import { notificationData } from "../data/notificationData";
 
 export const GameState = Object.freeze({
   PAUSED: "paused",
