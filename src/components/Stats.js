@@ -47,7 +47,7 @@ function StatBar({ title, colorClass, score }) {
           value={score}
           max="100"
         ></progress>
-        <label className={isLow ? "flash-warning" : ""}>{score}/100</label>
+        <label className={isLow ? "flash-warning" : ""}>{score}</label>
       </div>
     </div>
   );
