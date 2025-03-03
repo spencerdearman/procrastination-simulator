@@ -4,6 +4,7 @@ import "styles/Calendar.css";
 import TaskBlock from "./TaskBlock";
 import "../styles/Calendar.css";
 import "../styles/Notification.css";
+import TimeIndicator from "./TimeIndicator";
 
 export default function Calendar() {
   const gameContext = useGame();
@@ -16,6 +17,7 @@ export default function Calendar() {
 
   return (
     <div id="calendar-container" className="calendar">
+      <TimeIndicator />
       <div id="calendar" className="hours-container">
         {[...Array(24)].map((_, i) => (
           <div key={i} className="time-block">
