@@ -1,25 +1,33 @@
 import { useEffect, useRef, useState } from "react";
+import { useGame } from "../game-context/GameContext";
 
 function TimeIndicator() {
   const [position, setPosition] = useState(0);
   const indicatorRef = useRef(null);
+  const { currentTime, mode } = useGame();
+  const lastUpdateTimeRef = useRef(null);
 
   useEffect(() => {
+    if (!currentTime) return;
+
     const updateTimeIndicator = () => {
-      const now = new Date();
-      console.log(now);
-      const totalMinutes = now.getHours() * 60 + now.getMinutes();
+      const gameTime = currentTime.getCurrentGameTime();
+      //console.log(gameTime);
+      lastUpdateTimeRef.current = gameTime;
+
+      const totalMinutes = gameTime.getHours() * 60 + gameTime.getMinutes();
       const percentageOfDay = (totalMinutes / (24 * 60)) * 100;
-      console.log(percentageOfDay);
 
       const calendarContainer = document.getElementById("calendar-container");
+      if (!calendarContainer || !indicatorRef.current) return;
+
       const containerRect = calendarContainer.getBoundingClientRect();
       const scrollTop = calendarContainer.scrollTop;
-      const totalHeight = calendarContainer.scrollHeight - containerRect.height;
 
-      const pixelPosition = (totalHeight * percentageOfDay) / 100;
+      const calendarHeight =
+        document.querySelector(".hours-container").scrollHeight;
+      const pixelPosition = (calendarHeight * percentageOfDay) / 100;
 
-      // only show indicator when it's within the visible calendar area
       if (
         pixelPosition >= scrollTop &&
         pixelPosition <= scrollTop + containerRect.height
@@ -36,11 +44,10 @@ function TimeIndicator() {
         }
       }
 
-      // Update past blocks shading - not working rn
+      // changge background color of passed time blocks
       const timeBlocks = document.querySelectorAll(".time-block");
       timeBlocks.forEach((block, index) => {
-        const blockPosition = (index / timeBlocks.length) * 100;
-        if (blockPosition < percentageOfDay) {
+        if (index < gameTime.getHours()) {
           block.classList.add("past");
         } else {
           block.classList.remove("past");
@@ -48,18 +55,25 @@ function TimeIndicator() {
       });
     };
 
-    // handle scroll
     const calendarContainer = document.getElementById("calendar-container");
+    if (!calendarContainer) return;
     calendarContainer.addEventListener("scroll", updateTimeIndicator);
 
     updateTimeIndicator();
-    const interval = setInterval(updateTimeIndicator, 60000);
+
+    // TODO: deal with PAUSE mode
+    const interval = setInterval(
+      updateTimeIndicator,
+      mode === "play" ? 100 : 1000,
+    );
 
     return () => {
       clearInterval(interval);
-      calendarContainer.removeEventListener("scroll", updateTimeIndicator);
+      if (calendarContainer) {
+        calendarContainer.removeEventListener("scroll", updateTimeIndicator);
+      }
     };
-  }, []);
+  }, [currentTime, mode]);
 
   return (
     <div
