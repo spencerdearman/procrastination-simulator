@@ -8,7 +8,7 @@ import { useGame } from "game-context/GameContext";
 export default function Gameplay() {
   const { mode } = useGame();
   return (
-    <div id="container">
+    <div id="container" onDragOver={(e) => e.preventDefault()}>
       <NotificationsList />
       <TickingSound />
       <div id="main">
