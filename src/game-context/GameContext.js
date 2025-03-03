@@ -62,16 +62,24 @@ export const GameProvider = ({ children }) => {
   const handleAcceptNotification = useCallback(() => {
     if (!gameLogic) return;
     gameLogic.acceptNotification();
-    setNotifications(() => [...gameLogic.notificationsQueue]);
-    setNotifications((prev) => [...prev]);
+
+    // Force state update
+    setNotifications([]);
+    setTimeout(() => {
+      setNotifications([...gameLogic.notificationsQueue]);
+    }, 0);
   }, [gameLogic]);
 
   // Update state when a notification is rejected
   const handleRejectNotification = useCallback(() => {
     if (!gameLogic) return;
     gameLogic.rejectNotification();
-    setNotifications(() => [...gameLogic.notificationsQueue]);
-    setNotifications((prev) => [...prev]);
+
+    // Force state update
+    setNotifications([]);
+    setTimeout(() => {
+      setNotifications([...gameLogic.notificationsQueue]);
+    }, 0);
   }, [gameLogic]);
 
   useEffect(() => {
