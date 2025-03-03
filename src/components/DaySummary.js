@@ -49,7 +49,8 @@ function DaySummary({ currentDate = "Tuesday" }) {
     <div>
       <div id="header-day">
         <h3 id="banner-text-day">
-          <span style={{ color: "#D05147" }}>{currentDate}</span> at a Glance
+          <span style={{ color: "#D05147" }}>{`${currentDay.dayOfWeek} `}</span>
+          at a Glance
         </h3>
       </div>
       <div id="content">

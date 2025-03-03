@@ -1,16 +1,18 @@
 import Time from "./Time.js";
 import Task from "./Task.js";
 import Notification from "./Notification.js";
-import Day, { DayUtils } from "./Day.js";
+import Day, { DaysOfWeek, DayUtils } from "./Day.js";
 import { ATTRIBUTE_BITS } from "./Player.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
-  constructor(numDays, timeInstance, player) {
+  constructor(numDays, timeInstance, player, dayEndCallback) {
     this.days = [];
-    for (let i = 0; i < numDays; i++) {
-      this.days.push(new Day());
-    }
+    Array.from({ length: numDays }).forEach((_, i) => {
+      let dayOfWeek =
+        i === 0 ? DaysOfWeek.MONDAY : this.days[i - 1].getTomorrow();
+      this.days.push(new Day(dayOfWeek));
+    });
 
     this.currentDayIndex = 0;
     this.currentDay = this.days[0];

@@ -38,8 +38,18 @@ export class DayUtils {
   }
 }
 
+export const DaysOfWeek = Object.freeze({
+  SUNDAY: 0,
+  MONDAY: 1,
+  TUESDAY: 2,
+  WEDNESDAY: 3,
+  THURSDAY: 4,
+  FRIDAY: 5,
+  SATURDAY: 6,
+});
+
 export default class Day {
-  constructor() {
+  constructor(dayOfWeek) {
     this.id = Math.random().toString(36).substring(2, 15); // Generate random ID
     this.notifications = []; // Stores the list of notification class objects
     // Stores the list of task class objects ACTUALLY ON CALENDAR
@@ -74,17 +84,6 @@ export default class Day {
     this.completedTasks = []; // Stores the list of task class objects with completed == true
     this.rollover = []; // Movable but uncompleted tasks
 
-    // JS equivalent of an enumerator
-    this.DaysOfWeek = Object.freeze({
-      SUNDAY: 0,
-      MONDAY: 1,
-      TUESDAY: 2,
-      WEDNESDAY: 3,
-      THURSDAY: 4,
-      FRIDAY: 5,
-      SATURDAY: 6,
-    });
-
     // Stores the change in attributes from day to day
     this.attributeChanges = {
       academics: 0,
@@ -94,6 +93,25 @@ export default class Day {
     };
 
     this.isCompleted = false;
+    this.logs = [];
+    this.dayOfWeek = dayOfWeek;
+  }
+
+  getTomorrow() {
+    return this.dayOfWeek + (1 % 7);
+  }
+
+  getDayOfWeek() {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return days[this.dayOfWeek];
   }
 
   // Adds a notification to the notification list of the day

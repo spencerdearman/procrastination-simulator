@@ -157,6 +157,7 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       mode,
       setMode,
+      day,
     }),
     [
       attributes,
@@ -167,6 +168,7 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       setMode,
       mode,
+      day,
     ],
   );
   const shouldShowToast = () => {
