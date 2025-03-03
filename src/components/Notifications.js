@@ -11,8 +11,8 @@ function NotificationsList({ notifications, onAccept, onReject }) {
           isMandatory={notification.getForced()}
           acceptButton="Accept"
           rejectButton="Reject"
-          onAccept={onAccept}
-          onReject={onReject}
+          onAccept={() => onAccept(notification)}
+          onReject={() => onReject(notification)}
         />
       ))}
     </div>
