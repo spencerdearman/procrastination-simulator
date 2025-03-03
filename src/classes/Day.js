@@ -216,7 +216,7 @@ export default class Day {
 
     if (task.reusable) {
       taskToSchedule = new Task(task.name);
-      taskToSchedule.initializeFromData(task.toJSON());
+      taskToSchedule.initializeFromData(task);
       taskToSchedule.id = `${task.id}-${Date.now()}`; // Unique ID
       taskToSchedule.reusable = false; // The copy isn't reusable
     }

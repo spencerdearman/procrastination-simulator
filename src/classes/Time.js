@@ -1,3 +1,5 @@
+import { DayUtils } from "./Day";
+
 const DEFAULT_SPEED = 5;
 
 export default class Time {
@@ -53,6 +55,10 @@ export default class Time {
           1000,
     );
 
+    if (!DayUtils.isSameDay(newGameTime, this.getCurrentGameTime())) {
+      newGameTime = new Date(newTimeInstance.getCurrentGameTime());
+    }
+
     newTimeInstance.lastGameRecordTime = newGameTime;
 
     return newTimeInstance;
@@ -86,6 +92,7 @@ export default class Time {
   startGameLoop() {
     if (this.gameLoopInterval) return;
 
+    this.lastRealWorldCheckTime = Date.now();
     this.gameLoopInterval = setInterval(() => {
       const newTime = this.tick();
       this.subscribers.forEach((callback) => callback(newTime));

@@ -37,23 +37,31 @@ export const GameProvider = ({ children }) => {
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [notifications] = useState([]);
-  const [day, setDay] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const [day, setDay] = useState(null);
 
-  const initializeGameState = () => {
+  const initializeGameState = useCallback(() => {
     const time = new Time();
     const player = new Player();
-    const logic = new Logic(3, time, player);
+
+    const dayEndHandler = (currentDay, nextDay, startTime, tasks) => {
+      setDay(nextDay);
+      setCurrentTime(startTime);
+      setTasks(tasks);
+
+      // The object's methods aren't passed through the state property, so we must compute it here, and send the string value across
+      currentDay.dayOfWeek = currentDay.getDayOfWeek();
+      navigate("/game/end-of-day", {
+        state: { currentDay: currentDay, nextDay: nextDay },
+      });
+    };
+
+    const logic = new Logic(3, time, player, dayEndHandler);
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
-  };
-
-  // Initialize game logic
-  useEffect(() => {
-    initializeGameState();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     setMode(GameState.PAUSED);
@@ -72,16 +80,15 @@ export const GameProvider = ({ children }) => {
   }, [gameLogic]);
 
   useEffect(() => {
-    if (!gameLogic) return;
     if (mode === GameState.PAUSED) {
       // Do nothing since state is driven elsewhere (pausing inside of Logic.js and playing within <PlayControls />)
-    } else if (mode === GameState.PLAY) {
+    } else if (mode === GameState.PLAY && gameLogic) {
       // Initialize the game with the parsed tasks
       gameLogic.beginDay();
     } else {
-      // TODO: may have to navigate to another page here
+      initializeGameState();
     }
-  }, [mode, gameLogic]);
+  }, [mode, gameLogic, initializeGameState]);
 
   useEffect(() => {
     if (!gameLogic) return;
@@ -99,7 +106,6 @@ export const GameProvider = ({ children }) => {
         navigate("/game/end-of-week");
         return;
       }
-      setDay((prev) => (prev?.id === currentDay?.id ? prev : currentDay));
     });
 
     return () => {
@@ -124,10 +130,7 @@ export const GameProvider = ({ children }) => {
       gameLogic.logicPlanTask(task, hourIndex);
 
       // Update React state to reflect changes
-      setTasks([
-        ...gameLogic.currentDay.tasks.filter(Boolean),
-        ...gameLogic.currentDay.unplannedTasks,
-      ]);
+      setTasks(gameLogic.getTasks());
     },
     [gameLogic, tasks],
   );
@@ -138,10 +141,10 @@ export const GameProvider = ({ children }) => {
     );
     if (deficiency) {
       // TODO: Might have to update internal `Player` state before navigating to fail screen
-      initializeGameState();
       navigate("/game/game-over", { state: { deathCause: deficiency } });
+      setMode(GameState.COMPLETE);
     }
-  }, [attributes, navigate]);
+  }, [attributes, navigate, initializeGameState]);
 
   const getPlannedTasks = useCallback(() => {
     return tasks.filter((task) => task.startTime);

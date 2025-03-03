@@ -1,17 +1,12 @@
 import Groq from "groq-sdk";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Stats from "./Stats";
 
-function DaySummary({ currentDate = "Tuesday" }) {
+function DaySummary({ currentDay, nextDay }) {
   const [summary, setSummary] = useState("");
-  const [log, setLog] = useState(null);
-  const [name, setName] = useState("Lebron");
-  const stats = {
-    academics: 20,
-    social: 95,
-    energy: 80,
-    mentalHealth: 90,
-  };
+  const name = useState("Lebron");
+  const navigate = useNavigate();
   const groq = new Groq({
     apiKey: "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",
     dangerouslyAllowBrowser: true,
@@ -45,6 +40,10 @@ function DaySummary({ currentDate = "Tuesday" }) {
     fetchSummary();
   }, []);
 
+  const goToNextDay = () => {
+    navigate("/game/calendar", { state: { currentDay: nextDay } });
+  };
+
   return (
     <div>
       <div id="header-day">
@@ -61,7 +60,9 @@ function DaySummary({ currentDate = "Tuesday" }) {
         <div id="summary-text-box">
           <h3 className="subheader-text">Your Day</h3>
           <p id="blurb-text">{summary || "Writing Your Journal Entry 📝..."}</p>
-          <button className="restart-button">Next Day</button>
+          <button onClick={() => goToNextDay()} className="restart-button">
+            Next Day
+          </button>
         </div>
       </div>
     </div>

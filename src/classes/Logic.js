@@ -23,6 +23,14 @@ export default class Logic {
     this.currentNotification = null;
     this.player = player;
     this.availableTasks = [];
+    this.dayEndCallback = dayEndCallback;
+  }
+
+  getTasks() {
+    return [
+      ...this.currentDay.tasks.filter(Boolean),
+      ...this.currentDay.unplannedTasks,
+    ];
   }
 
   getAttributes() {
@@ -70,8 +78,9 @@ export default class Logic {
     //filter to the corresponding days/unplanned list and tasks
     this.availableTasks.forEach((task) => {
       if (
-        !task.startTime ||
-        DayUtils.isSameDay(this.time.lastGameRecordTime, task.startTime)
+        !task.completed &&
+        (!task.startTime ||
+          DayUtils.isSameDay(this.time.lastGameRecordTime, task.startTime))
       ) {
         this.currentDay.addTask(task);
       }
@@ -136,6 +145,7 @@ export default class Logic {
 
   handleRunningTask(currentGameTime) {
     let updatedAttributesBitmap = 0;
+    const playerAttributesBeforeUpdate = this.player.attributes;
     if (
       this.currentRunningTask &&
       currentGameTime >= this.currentRunningTask.endTime
@@ -197,7 +207,7 @@ export default class Logic {
       // End the current day
       newTime.stopGameLoop();
 
-      this.completeDay();
+      this.completeDay(newTime);
     }
   }
 
@@ -212,7 +222,7 @@ export default class Logic {
   }
 
   // FOR THE NEXT DAY: call startGameLoop() again
-  completeDay() {
+  completeDay(tomorrow) {
     // Move to the next day
     this.currentDayIndex++;
     if (this.currentDayIndex >= this.days.length) {
@@ -220,31 +230,18 @@ export default class Logic {
       return;
     }
 
-    this.currentDay = this.days[this.currentDayIndex];
-    this.currentDay.updateCompleted();
+    const currentDay = this.currentDay;
+    const nextDay = this.days[this.currentDayIndex];
+    this.currentDay.updateCompleted(this.player.attributes);
+    this.currentDay = nextDay;
     this.initializeCurrentDay();
-  }
 
-  completeTask(taskName) {
-    const task = this.currentDay.tasks.find((t) => t.name === taskName);
-    if (!task) {
-      console.error(`Task "${taskName}" not found.`);
-      return;
-    }
-
-    console.log(`Completing Task: ${task.name}`);
-    // Calculate the new game time after task completion.
-    const currentGameTime = this.time.getCurrentGameTime();
-    let newGameTime = new Date(currentGameTime);
-    newGameTime.setMinutes(newGameTime.getMinutes() + task.duration * 60); // task.duration is in hours
-
-    // Update the shared Time instance so that both logic and UI reflect the new time.
-    this.time.setCurrentGameTime(newGameTime);
-
-    task.completeTask(this.player.attributes);
-    this.currentDay.updateCompleted();
-
-    console.log(`Updated Game Time after completing task: ${newGameTime}`);
+    this.dayEndCallback(
+      currentDay,
+      nextDay,
+      tomorrow.getCurrentGameTime(),
+      this.getTasks(),
+    );
   }
 
   // Load notifications from a JSON array
