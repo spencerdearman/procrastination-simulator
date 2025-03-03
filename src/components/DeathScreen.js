@@ -11,7 +11,7 @@ function DeathScreen({ deathCause }) {
     <div id="death-box">
       <div id="death-title">You died 🪦</div>
       <div id="death-message">
-        Seems like you couldn't get enough ${deathCause}{" "}
+        Seems like you couldn't get enough {deathCause}{" "}
       </div>
       <button className="restart-button" onClick={restartGame}>
         Restart Game
