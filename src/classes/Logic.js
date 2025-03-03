@@ -296,6 +296,13 @@ export default class Logic {
     }
     this.currentNotification = notification;
     console.log(`📝 Description: ${notification.getDescription()}`);
+
+    // If the notification has a follow-up task, schedule it upon acceptance
+    if (notification.getFollowUp()) {
+      console.log(
+        `📌 Follow-up task will be scheduled: ${notification.getFollowUp()}`,
+      );
+    }
   }
 
   // Accept the notification decision
