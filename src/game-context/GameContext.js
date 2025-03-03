@@ -35,7 +35,7 @@ export const GameProvider = ({ children }) => {
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [notifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [day, setDay] = useState(null);
   const navigate = useNavigate();
 
@@ -89,6 +89,10 @@ export const GameProvider = ({ children }) => {
       setAttributes(gameLogic.getAttributes());
 
       const currentDay = gameLogic.getCurrentDay();
+
+      // Check for new notifications
+      setNotifications([...gameLogic.notificationsQueue]);
+
       if (currentDay === null) {
         navigate("/game/end-of-week");
         return;
