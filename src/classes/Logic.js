@@ -339,12 +339,4 @@ export default class Logic {
     );
     this.resolveNotification();
   }
-  // Reset notification and resume previous activity if forced
-  resolveNotification() {
-    if (this.currentNotification.getForced()) {
-      this.currentNotification.resumePreviousActivity();
-    }
-    console.log(`🎬 Resolved: ${this.currentNotification.getHeader()}`);
-    this.currentNotification = null;
-  }
 }
