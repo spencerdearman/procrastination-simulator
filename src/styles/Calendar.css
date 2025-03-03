@@ -71,7 +71,7 @@
   background-color: #d3e5d7;
 }
 
-.slot .task-block p {
+.slot .task-block .hideable {
   display: none;
 }
 .slot.disabled {

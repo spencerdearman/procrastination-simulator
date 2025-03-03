@@ -18,10 +18,10 @@
 }
 
 .side-bar-subheading {
+  @apply text-xl;
   font-family: "Pixelify Sans", serif;
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
-  font-size: 16px;
   margin: 0px;
 }

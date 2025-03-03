@@ -21,7 +21,6 @@
 }
 
 .task-block h2 {
-  margin: 0;
   padding: 0;
   font-size: 30px;
   font-weight: normal;
@@ -29,7 +28,6 @@
 }
 
 .task-block p {
-  margin: 7px 0 0 0;
   padding: 0;
   font-size: 20px;
   letter-spacing: 0.05em;
@@ -46,8 +44,9 @@
   transform: scale(1.02);
   cursor: grabbing;
 }
-.task-block:active p {
-  display: none;
+
+.task-block:active .hideable {
+  display: none !important;
 }
 
 .type-academic {

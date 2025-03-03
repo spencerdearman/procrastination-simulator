@@ -1,4 +1,5 @@
 import { GameState } from "game-context/GameContext";
+import TaskStats from "pages/gameplay/components/TaskStats";
 
 export default function TaskBlock({ task, draggable, mode }) {
   const handleDragStart = (e) => {
@@ -21,10 +22,13 @@ export default function TaskBlock({ task, draggable, mode }) {
         draggable={draggable}
         onDragStart={handleDragStart}
       >
-        <h2>
+        <h2 className="mb-4">
           {task.icon} {task.name}
         </h2>
-        <p>{task.description}</p>
+        <div className="hideable">
+          <p className="mb-2">{task.description}</p>
+          <TaskStats attributes={task.attributeImpacts} />
+        </div>
       </div>
     </div>
   );
