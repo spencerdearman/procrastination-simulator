@@ -262,7 +262,17 @@ export default class Logic {
       );
       notification.setNarrative(data.narrativeOutcome);
 
+      // Ensure notifications are always scheduled in the future
+      let baseTime = new Date(this.time.getCurrentGameTime().getTime());
+      baseTime.setHours(6 + Math.floor(Math.random() * 14), Math.random() * 60);
+
+      // If the time is still before the game's start time, push it forward
+      if (baseTime <= this.time.getCurrentGameTime()) {
+        baseTime.setDate(baseTime.getDate() + 1);
+      }
+
       // Dynamic random time based on the current game day
+      /*
       const baseTime = this.time.getCurrentGameTime();
       const randomHour = Math.floor(Math.random() * (20 - 6) + 6);
       const randomMinute = Math.floor(Math.random() * 60);
@@ -274,7 +284,9 @@ export default class Logic {
         randomMinute,
       );
       notification.setNotificationTime(randomTime);
+      */
 
+      notification.setNotificationTime(baseTime);
       return notification;
     });
     console.log(`📢 Loaded ${this.notificationsQueue.length} notifications.`);
