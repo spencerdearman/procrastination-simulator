@@ -6,13 +6,25 @@ import "../styles/Calendar.css";
 import "../styles/Notification.css";
 import TimeIndicator from "./TimeIndicator";
 
-export default function Calendar() {
+export default function Calendar({ draggedTaskGhostRef }) {
   const gameContext = useGame();
   const plannedTasks = gameContext.getPlannedTasks();
   const formatHour = (hour) => {
     const period = hour >= 12 ? "PM" : "AM";
     const displayHour = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
     return `${displayHour}${period}`;
+  };
+
+  const handleDragOver = (e, i) => {
+    e.preventDefault();
+    if (!draggedTaskGhostRef.current) return;
+
+    if (gameContext.canPlanTask(i)) {
+      draggedTaskGhostRef.current.classList.remove("invalid");
+    } else {
+      draggedTaskGhostRef.current.classList.add("invalid");
+      // draggedTaskGhostRef.current.style.borderColor = "red");
+    }
   };
 
   return (
@@ -24,7 +36,7 @@ export default function Calendar() {
             <div className="hours">{formatHour(i)}</div>
             <div
               className="slot"
-              onDragOver={(e) => e.preventDefault()}
+              onDragOver={(e) => handleDragOver(e, i)}
               onDrop={(e) => {
                 e.preventDefault();
                 try {
@@ -45,6 +57,7 @@ export default function Calendar() {
                     key={`${task.name}-${index}`}
                     task={task}
                     draggable={false}
+                    draggedTaskGhostRef={draggedTaskGhostRef}
                   />
                 ))}
             </div>
