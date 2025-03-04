@@ -258,8 +258,7 @@ export const taskData = [
     id: "rso-1",
     name: "Theater Rehearsal",
     category: "Social",
-    description:
-      "The play is coming up soon!",
+    description: "The play is coming up soon!",
     icon: "🎭",
     startTime: null,
     endTime: null,
@@ -374,7 +373,8 @@ export const taskData = [
     id: "meeting-1",
     name: "Call Mom",
     category: "Social",
-    description: "Mom has been leaving a lot of voicemails lately. Call her back.",
+    description:
+      "Mom has been leaving a lot of voicemails lately. Call her back.",
     icon: "📲",
     startTime: null,
     endTime: null,
@@ -473,8 +473,7 @@ export const taskData = [
     id: "party-2",
     name: "Karaoke",
     category: "Social",
-    description:
-      "Your friend just booked a karaoke room in Chinatown.",
+    description: "Your friend just booked a karaoke room in Chinatown.",
     icon: "🎂",
     startTime: null,
     endTime: null,
