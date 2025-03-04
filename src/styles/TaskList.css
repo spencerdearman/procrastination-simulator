@@ -1,6 +1,10 @@
+.task-list {
+  overflow-y: scroll;
+}
+
+.task-list,
 .tasks-container {
-  height: 57vh;
-  overflow-y: auto;
+  height: 100%;
 }
 
 .task-block-container {

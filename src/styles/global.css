@@ -35,3 +35,8 @@ body {
   overflow: hidden;
   background-color: #e2dac7;
 }
+
+#container,
+#root {
+  height: 100%;
+}
