@@ -55,7 +55,6 @@ function WeekSummary() {
       <div id="content">
         <div id="stats-box">
           <h3 id="blurb-text">Your Cumulative Stats</h3>
-          <h3 id="blurb-text">Your Cumulative Stats</h3>
           <Stats />
         </div>
         <div id="summary-text-box">

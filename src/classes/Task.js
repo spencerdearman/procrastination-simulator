@@ -168,31 +168,34 @@ export default class Task {
   completeTask(playerAttributes) {
     if (typeof playerAttributes !== "object" || playerAttributes === null) {
       console.error("Invalid playerAttributes provided. Expected an object.");
-      return;
+      return false;
     }
-    if (!this.getCompleted()) {
-      this.setCompleted(true);
 
-      if (Object.keys(this.getAttributeImpactsObject()).length === 0) {
-        console.warn(`Task "${this.name}" has no attribute impacts defined.`);
-      }
-
-      // Apply attribute impacts to player attributes
-      for (let key in this.getAttributeImpactsObject()) {
-        if (playerAttributes.hasOwnProperty(key)) {
-          playerAttributes[key] += this.getAttributeImpact(key);
-          playerAttributes[key] = Math.min(
-            100,
-            Math.max(0, playerAttributes[key]),
-          );
-        } else {
-          console.error(`Player attributes lacks attribute: ${key}`);
-        }
-      }
-      console.log(`Task "${this.name}" completed successfully.`);
-    } else {
+    if (this.getCompleted()) {
       console.warn(`Task "${this.name}" is already completed.`);
+      return false;
     }
+
+    this.setCompleted(true);
+
+    if (Object.keys(this.getAttributeImpactsObject()).length === 0) {
+      console.warn(`Task "${this.name}" has no attribute impacts defined.`);
+      return false;
+    }
+
+    // Apply attribute impacts to player attributes
+    for (let key in this.getAttributeImpactsObject()) {
+      if (!playerAttributes.hasOwnProperty(key)) {
+        console.error(`Player attributes lacks attribute: ${key}`);
+        continue;
+      }
+
+      playerAttributes[key] += this.getAttributeImpact(key);
+      playerAttributes[key] = Math.min(100, Math.max(0, playerAttributes[key]));
+    }
+
+    console.log(`Task "${this.name}" completed successfully.`);
+    return true;
   }
 
   isOverdue(currentGameTime) {

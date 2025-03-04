@@ -23,7 +23,7 @@
   background-color: #e9e9e9;
 }
 
-.time-block:past {
+.time-block.past {
   background-color: #e9e9e9;
 }
 
@@ -71,7 +71,7 @@
   background-color: #d3e5d7;
 }
 
-.slot .task-block p {
+.slot .task-block .hideable {
   display: none;
 }
 .slot.disabled {
@@ -79,13 +79,15 @@
 }
 
 .current-time-indicator {
-  position: fixed;
+  position: absolute;
   width: calc(60vw - 74px);
   left: 74px;
   height: 2px;
   background-color: red;
   z-index: 10;
   pointer-events: none;
+  top: 0;
+  transition-timing-function: linear;
 }
 
 .current-time-indicator::before {

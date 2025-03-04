@@ -6,7 +6,7 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Logic from "../classes/Logic";
@@ -15,9 +15,10 @@ import ToastNofication from "components/ToastNotification";
 import { notificationData } from "../data/notificationData";
 
 export const GameState = Object.freeze({
+  TUTORIAL: "tutorial",
   PAUSED: "paused",
   PLAY: "play",
-  COMPLETE: "COMPLETE",
+  COMPLETE: "complete",
 });
 
 const GameContext = createContext();
@@ -31,56 +32,37 @@ export const useGame = () => {
 };
 
 export const GameProvider = ({ children }) => {
-  const [mode, setMode] = useState(GameState.PAUSED);
+  const [mode, setMode] = useState(GameState.TUTORIAL);
   const [gameLogic, setGameLogic] = useState(null);
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [notifications, setNotifications] = useState([]);
-  const [day, setDay] = useState(null);
+  const [notifications] = useState([]);
+  const location = useLocation();
   const navigate = useNavigate();
+  const [day, setDay] = useState(null);
 
-  // Initialize game logic
-  useEffect(() => {
+  const initializeGameState = useCallback(() => {
     const time = new Time();
     const player = new Player();
-    const logic = new Logic(3, time, player);
+
+    const dayEndHandler = (currentDay, nextDay, startTime, tasks) => {
+      setDay(nextDay);
+      setCurrentTime(startTime);
+      setTasks(tasks);
+
+      // The object's methods aren't passed through the state property, so we must compute it here, and send the string value across
+      currentDay.dayOfWeek = currentDay.getDayOfWeek();
+      navigate("/game/end-of-day", {
+        state: { currentDay: currentDay, nextDay: nextDay },
+      });
+    };
+
+    const logic = new Logic(3, time, player, dayEndHandler);
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
-
-    //Load notifications into the game logic
-    if (notificationData && Array.isArray(notificationData)) {
-      logic.loadNotifications(notificationData);
-      setNotifications([...logic.notificationsQueue]);
-    } else {
-      console.error("❌ notificationData is not an array!");
-    }
-  }, []);
-
-  // Update state when a notification is accepted
-  const handleAcceptNotification = useCallback(() => {
-    if (!gameLogic) return;
-    gameLogic.acceptNotification();
-
-    // Force state update
-    setNotifications([]);
-    setTimeout(() => {
-      setNotifications([...gameLogic.notificationsQueue]);
-    }, 0);
-  }, [gameLogic]);
-
-  // Update state when a notification is rejected
-  const handleRejectNotification = useCallback(() => {
-    if (!gameLogic) return;
-    gameLogic.rejectNotification();
-
-    // Force state update
-    setNotifications([]);
-    setTimeout(() => {
-      setNotifications([...gameLogic.notificationsQueue]);
-    }, 0);
-  }, [gameLogic]);
+  }, [navigate]);
 
   useEffect(() => {
     setMode(GameState.PAUSED);
@@ -101,16 +83,15 @@ export const GameProvider = ({ children }) => {
   }, [gameLogic]);
 
   useEffect(() => {
-    if (!gameLogic) return;
     if (mode === GameState.PAUSED) {
       // Do nothing since state is driven elsewhere (pausing inside of Logic.js and playing within <PlayControls />)
-    } else if (mode === GameState.PLAY) {
+    } else if (mode === GameState.PLAY && gameLogic) {
       // Initialize the game with the parsed tasks
       gameLogic.beginDay();
     } else {
-      // TODO: may have to navigate to another page here
+      initializeGameState();
     }
-  }, [mode, gameLogic]);
+  }, [mode, gameLogic, initializeGameState]);
 
   useEffect(() => {
     if (!gameLogic) return;
@@ -125,14 +106,10 @@ export const GameProvider = ({ children }) => {
 
       const currentDay = gameLogic.getCurrentDay();
 
-      // Check for new notifications
-      setNotifications((prev) => [...gameLogic.notificationsQueue]);
-
       if (currentDay === null) {
         navigate("/game/end-of-week");
         return;
       }
-      setDay((prev) => (prev?.id === currentDay?.id ? prev : currentDay));
     });
 
     return () => {
@@ -157,21 +134,21 @@ export const GameProvider = ({ children }) => {
       gameLogic.logicPlanTask(task, hourIndex);
 
       // Update React state to reflect changes
-      setTasks([
-        ...gameLogic.currentDay.tasks.filter(Boolean),
-        ...gameLogic.currentDay.unplannedTasks,
-      ]);
+      setTasks(gameLogic.getTasks());
     },
     [gameLogic, tasks],
   );
 
   useEffect(() => {
-    const isGameOver = Object.values(attributes).some((stat) => stat <= 0);
-    if (isGameOver) {
+    const deficiency = Object.keys(attributes).find(
+      (stat) => attributes[stat] <= 0,
+    );
+    if (deficiency) {
       // TODO: Might have to update internal `Player` state before navigating to fail screen
-      navigate("/game/game-over");
+      setMode(GameState.COMPLETE);
+      navigate("/game/game-over", { state: { deathCause: deficiency } });
     }
-  }, [attributes, navigate]);
+  }, [attributes, navigate, initializeGameState]);
 
   const getPlannedTasks = useCallback(() => {
     return tasks.filter((task) => task.startTime);
@@ -187,8 +164,7 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       mode,
       setMode,
-      handleAcceptNotification,
-      handleRejectNotification,
+      day,
     }),
     [
       attributes,
@@ -199,17 +175,19 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       setMode,
       mode,
-      handleAcceptNotification,
-      handleRejectNotification,
+      day,
     ],
   );
+  const shouldShowToast = () => {
+    return location.pathname === "/game/calendar" && mode === GameState.PAUSED;
+  };
 
   // Don't render child components until this component is set up
   if (currentTime === null) return <></>;
 
   return (
     <>
-      {mode === GameState.PAUSED && <ToastNofication text="Plan your day!" />}
+      {shouldShowToast() && <ToastNofication text="Plan your day!" />}
       <GameContext.Provider value={value}>{children}</GameContext.Provider>
     </>
   );

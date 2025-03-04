@@ -1,23 +1,21 @@
+import { useGame } from "game-context/GameContext";
 import { useEffect, useState } from "react";
 
 const TimeView = ({ time }) => {
   const [currentGameTime, setCurrentGameTime] = useState(null);
   const [isTimeStopped, setIsTimeStopped] = useState(false);
-
-  const updateTime = () => {
-    const newTime = time.getCurrentGameTime();
-    setCurrentGameTime(newTime);
-  };
+  const { currentTime } = useGame();
 
   useEffect(() => {
-    setInterval(updateTime, 1000);
-  });
+    const newTime = currentTime.getCurrentGameTime();
+    setCurrentGameTime(newTime);
+  }, [currentTime]);
 
   const toggleTime = () => {
     if (isTimeStopped) {
-      time.startTimer();
+      currentTime.startTimer();
     } else {
-      time.stopTimer();
+      currentTime.stopTimer();
     }
     setIsTimeStopped(!isTimeStopped);
   };

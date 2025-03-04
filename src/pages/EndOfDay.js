@@ -1,6 +1,9 @@
+import { useLocation } from "react-router-dom";
 import DaySummary from "../components/DaySummary";
 import "../styles/DaySummary.css";
 
 export default function EndOfDay() {
-  return <DaySummary />;
+  const { state } = useLocation();
+  const { currentDay, nextDay } = state || {};
+  return <DaySummary currentDay={currentDay} nextDay={nextDay} />;
 }

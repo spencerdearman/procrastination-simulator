@@ -38,8 +38,18 @@ export class DayUtils {
   }
 }
 
+export const DaysOfWeek = Object.freeze({
+  SUNDAY: 0,
+  MONDAY: 1,
+  TUESDAY: 2,
+  WEDNESDAY: 3,
+  THURSDAY: 4,
+  FRIDAY: 5,
+  SATURDAY: 6,
+});
+
 export default class Day {
-  constructor() {
+  constructor(dayOfWeek) {
     this.id = Math.random().toString(36).substring(2, 15); // Generate random ID
     this.notifications = []; // Stores the list of notification class objects
     // Stores the list of task class objects ACTUALLY ON CALENDAR
@@ -74,17 +84,6 @@ export default class Day {
     this.completedTasks = []; // Stores the list of task class objects with completed == true
     this.rollover = []; // Movable but uncompleted tasks
 
-    // JS equivalent of an enumerator
-    this.DaysOfWeek = Object.freeze({
-      SUNDAY: 0,
-      MONDAY: 1,
-      TUESDAY: 2,
-      WEDNESDAY: 3,
-      THURSDAY: 4,
-      FRIDAY: 5,
-      SATURDAY: 6,
-    });
-
     // Stores the change in attributes from day to day
     this.attributeChanges = {
       academics: 0,
@@ -94,6 +93,25 @@ export default class Day {
     };
 
     this.isCompleted = false;
+    this.logs = [];
+    this.dayOfWeek = dayOfWeek;
+  }
+
+  getTomorrow() {
+    return this.dayOfWeek + (1 % 7);
+  }
+
+  getDayOfWeek() {
+    const days = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    return days[this.dayOfWeek];
   }
 
   // Adds a notification to the notification list of the day
@@ -142,6 +160,40 @@ export default class Day {
     this.tasks[index] = task;
   }
 
+  logTaskPlanning(task) {
+    if (!this.logs || !Array.isArray(this.logs)) {
+      console.error("logs not available");
+      return;
+    }
+
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      taskName: task.name,
+      taskDescription: task.description,
+      taskStartTime: task.startTime.toISOString(),
+    };
+
+    this.logs.push(logEntry);
+  }
+
+  // Intended to be called after the task is completed
+  logTaskCompleted(task, playerAttributes) {
+    if (!this.logs || !Array.isArray(this.logs)) {
+      console.error("logs not available");
+      return;
+    }
+
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      taskName: task.name,
+      taskDescription: task.description,
+      taskAttributes: task.attributeImpacts,
+      playerStatsBeforeUpdate: playerAttributes,
+    };
+
+    this.logs.push(logEntry);
+  }
+
   // THIS GETS CALLED BY LOGIC ONLY
   planTask(task, index, date) {
     let taskToSchedule = task;
@@ -164,7 +216,7 @@ export default class Day {
 
     if (task.reusable) {
       taskToSchedule = new Task(task.name);
-      taskToSchedule.initializeFromData(task.toJSON());
+      taskToSchedule.initializeFromData(task);
       taskToSchedule.id = `${task.id}-${Date.now()}`; // Unique ID
       taskToSchedule.reusable = false; // The copy isn't reusable
     }
@@ -183,6 +235,10 @@ export default class Day {
     if (!task.reusable) {
       this.unplannedTasks = this.unplannedTasks.filter((t) => t.id !== task.id);
     }
+
+    // Log the successful task planning
+    this.logTaskPlanning(taskToSchedule);
+
     return true;
   }
 
@@ -231,7 +287,7 @@ export default class Day {
   }
 
   // Updates the list of completed tasks (ideally at the end of the day)
-  updateCompleted() {
+  updateCompleted(endAttributes) {
     this.completedTasks = [];
     for (let task of this.tasks) {
       if (task && task.completed) {
@@ -239,7 +295,11 @@ export default class Day {
       }
     }
 
-    this.isCompleted = true;
+    const logEntry = {
+      timestamp: new Date().toISOString(),
+      endingAttributes: endAttributes,
+    };
+    this.logs.push(logEntry);
   }
 
   // Updates the tasks that will rollover to the next day

@@ -2,12 +2,16 @@ import React from "react";
 import "../styles/Header.css";
 import TimeDisplay from "./TimeDisplay";
 import PlayControls from "./PlayControls";
-import { GameState } from "game-context/GameContext";
+import { GameState, useGame } from "game-context/GameContext";
 
 function Header({ mode }) {
+  const { day } = useGame();
+
+  if (!day) return;
+
   return (
     <div id="header">
-      <TimeDisplay />
+      <TimeDisplay day={day} />
       {mode === GameState.PAUSED && <PlayControls />}
     </div>
   );

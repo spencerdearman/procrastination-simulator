@@ -7,21 +7,21 @@
 }
 
 .side-bar-header {
+  @apply text-3xl;
   font-family: "Pixelify Sans", serif;
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
-  font-size: 30px;
   position: relative;
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 0px 0px;
   padding: 0px;
 }
 
 .side-bar-subheading {
+  @apply text-xl;
   font-family: "Pixelify Sans", serif;
   font-optical-sizing: auto;
   font-weight: normal;
   font-style: normal;
-  font-size: 20px;
   margin: 0px;
 }

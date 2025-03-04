@@ -1,71 +1,47 @@
+import { DEFAULT_SPEED } from "classes/Time";
 import { useEffect, useRef, useState } from "react";
+import { GameState, useGame } from "../game-context/GameContext";
 
 function TimeIndicator() {
   const [position, setPosition] = useState(0);
   const indicatorRef = useRef(null);
+  const { currentTime, mode } = useGame();
+  const lastUpdateTimeRef = useRef(null);
 
   useEffect(() => {
-    const updateTimeIndicator = () => {
-      const now = new Date();
-      console.log(now);
-      const totalMinutes = now.getHours() * 60 + now.getMinutes();
-      const percentageOfDay = (totalMinutes / (24 * 60)) * 100;
-      console.log(percentageOfDay);
+    if (!currentTime) return;
 
-      const calendarContainer = document.getElementById("calendar-container");
-      const containerRect = calendarContainer.getBoundingClientRect();
-      const scrollTop = calendarContainer.scrollTop;
-      const totalHeight = calendarContainer.scrollHeight - containerRect.height;
+    const gameTime = currentTime.getCurrentGameTime();
+    lastUpdateTimeRef.current = gameTime;
 
-      const pixelPosition = (totalHeight * percentageOfDay) / 100;
-
-      // only show indicator when it's within the visible calendar area
-      if (
-        pixelPosition >= scrollTop &&
-        pixelPosition <= scrollTop + containerRect.height
-      ) {
-        const adjustedPosition =
-          containerRect.top + (pixelPosition - scrollTop);
-        setPosition(adjustedPosition);
-        if (indicatorRef.current) {
-          indicatorRef.current.style.display = "block";
-        }
+    // change background color of passed time blocks
+    const timeBlocks = document.querySelectorAll(".time-block");
+    timeBlocks.forEach((block, index) => {
+      if (index < gameTime.getHours()) {
+        block.classList.add("past");
       } else {
-        if (indicatorRef.current) {
-          indicatorRef.current.style.display = "none";
-        }
+        block.classList.remove("past");
       }
+    });
+  }, [currentTime, mode]);
 
-      // Update past blocks shading - not working rn
-      const timeBlocks = document.querySelectorAll(".time-block");
-      timeBlocks.forEach((block, index) => {
-        const blockPosition = (index / timeBlocks.length) * 100;
-        if (blockPosition < percentageOfDay) {
-          block.classList.add("past");
-        } else {
-          block.classList.remove("past");
-        }
-      });
-    };
+  useEffect(() => {
+    const calendarHeight =
+      document.querySelector(".hours-container").scrollHeight;
 
-    // handle scroll
-    const calendarContainer = document.getElementById("calendar-container");
-    calendarContainer.addEventListener("scroll", updateTimeIndicator);
-
-    updateTimeIndicator();
-    const interval = setInterval(updateTimeIndicator, 60000);
-
-    return () => {
-      clearInterval(interval);
-      calendarContainer.removeEventListener("scroll", updateTimeIndicator);
-    };
-  }, []);
+    if (mode === GameState.PLAY) {
+      setPosition(calendarHeight);
+    }
+  }, [mode]);
 
   return (
     <div
       ref={indicatorRef}
       className="current-time-indicator"
-      style={{ top: `${position}px` }}
+      style={{
+        top: `${position}px`,
+        transitionDuration: `${DEFAULT_SPEED * 24}s`,
+      }}
     />
   );
 }
