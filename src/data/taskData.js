@@ -1,7 +1,7 @@
 export const taskData = [
   {
     id: "chores-1",
-    name: "Clean your room",
+    name: "Clean Room",
     category: "Mental",
     description: "Room is a literal pigsty that needs to be cleaned.",
     icon: "🧹",
@@ -20,7 +20,7 @@ export const taskData = [
   },
   {
     id: "chores-2",
-    name: "Do laundry",
+    name: "Do Laundry",
     category: "Mental",
     description: "Laundry basket is overfilling, you have no more clean socks.",
     icon: "🧹",
@@ -39,7 +39,7 @@ export const taskData = [
   },
   {
     id: "chores-3",
-    name: "Take out trash",
+    name: "Take out Trash",
     category: "Mental",
     description:
       "My turn to take out the trash, unless you want to piss off your roommates.",
@@ -59,7 +59,7 @@ export const taskData = [
   },
   {
     id: "chores-4",
-    name: "Organize notes",
+    name: "Organize Notes",
     category: "Mental",
     description:
       "Organize your class notes before they turn into an unreadable mess.",
@@ -216,7 +216,7 @@ export const taskData = [
   },
   {
     id: "reading-1",
-    name: "Read book your friend gave you",
+    name: "Read Book your Friend Gave You",
     category: "Mental",
     description:
       "Read that novel that your friend has been trying to convince you to read for weeks.",
@@ -236,7 +236,7 @@ export const taskData = [
   },
   {
     id: "reading-2",
-    name: "Read for fun?",
+    name: "Read for Fun?",
     category: "Mental",
     description:
       "Remember that books don't have to come with analysis questions.",
@@ -257,7 +257,7 @@ export const taskData = [
   {
     id: "rso-1",
     name: "Theater Rehearsal",
-    category: "RSO",
+    category: "Social",
     description:
       "The play is coming up soon!",
     icon: "🎭",
@@ -277,7 +277,7 @@ export const taskData = [
   {
     id: "rso-2",
     name: "Hack Night",
-    category: "RSO",
+    category: "Social",
     description:
       "Do you ever do any coding there? No. Do you go there anyways for the food? Absolutely.",
     icon: "🎭",
@@ -296,8 +296,8 @@ export const taskData = [
   },
   {
     id: "rso-3",
-    name: "e-sports meeting",
-    category: "RSO",
+    name: "E-sports Meeting",
+    category: "Social",
     description: "Meet up with your e-sports teammates.",
     icon: "🎭",
     startTime: null,
@@ -315,7 +315,7 @@ export const taskData = [
   },
   {
     id: "hangout-1",
-    name: "Go to the point",
+    name: "Go to the Point",
     category: "Social",
     description: "Your friends wanna meet up at the point!",
     icon: "👥",
@@ -334,10 +334,10 @@ export const taskData = [
   },
   {
     id: "hangout-2",
-    name: "See a movie",
+    name: "See a Movie",
     category: "Social",
     description: "Your friends wanna go to the movies!",
-    icon: "👥",
+    icon: "🎬",
     startTime: null,
     endTime: null,
     completed: false,
@@ -353,7 +353,7 @@ export const taskData = [
   },
   {
     id: "hangout-3",
-    name: "Coffee hang",
+    name: "Coffee Hangout",
     category: "Social",
     description: "Your friends catch up over coffee!",
     icon: "👥",
@@ -391,7 +391,7 @@ export const taskData = [
   },
   {
     id: "meeting-2",
-    name: "Summer vacation plans",
+    name: "Summer Vacation Plans",
     category: "Social",
     description:
       "Your friends wanna talk about your summer getaway plans! Can't wait to get out of here and take a break from studying!",
@@ -451,11 +451,11 @@ export const taskData = [
   },
   {
     id: "party-1",
-    name: "Frat party",
+    name: "Frat Party",
     category: "Social",
     description:
       "There's a frat party going on right now! I heard your crush is gonna be there~",
-    icon: "🎉",
+    icon: "🍺",
     startTime: null,
     endTime: null,
     completed: false,
@@ -471,11 +471,11 @@ export const taskData = [
   },
   {
     id: "party-2",
-    name: "Birthday party",
+    name: "Karaoke",
     category: "Social",
     description:
-      "It's your friend's birthday today! Gotta go to his birthday party!",
-    icon: "🎉",
+      "Your friend just booked a karaoke room in Chinatown.",
+    icon: "🎂",
     startTime: null,
     endTime: null,
     completed: false,
@@ -491,11 +491,11 @@ export const taskData = [
   },
   {
     id: "party-3",
-    name: "Party Time",
+    name: "Cat Birthday Party?",
     category: "Social",
     description:
-      "It's your friend's birthday today! Gotta go to his birthday party!",
-    icon: "🎉",
+      "Your friend's cat is turning one today! Not sure why they decided to throw a party.",
+    icon: "🎂",
     startTime: null,
     endTime: null,
     completed: false,
@@ -511,7 +511,7 @@ export const taskData = [
   },
   {
     id: "party-4",
-    name: "Project party",
+    name: "Project Party",
     category: "Social",
     description: "Your group mates are celebrating your project's success!",
     icon: "🎉",
@@ -530,7 +530,7 @@ export const taskData = [
   },
   {
     id: "date-1",
-    name: "Date Night",
+    name: "Night on the Town",
     category: "Social",
     description:
       "Your partner wants to try out this new restaurant that just opened downtown!",
@@ -570,7 +570,7 @@ export const taskData = [
   },
   {
     id: "date-3",
-    name: "Date Night",
+    name: "Date Night (low key)",
     category: "Social",
     description: "You want to spend some quality time with your partner today!",
     icon: "💌",
@@ -589,7 +589,7 @@ export const taskData = [
   },
   {
     id: "time-to-eat-1",
-    name: "Eat some eggs",
+    name: "Eat Some Eggs",
     category: "Energy",
     description:
       "All you have is eggs, enjoy!... you really need to get more groceries.",
@@ -610,7 +610,7 @@ export const taskData = [
   },
   {
     id: "time-to-eat-2",
-    name: "Bartlett with buds",
+    name: "Bartlett with Buds",
     category: "Energy",
     description: "Go to Bartlett with your friends.",
     icon: "🍽️",
@@ -630,9 +630,9 @@ export const taskData = [
   },
   {
     id: "time-to-eat-3",
-    name: "Lunch at Cathy",
+    name: "Lunch at Cathy's",
     category: "Energy",
-    description: "Meet your friends at Cathy.",
+    description: "Meet your friends at Cathy's.",
     icon: "🍽️",
     startTime: null,
     endTime: null,
@@ -653,7 +653,7 @@ export const taskData = [
     name: "Quick Bite",
     category: "Energy",
     description: "Quick Meal at Hutch",
-    icon: "🍽️",
+    icon: "🥗",
     startTime: null,
     endTime: null,
     completed: false,
@@ -673,7 +673,7 @@ export const taskData = [
     name: "Chinatown Meal",
     category: "Energy",
     description: "Go out to Chinatown for food and boba.",
-    icon: "🍽️",
+    icon: "🧋",
     startTime: null,
     endTime: null,
     completed: false,
@@ -690,10 +690,10 @@ export const taskData = [
   },
   {
     id: "time-to-eat-6",
-    name: "Snack break",
+    name: "Snack Break",
     category: "Energy",
     description: "Small Snack and Netflix.",
-    icon: "🍽️",
+    icon: "🍎",
     startTime: null,
     endTime: null,
     completed: false,
@@ -713,7 +713,7 @@ export const taskData = [
     name: "Caffeine",
     category: "Energy",
     description: "Choose your poison, latte or celsius.",
-    icon: "🍽️",
+    icon: "☕️",
     startTime: null,
     endTime: null,
     completed: false,
@@ -1028,7 +1028,7 @@ export const taskData = [
   },
   {
     id: "read-play",
-    name: "Read A Play",
+    name: "Read a Play",
     category: "academic",
     description: "You better read this before tomorrow's in class discussion.",
     icon: "📝",
@@ -1190,7 +1190,7 @@ export const taskData = [
   },
   {
     id: "lab-2",
-    name: "Art Institute",
+    name: "Art Museum Trip",
     category: "academic",
     description:
       "Art Institute field trip? As a requirement?? In this economy???",
