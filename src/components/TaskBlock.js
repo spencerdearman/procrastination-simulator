@@ -36,6 +36,7 @@ export default function TaskBlock({
 
     const nodeRect = dragEl.getBoundingClientRect();
     ghostEl.style.width = `${nodeRect.width}px`;
+    ghostEl.style.marginTop = 0;
 
     // Set initial position
     ghostEl.style.left = `${e.clientX - nodeRect.width / 2}px`;
@@ -56,13 +57,6 @@ export default function TaskBlock({
     e.dataTransfer.setDragImage(img, 0, 0); // Hide the default drag image
     draggedTaskGhostRef.current = ghostEl;
   };
-
-  // const handleDragEnd = () => {
-  //   const ghostEl = draggedTaskGhostRef.current;
-  //   setTopMargin(0);
-  //
-  //   if (ghostEl) ghostEl.remove();
-  // };
 
   const handleClick = (e) => {
     if (draggable) {
@@ -93,7 +87,10 @@ export default function TaskBlock({
       // Cleanup on unmount
       if (draggedTaskGhostRef.current) {
         if (draggedTaskGhostRef.current.dragHandler) {
-          document.removeEventListener("drag", draggedTaskGhostRef.current.dragHandler);
+          document.removeEventListener(
+            "drag",
+            draggedTaskGhostRef.current.dragHandler,
+          );
         }
         draggedTaskGhostRef.current.remove();
         draggedTaskGhostRef.current = null;
