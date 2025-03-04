@@ -1,7 +1,7 @@
 export const taskData = [
   {
     id: "chores-1",
-    name: "Chores",
+    name: "Clean Room",
     category: "Mental",
     description: "Room is a literal pigsty that needs to be cleaned.",
     icon: "🧹",
@@ -20,7 +20,7 @@ export const taskData = [
   },
   {
     id: "chores-2",
-    name: "Chores",
+    name: "Do Laundry",
     category: "Mental",
     description: "Laundry basket is overfilling, you have no more clean socks.",
     icon: "🧹",
@@ -39,7 +39,7 @@ export const taskData = [
   },
   {
     id: "chores-3",
-    name: "Chores",
+    name: "Take out Trash",
     category: "Mental",
     description:
       "My turn to take out the trash, unless you want to piss off your roommates.",
@@ -59,7 +59,7 @@ export const taskData = [
   },
   {
     id: "chores-4",
-    name: "Chores",
+    name: "Organize Notes",
     category: "Mental",
     description:
       "Organize your class notes before they turn into an unreadable mess.",
@@ -80,7 +80,7 @@ export const taskData = [
 
   {
     id: "workout-1",
-    name: "Work Out",
+    name: "Pilates",
     category: "Mental",
     description:
       "Go to the pilates class I signed up for when I was feeling spontaneous.",
@@ -119,7 +119,7 @@ export const taskData = [
   },
   {
     id: "workout-3",
-    name: "Work Out",
+    name: "Lakefront Run",
     category: "Mental",
     description:
       "Run along the Lakefront and wonder why you live in a city where the wind tries to fight you.",
@@ -216,10 +216,10 @@ export const taskData = [
   },
   {
     id: "reading-1",
-    name: "Reading",
+    name: "Read Book your Friend Gave You",
     category: "Mental",
     description:
-      "Read that one novel that your friend has been trying to convince you to read for weeks.",
+      "Read that novel that your friend has been trying to convince you to read for weeks.",
     icon: "📖",
     startTime: null,
     endTime: null,
@@ -236,10 +236,10 @@ export const taskData = [
   },
   {
     id: "reading-2",
-    name: "Reading",
+    name: "Read for Fun?",
     category: "Mental",
     description:
-      "Read for fun and remember that books don't have to come with analysis questions.",
+      "Remember that books don't have to come with analysis questions.",
     icon: "📖",
     startTime: null,
     endTime: null,
@@ -256,10 +256,9 @@ export const taskData = [
   },
   {
     id: "rso-1",
-    name: "RSO",
+    name: "Theater Rehearsal",
     category: "Social",
-    description:
-      "It's time to go to theater rehearsal, you've got a play coming up soon!",
+    description: "The play is coming up soon!",
     icon: "🎭",
     startTime: null,
     endTime: null,
@@ -276,10 +275,10 @@ export const taskData = [
   },
   {
     id: "rso-2",
-    name: "RSO",
+    name: "Hack Night",
     category: "Social",
     description:
-      "It's time for hack night! Do you ever do any coding there? No. Do you go there anyways for the food? Absolutely.",
+      "Do you ever do any coding there? No. Do you go there anyways for the food? Absolutely.",
     icon: "🎭",
     startTime: null,
     endTime: null,
@@ -296,9 +295,9 @@ export const taskData = [
   },
   {
     id: "rso-3",
-    name: "RSO",
+    name: "E-sports Meeting",
     category: "Social",
-    description: "You've gotta go meet up with your e-sports teammates.",
+    description: "Meet up with your e-sports teammates.",
     icon: "🎭",
     startTime: null,
     endTime: null,
@@ -315,7 +314,7 @@ export const taskData = [
   },
   {
     id: "hangout-1",
-    name: "Hang Out with Friends",
+    name: "Go to the Point",
     category: "Social",
     description: "Your friends wanna meet up at the point!",
     icon: "👥",
@@ -334,10 +333,10 @@ export const taskData = [
   },
   {
     id: "hangout-2",
-    name: "Hang Out with Friends",
+    name: "See a Movie",
     category: "Social",
     description: "Your friends wanna go to the movies!",
-    icon: "👥",
+    icon: "🎬",
     startTime: null,
     endTime: null,
     completed: false,
@@ -353,9 +352,9 @@ export const taskData = [
   },
   {
     id: "hangout-3",
-    name: "Hang Out with Friends",
+    name: "Coffee Hangout",
     category: "Social",
-    description: "Your friends wanna get together for coffee!",
+    description: "Your friends catch up over coffee!",
     icon: "👥",
     startTime: null,
     endTime: null,
@@ -372,9 +371,10 @@ export const taskData = [
   },
   {
     id: "meeting-1",
-    name: "Meeting",
+    name: "Call Mom",
     category: "Social",
-    description: "Your mom is calling. You better pick up...",
+    description:
+      "Mom has been leaving a lot of voicemails lately. Call her back.",
     icon: "📲",
     startTime: null,
     endTime: null,
@@ -391,7 +391,7 @@ export const taskData = [
   },
   {
     id: "meeting-2",
-    name: "Meeting",
+    name: "Summer Vacation Plans",
     category: "Social",
     description:
       "Your friends wanna talk about your summer getaway plans! Can't wait to get out of here and take a break from studying!",
@@ -411,10 +411,10 @@ export const taskData = [
   },
   {
     id: "meeting-3",
-    name: "Meeting",
+    name: "Gossip",
     category: "Social",
     description:
-      "Your friends wanna talk about your summer getaway plans! Can't wait to get out of here and take a break from studying!",
+      "Your friend sent you a mysterious text. You're dying to know what it's about.",
     icon: "📲",
     startTime: null,
     endTime: null,
@@ -431,7 +431,7 @@ export const taskData = [
   },
   {
     id: "meeting-4",
-    name: "Meeting",
+    name: "Internship Interview",
     category: "Social",
     description:
       "You've got an interview for a summer internship, don't wanna miss this!",
@@ -451,11 +451,11 @@ export const taskData = [
   },
   {
     id: "party-1",
-    name: "Party Time",
+    name: "Frat Party",
     category: "Social",
     description:
       "There's a frat party going on right now! I heard your crush is gonna be there~",
-    icon: "🎉",
+    icon: "🍺",
     startTime: null,
     endTime: null,
     completed: false,
@@ -471,11 +471,10 @@ export const taskData = [
   },
   {
     id: "party-2",
-    name: "Party Time",
+    name: "Karaoke",
     category: "Social",
-    description:
-      "It's your friend's birthday today! Gotta go to his birthday party!",
-    icon: "🎉",
+    description: "Your friend just booked a karaoke room in Chinatown.",
+    icon: "🎂",
     startTime: null,
     endTime: null,
     completed: false,
@@ -491,11 +490,11 @@ export const taskData = [
   },
   {
     id: "party-3",
-    name: "Party Time",
+    name: "Cat Birthday Party?",
     category: "Social",
     description:
-      "It's your friend's birthday today! Gotta go to his birthday party!",
-    icon: "🎉",
+      "Your friend's cat is turning one today! Not sure why they decided to throw a party.",
+    icon: "🎂",
     startTime: null,
     endTime: null,
     completed: false,
@@ -511,7 +510,7 @@ export const taskData = [
   },
   {
     id: "party-4",
-    name: "Party Time",
+    name: "Project Party",
     category: "Social",
     description: "Your group mates are celebrating your project's success!",
     icon: "🎉",
@@ -530,7 +529,7 @@ export const taskData = [
   },
   {
     id: "date-1",
-    name: "Date Night",
+    name: "Night on the Town",
     category: "Social",
     description:
       "Your partner wants to try out this new restaurant that just opened downtown!",
@@ -550,7 +549,7 @@ export const taskData = [
   },
   {
     id: "date-2",
-    name: "Date Night",
+    name: "Anniversary Date",
     category: "Social",
     description:
       "Today is you and your partner's anniversary, you gotta treat them to a romantic night out!",
@@ -564,13 +563,13 @@ export const taskData = [
     attributeImpacts: {
       academics: 0,
       socialLife: 15,
-      energy: -2,
+      energy: -4,
       mentalHealth: 0,
     },
   },
   {
     id: "date-3",
-    name: "Date Night",
+    name: "Date Night (low key)",
     category: "Social",
     description: "You want to spend some quality time with your partner today!",
     icon: "💌",
@@ -589,7 +588,7 @@ export const taskData = [
   },
   {
     id: "time-to-eat-1",
-    name: "Eat some eggs",
+    name: "Eat Some Eggs",
     category: "Energy",
     description:
       "All you have is eggs, enjoy!... you really need to get more groceries.",
@@ -610,7 +609,7 @@ export const taskData = [
   },
   {
     id: "time-to-eat-2",
-    name: "Bartlett with buds",
+    name: "Bartlett with Buds",
     category: "Energy",
     description: "Go to Bartlett with your friends.",
     icon: "🍽️",
@@ -630,9 +629,9 @@ export const taskData = [
   },
   {
     id: "time-to-eat-3",
-    name: "Lunch at Cathy",
+    name: "Lunch at Cathy's",
     category: "Energy",
-    description: "Meet your friends at Cathy.",
+    description: "Meet your friends at Cathy's.",
     icon: "🍽️",
     startTime: null,
     endTime: null,
@@ -653,7 +652,7 @@ export const taskData = [
     name: "Quick Bite",
     category: "Energy",
     description: "Quick Meal at Hutch",
-    icon: "🍽️",
+    icon: "🥗",
     startTime: null,
     endTime: null,
     completed: false,
@@ -673,7 +672,7 @@ export const taskData = [
     name: "Chinatown Meal",
     category: "Energy",
     description: "Go out to Chinatown for food and boba.",
-    icon: "🍽️",
+    icon: "🧋",
     startTime: null,
     endTime: null,
     completed: false,
@@ -690,10 +689,10 @@ export const taskData = [
   },
   {
     id: "time-to-eat-6",
-    name: "Snack Time",
+    name: "Snack Break",
     category: "Energy",
     description: "Small Snack and Netflix.",
-    icon: "🍽️",
+    icon: "🍎",
     startTime: null,
     endTime: null,
     completed: false,
@@ -713,7 +712,7 @@ export const taskData = [
     name: "Caffeine",
     category: "Energy",
     description: "Choose your poison, latte or celsius.",
-    icon: "🍽️",
+    icon: "☕️",
     startTime: null,
     endTime: null,
     completed: false,
@@ -1028,7 +1027,7 @@ export const taskData = [
   },
   {
     id: "read-play",
-    name: "Read A Play",
+    name: "Read a Play",
     category: "academic",
     description: "You better read this before tomorrow's in class discussion.",
     icon: "📝",
@@ -1190,7 +1189,7 @@ export const taskData = [
   },
   {
     id: "lab-2",
-    name: "LAB",
+    name: "Art Museum Trip",
     category: "academic",
     description:
       "Art Institute field trip? As a requirement?? In this economy???",

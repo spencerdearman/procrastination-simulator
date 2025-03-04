@@ -3,11 +3,11 @@ import Stats from "./Stats";
 import TaskList from "./TaskList";
 import "../styles/Sidebar.css";
 
-function Sidebar() {
+function Sidebar({ draggedTaskGhostRef }) {
   return (
     <div id="sidebar">
       <Stats />
-      <TaskList />
+      <TaskList draggedTaskGhostRef={draggedTaskGhostRef} />
     </div>
   );
 }

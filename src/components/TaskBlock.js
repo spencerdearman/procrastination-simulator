@@ -1,12 +1,26 @@
 import { GameState } from "game-context/GameContext";
 import TaskStats from "pages/gameplay/components/TaskStats";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
-export default function TaskBlock({ task, draggable, mode }) {
+// Necessary for animating the dragged task
+var img = document.createElement("img");
+img.src =
+  "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
+export default function TaskBlock({
+  task,
+  draggable,
+  mode,
+  draggedTaskGhostRef,
+}) {
   const [topMargin, setTopMargin] = useState(0);
   const blockRef = useRef(null);
+
   const handleDragStart = (e) => {
+    if (!blockRef.current) return;
+
     // Make sure to include the id in the data being transferred
+    const dragEl = blockRef.current;
     const dragData = {
       id: task.id,
       name: task.name,
@@ -14,15 +28,81 @@ export default function TaskBlock({ task, draggable, mode }) {
       duration: task.duration,
     };
     e.dataTransfer.setData("application/json", JSON.stringify(dragData));
+
+    const ghostEl = dragEl.cloneNode(true);
+    ghostEl.classList.add("dragging");
+    ghostEl.classList.remove("flashing");
+    document.body.appendChild(ghostEl);
+
+    const nodeRect = dragEl.getBoundingClientRect();
+    ghostEl.style.width = `${nodeRect.width}px`;
+
+    // Set initial position
+    ghostEl.style.left = `${e.clientX - nodeRect.width / 2}px`;
+    ghostEl.style.top = `${e.clientY - nodeRect.height / 2}px`;
+
+    // Add drag event listener to update ghost position
+    const handleDrag = (dragEvent) => {
+      if (!ghostEl) return;
+      ghostEl.style.left = `${dragEvent.clientX - nodeRect.width / 2}px`;
+      ghostEl.style.top = `${dragEvent.clientY - nodeRect.height / 2}px`;
+    };
+
+    document.addEventListener("drag", handleDrag);
+
+    // Store the handler reference for cleanup
+    ghostEl.dragHandler = handleDrag;
+
+    e.dataTransfer.setDragImage(img, 0, 0); // Hide the default drag image
+    draggedTaskGhostRef.current = ghostEl;
   };
+
+  // const handleDragEnd = () => {
+  //   const ghostEl = draggedTaskGhostRef.current;
+  //   setTopMargin(0);
+  //
+  //   if (ghostEl) ghostEl.remove();
+  // };
 
   const handleClick = (e) => {
     if (draggable) {
       const boundingRect = blockRef.current.getBoundingClientRect();
       const topMargin = e.clientY - boundingRect.top - boundingRect.height / 2;
-      setTopMargin(Math.round(topMargin));
+      setTopMargin(Math.max(Math.round(topMargin), 0));
     }
   };
+
+  const handleDragEnd = () => {
+    const ghostEl = draggedTaskGhostRef.current;
+    setTopMargin(0);
+
+    if (ghostEl) {
+      // Remove the drag event listener
+      if (ghostEl.dragHandler) {
+        document.removeEventListener("drag", ghostEl.dragHandler);
+      }
+      ghostEl.remove();
+      // Clear the reference
+      draggedTaskGhostRef.current = null;
+    }
+  };
+
+  // Add this effect near your other hooks
+  useEffect(() => {
+    return () => {
+      // Cleanup on unmount
+      if (draggedTaskGhostRef.current) {
+        if (draggedTaskGhostRef.current.dragHandler) {
+          document.removeEventListener(
+            "drag",
+            draggedTaskGhostRef.current.dragHandler,
+          );
+        }
+        draggedTaskGhostRef.current.remove();
+        draggedTaskGhostRef.current = null;
+      }
+    };
+  }, [draggedTaskGhostRef]);
 
   return (
     // This outer div is necessary for styling the flashing animation
@@ -31,7 +111,7 @@ export default function TaskBlock({ task, draggable, mode }) {
       style={{ marginTop: `${topMargin}px` }}
       onMouseDown={handleClick}
       onMouseUp={() => setTopMargin(0)}
-      onDragEnd={() => setTopMargin(0)}
+      onDragEnd={handleDragEnd}
       onDragStart={handleDragStart}
       ref={blockRef}
     >

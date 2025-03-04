@@ -194,25 +194,28 @@ export default class Day {
     this.logs.push(logEntry);
   }
 
+  canPlanTask(index, gameTime) {
+    if (
+      index < 0 ||
+      index >= this.tasks.length ||
+      index < gameTime.getHours() ||
+      this.tasks[index] !== null
+    ) {
+      return false;
+    }
+    return true;
+  }
+
   // THIS GETS CALLED BY LOGIC ONLY
   planTask(task, index, date) {
-    let taskToSchedule = task;
     if (!(task instanceof Task)) {
       console.error("Invalid task. Must be an instance of Task.");
       return false;
     }
 
-    if (index < 0 || index >= this.tasks.length) {
-      console.error(`Invalid task index for "${task.name}":`, index);
-      return false;
-    }
+    if (!this.canPlanTask(index, date)) return false;
 
-    if (this.tasks[index] !== null) {
-      console.error(
-        `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
-      );
-      return false;
-    }
+    let taskToSchedule = task;
 
     if (task.reusable) {
       taskToSchedule = new Task(task.name);

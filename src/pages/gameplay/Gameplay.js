@@ -4,8 +4,10 @@ import Header from "components/Header";
 import NotificationsList from "components/Notifications";
 import Sidebar from "components/Sidebar";
 import TickingSound from "components/TickingSound";
+import { useRef } from "react";
 
 export default function Gameplay() {
+  const draggedTaskGhostRef = useRef();
   const {
     mode,
     notifications,
@@ -23,9 +25,9 @@ export default function Gameplay() {
       <TickingSound />
       <div id="main">
         <Header mode={mode} />
-        <Calendar />
+        <Calendar draggedTaskGhostRef={draggedTaskGhostRef} />
       </div>
-      <Sidebar />
+      <Sidebar draggedTaskGhostRef={draggedTaskGhostRef} />
     </div>
   );
 }

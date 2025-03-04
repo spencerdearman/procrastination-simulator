@@ -4,7 +4,7 @@ import TaskBlock from "./TaskBlock";
 import "../styles/TaskList.css";
 
 //this is the task list that will be used to display the tasks
-export default function TaskList() {
+export default function TaskList({ draggedTaskGhostRef }) {
   const { tasks, mode } = useGame();
   const [unplannedTasks, setUnplannedTasks] = useState(tasks);
 
@@ -21,6 +21,7 @@ export default function TaskList() {
             task={task}
             draggable={true}
             mode={mode}
+            draggedTaskGhostRef={draggedTaskGhostRef}
           />
         ))}
       </div>

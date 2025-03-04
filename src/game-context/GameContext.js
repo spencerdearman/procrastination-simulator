@@ -176,6 +176,13 @@ export const GameProvider = ({ children }) => {
     return tasks.filter((task) => task.startTime);
   }, [tasks]);
 
+  const canPlanTask = useCallback(
+    (hourIndex) => {
+      return gameLogic.canPlanTask(hourIndex);
+    },
+    [gameLogic],
+  );
+
   const value = useMemo(
     () => ({
       attributes,
@@ -184,6 +191,7 @@ export const GameProvider = ({ children }) => {
       notifications,
       handleAcceptNotification,
       handleRejectNotification,
+      canPlanTask,
       logicPlanTask,
       getPlannedTasks,
       mode,
@@ -195,6 +203,7 @@ export const GameProvider = ({ children }) => {
       currentTime,
       tasks,
       notifications,
+      canPlanTask,
       logicPlanTask,
       gameLogic,
       getPlannedTasks,

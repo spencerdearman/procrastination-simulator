@@ -110,6 +110,12 @@ export default class Logic {
     console.log("Game ended, but currentDay is retained for debugging.");
   }
 
+  canPlanTask(index) {
+    const currentGameTime = this.time.getCurrentGameTime();
+    let newGameTime = new Date(currentGameTime);
+    return this.currentDay.canPlanTask(index, newGameTime);
+  }
+
   // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED
   logicPlanTask(task, index) {
     const currentGameTime = this.time.getCurrentGameTime();
