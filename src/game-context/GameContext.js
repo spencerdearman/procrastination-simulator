@@ -11,7 +11,8 @@ import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
-import ToastNofication from "components/ToastNotification";
+import ToastNotification from "components/ToastNotification";
+import { notificationData } from "../data/notificationData";
 
 export const GameState = Object.freeze({
   PAUSED: "paused",
@@ -35,7 +36,7 @@ export const GameProvider = ({ children }) => {
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [notifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const [day, setDay] = useState(null);
   const navigate = useNavigate();
 
@@ -49,12 +50,38 @@ export const GameProvider = ({ children }) => {
     setGameLogic(logic);
   }, []);
 
+  // Update state when a notification is accepted
+  const handleAcceptNotification = useCallback(() => {
+    if (!gameLogic) return;
+    gameLogic.acceptNotification();
+
+    // Force state update
+    setNotifications([]);
+    setTimeout(() => {
+      setNotifications([...gameLogic.notificationsQueue]);
+    }, 0);
+  }, [gameLogic]);
+
+  // Update state when a notification is rejected
+  const handleRejectNotification = useCallback(() => {
+    if (!gameLogic) return;
+    gameLogic.rejectNotification();
+
+    // Force state update
+    setNotifications([]);
+    setTimeout(() => {
+      setNotifications([...gameLogic.notificationsQueue]);
+    }, 0);
+  }, [gameLogic]);
+
   useEffect(() => {
     setMode(GameState.PAUSED);
   }, [day]);
 
   useEffect(() => {
     if (!gameLogic) return;
+
+    gameLogic.loadNotifications(notificationData);
 
     const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
     const parsedTasks = gameLogic.startGame(shuffledTaskData);
@@ -83,12 +110,17 @@ export const GameProvider = ({ children }) => {
 
     // Subscribe to time updates from the game logic
     const unsubscribe = gameLogic.time.subscribe((newTime) => {
+      // console.log("Time updated to:", newTime.getCurrentGameTime());
       setCurrentTime(newTime);
 
       // Get updated attributes from game logic
       setAttributes(gameLogic.getAttributes());
 
       const currentDay = gameLogic.getCurrentDay();
+
+      // Check for new notifications
+      setNotifications((prev) => [...gameLogic.notificationsQueue]);
+
       if (currentDay === null) {
         navigate("/game/end-of-week");
         return;
@@ -148,6 +180,8 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       mode,
       setMode,
+      handleAcceptNotification,
+      handleRejectNotification,
     }),
     [
       attributes,
@@ -158,6 +192,8 @@ export const GameProvider = ({ children }) => {
       getPlannedTasks,
       setMode,
       mode,
+      handleAcceptNotification,
+      handleRejectNotification,
     ],
   );
 
@@ -166,7 +202,17 @@ export const GameProvider = ({ children }) => {
 
   return (
     <>
-      {mode === GameState.PAUSED && <ToastNofication text="Plan your day!" />}
+      {gameLogic && gameLogic.currentNotification && (
+        <div className="notification-popup">
+          <p>{gameLogic.currentNotification.getDescription()}</p>
+          <div>
+            {!gameLogic.currentNotification.getForced() && (
+              <button onClick={handleRejectNotification}>Reject</button>
+            )}
+            <button onClick={handleAcceptNotification}>Accept</button>
+          </div>
+        </div>
+      )}
       <GameContext.Provider value={value}>{children}</GameContext.Provider>
     </>
   );

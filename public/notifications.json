@@ -1,0 +1,50 @@
+{
+  "notifications": [
+    {
+      "header": "Morning Yoga Session",
+      "description": "A friend invited you to a relaxing yoga session at the park. It could help clear your mind and boost your energy for the day ahead.",
+      "option1": "Join the yoga session",
+      "option2": "Skip and continue your routine",
+      "impacts": {
+        "option1Impact": {
+          "energy": 10,
+          "mentalHealth": 15,
+          "academics": -5,
+          "socialLife": 5
+        },
+        "option2Impact": {
+          "energy": 0,
+          "mentalHealth": -5,
+          "academics": 0,
+          "socialLife": 0
+        }
+      },
+      "narrativeOutcome": "You feel refreshed and more focused after the session, ready to take on the day!",
+      "notificationDuration": 1,
+      "forced": false
+    },
+    {
+      "header": "Last-Minute Study Group",
+      "description": "Your study group is meeting for a last-minute review before tomorrow's exam. Joining could help improve your understanding, but it might cost you some energy.",
+      "option1": "Attend the study session",
+      "option2": "Stay home and rest",
+      "impacts": {
+        "option1Impact": {
+          "energy": -10,
+          "mentalHealth": 0,
+          "academics": 20,
+          "socialLife": 5
+        },
+        "option2Impact": {
+          "energy": 5,
+          "mentalHealth": 0,
+          "academics": -10,
+          "socialLife": 0
+        }
+      },
+      "narrativeOutcome": "Your confidence in the material grows after the study session. You feel well-prepared for the exam.",
+      "notificationDuration": 2,
+      "forced": true
+    }
+  ]
+}

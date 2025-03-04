@@ -8,7 +8,9 @@ export default class Time {
       this.lastGameRecordTime = time.lastGameRecordTime;
       this.lastRealWorldCheckTime = time.lastRealWorldCheckTime;
       this.playerDefinedSpeed = time.playerDefinedSpeed;
-      this.subscribers = [...time.subscribers];
+      this.subscribers = Array.isArray(time.subscribers)
+        ? [...time.subscribers]
+        : [];
       this.gameLoopInterval = time.gameLoopInterval;
     } else {
       this.realSecondsPerGameHour = DEFAULT_SPEED;
