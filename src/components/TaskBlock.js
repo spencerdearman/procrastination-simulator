@@ -1,6 +1,6 @@
 import { GameState } from "game-context/GameContext";
 import TaskStats from "pages/gameplay/components/TaskStats";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // Necessary for animating the dragged task
 var img = document.createElement("img");
@@ -82,8 +82,24 @@ export default function TaskBlock({
         document.removeEventListener("drag", ghostEl.dragHandler);
       }
       ghostEl.remove();
+      // Clear the reference
+      draggedTaskGhostRef.current = null;
     }
   };
+
+  // Add this effect near your other hooks
+  useEffect(() => {
+    return () => {
+      // Cleanup on unmount
+      if (draggedTaskGhostRef.current) {
+        if (draggedTaskGhostRef.current.dragHandler) {
+          document.removeEventListener("drag", draggedTaskGhostRef.current.dragHandler);
+        }
+        draggedTaskGhostRef.current.remove();
+        draggedTaskGhostRef.current = null;
+      }
+    };
+  }, [draggedTaskGhostRef]);
 
   return (
     // This outer div is necessary for styling the flashing animation
