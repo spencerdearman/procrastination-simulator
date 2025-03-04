@@ -1,29 +1,3 @@
-import React from "react";
-
-function NotificationsList({ notifications, onAccept, onReject }) {
-  if (!notifications || notifications.length === 0) {
-    return null; // Hide if no notifications
-  }
-
-  return (
-    <div className="notifications-list">
-      {notifications.map((notification, index) => (
-        <Notification
-          key={index}
-          notification={notification}
-          title={notification.header}
-          message={notification.getDescription()}
-          isMandatory={notification.getForced()}
-          acceptButton="Accept"
-          rejectButton="Reject"
-          onAccept={() => onAccept(notification)}
-          onReject={() => onReject(notification)}
-        />
-      ))}
-    </div>
-  );
-}
-
 function Notification({
   notification,
   isMandatory = false,
@@ -62,6 +36,30 @@ function Notification({
           {acceptButton}
         </button>
       </div>
+    </div>
+  );
+}
+
+function NotificationsList({ notifications, onAccept, onReject }) {
+  if (!notifications || notifications.length === 0) {
+    return null; // Hide if no notifications
+  }
+
+  return (
+    <div className="notifications-list">
+      {notifications.map((notification, index) => (
+        <Notification
+          key={index}
+          notification={notification}
+          title={notification.header}
+          message={notification.getDescription()}
+          isMandatory={notification.getForced()}
+          acceptButton="Accept"
+          rejectButton="Reject"
+          onAccept={() => onAccept(notification)}
+          onReject={() => onReject(notification)}
+        />
+      ))}
     </div>
   );
 }

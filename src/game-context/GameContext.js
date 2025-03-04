@@ -37,7 +37,7 @@ export const GameProvider = ({ children }) => {
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [notifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const [day, setDay] = useState(null);
@@ -59,6 +59,7 @@ export const GameProvider = ({ children }) => {
     };
 
     const logic = new Logic(3, time, player, dayEndHandler);
+    logic.loadNotifications(notificationData);
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
@@ -70,8 +71,6 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     if (!gameLogic) return;
-
-    gameLogic.loadNotifications(notificationData);
 
     const shuffledTaskData = [...taskData].sort(() => Math.random() - 0.5);
     const parsedTasks = gameLogic.startGame(shuffledTaskData);
@@ -104,6 +103,11 @@ export const GameProvider = ({ children }) => {
       // Get updated attributes from game logic
       setAttributes(gameLogic.getAttributes());
 
+      // *** Update notifications state here ***
+      const newNotification = gameLogic.currentNotification;
+      // Wrap in an array so NotificationsList can map over it
+      setNotifications(newNotification ? [newNotification] : []);
+
       const currentDay = gameLogic.getCurrentDay();
 
       if (currentDay === null) {
@@ -116,6 +120,24 @@ export const GameProvider = ({ children }) => {
       unsubscribe();
     };
   }, [gameLogic, navigate]);
+
+  const handleAcceptNotification = () => {
+    if (gameLogic) {
+      gameLogic.acceptNotification();
+      // Update notifications immediately after a decision
+      const newNotification = gameLogic.currentNotification;
+      setNotifications(newNotification ? [newNotification] : []);
+    }
+  };
+
+  const handleRejectNotification = () => {
+    if (gameLogic) {
+      gameLogic.rejectNotification();
+      // Update notifications immediately after a decision
+      const newNotification = gameLogic.currentNotification;
+      setNotifications(newNotification ? [newNotification] : []);
+    }
+  };
 
   const logicPlanTask = useCallback(
     (taskData, hourIndex) => {
@@ -160,6 +182,8 @@ export const GameProvider = ({ children }) => {
       currentTime,
       tasks,
       notifications,
+      handleAcceptNotification,
+      handleRejectNotification,
       logicPlanTask,
       getPlannedTasks,
       mode,
@@ -172,6 +196,7 @@ export const GameProvider = ({ children }) => {
       tasks,
       notifications,
       logicPlanTask,
+      gameLogic,
       getPlannedTasks,
       setMode,
       mode,

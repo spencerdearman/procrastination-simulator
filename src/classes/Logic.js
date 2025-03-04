@@ -135,7 +135,15 @@ export default class Logic {
 
     const updatedAttributesBitmap = this.handleRunningTask(currentGameTime);
     this.handleTaskStart(currentGameTime, currentHourIndex);
-    this.checkAndTriggerNotification();
+    this.checkAndTriggerNotification(currentGameTime);
+    console.log("Current game time:", currentGameTime);
+    this.notificationsQueue.forEach((n) => {
+      console.log("Notification scheduled for:", n.getNotificationTime());
+    });
+
+    this.notificationsQueue.forEach((n) => {
+      console.log("Notification instance:", n, n instanceof Notification);
+    });
 
     // Decrement attributes, passing the bitmap of updated attributes
     const attributes = this.player.decrementAttributes(updatedAttributesBitmap);
@@ -275,21 +283,6 @@ export default class Logic {
         baseTime.setDate(baseTime.getDate() + 1);
       }
 
-      // Dynamic random time based on the current game day
-      /*
-      const baseTime = this.time.getCurrentGameTime();
-      const randomHour = Math.floor(Math.random() * (20 - 6) + 6);
-      const randomMinute = Math.floor(Math.random() * 60);
-      const randomTime = new Date(
-        baseTime.getFullYear(),
-        baseTime.getMonth(),
-        baseTime.getDate(),
-        randomHour,
-        randomMinute,
-      );
-      notification.setNotificationTime(randomTime);
-      */
-
       notification.setNotificationTime(baseTime);
       return notification;
     });
@@ -305,7 +298,7 @@ export default class Logic {
         !notification.getCompleted() &&
         notification.getNotificationTime() <= currentGameTime
       ) {
-        console.log(`🔔 Notification triggered: ${notification.getHeader()}`);
+        console.log(`🔔 Notification triggered: ${notification.header}`);
         this.triggerNotification(notification);
         break;
       }
@@ -345,7 +338,7 @@ export default class Logic {
   acceptNotification() {
     if (!this.currentNotification) return;
 
-    console.log(`✅ Accepted: ${this.currentNotification.getHeader()}`);
+    console.log(`✅ Accepted: ${this.currentNotification.header}`);
 
     this.currentNotification.handleDecision(
       this.currentNotification.getOptions().option1,
@@ -368,7 +361,7 @@ export default class Logic {
   // Reject the notification decision
   rejectNotification() {
     if (!this.currentNotification) return;
-    console.log(`❌ Rejected: ${this.currentNotification.getHeader()}`);
+    console.log(`❌ Rejected: ${this.currentNotification.header}`);
     this.currentNotification.handleDecision(
       this.currentNotification.getOptions().option2,
       this.player.attributes,
