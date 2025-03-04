@@ -140,8 +140,9 @@ export const GameProvider = ({ children }) => {
       (stat) => attributes[stat] <= 0,
     );
     if (deficiency) {
-      navigate("/game/game-over", { state: { deathCause: deficiency } });
+      // TODO: Might have to update internal `Player` state before navigating to fail screen
       setMode(GameState.COMPLETE);
+      navigate("/game/game-over", { state: { deathCause: deficiency } });
     }
   }, [attributes, navigate, initializeGameState]);
 

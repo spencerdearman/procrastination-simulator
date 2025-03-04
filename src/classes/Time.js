@@ -1,6 +1,6 @@
 import { DayUtils } from "./Day";
 
-const DEFAULT_SPEED = 5;
+export const DEFAULT_SPEED = 5;
 
 export default class Time {
   constructor(time = null) {
@@ -56,7 +56,9 @@ export default class Time {
     );
 
     if (!DayUtils.isSameDay(newGameTime, this.getCurrentGameTime())) {
-      newGameTime = new Date(newTimeInstance.getCurrentGameTime());
+      newGameTime = new Date(
+        newTimeInstance.getCurrentGameTime().getTime() + 24 * 60 * 60 * 1000,
+      );
     }
 
     newTimeInstance.lastGameRecordTime = newGameTime;
