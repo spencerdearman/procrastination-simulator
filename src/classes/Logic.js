@@ -260,7 +260,16 @@ export default class Logic {
       return;
     }
 
-    this.notificationsQueue = notificationDataArray.map((data) => {
+    // Determine the active hours for notifications (e.g., 6AM to 10PM)
+    const startHour = 6;
+    const endHour = 22;
+    const activeHours = endHour - startHour;
+    const count = 4 + Math.floor(Math.random() * 5); // random value: 4, 5, 6, 7, or 8
+
+    // Use only a subset of notifications for scheduling
+    const notificationsToSchedule = notificationDataArray.slice(0, count);
+
+    this.notificationsQueue = notificationsToSchedule.map((data, index) => {
       const notification = new Notification(
         data.header,
         data.notificationDuration,
@@ -274,9 +283,21 @@ export default class Logic {
       );
       notification.setNarrative(data.narrativeOutcome);
 
+      // Calculate start of this notification's interval
+      const intervalStart = startHour + (activeHours / count) * index;
+
+      // Calculate end of this notification's interval
+      const intervalEnd = startHour + (activeHours / count) * (index + 1);
+
+      // Choose a random hour within the interval
+      const randomHour = Math.floor(
+        intervalStart + Math.random() * (intervalEnd - intervalStart),
+      );
+      const randomMinute = Math.floor(Math.random() * 60);
+
       // Ensure notifications are always scheduled in the future
       let baseTime = new Date(this.time.getCurrentGameTime().getTime());
-      baseTime.setHours(6 + Math.floor(Math.random() * 14), Math.random() * 60);
+      baseTime.setHours(randomHour, randomMinute, 0, 0);
 
       // If the time is still before the game's start time, push it forward
       if (baseTime <= this.time.getCurrentGameTime()) {
@@ -291,6 +312,35 @@ export default class Logic {
 
   // Check if it's time to trigger a notification
   checkAndTriggerNotification(currentGameTime) {
+    if (this.currentNotification) return; // Wait until current one is resolved
+
+    for (let notification of this.notificationsQueue) {
+      // If notification is overdue by more than, say, 5 minutes,
+      // re-schedule it to currentGameTime + a random delay (e.g., 10–20 minutes)
+      if (
+        !notification.getCompleted() &&
+        notification.getNotificationTime() <= currentGameTime
+      ) {
+        const delayMinutes = 10 + Math.floor(Math.random() * 11); // 10 to 20 minutes
+        const newTime = new Date(currentGameTime.getTime());
+        newTime.setMinutes(newTime.getMinutes() + delayMinutes);
+        notification.setNotificationTime(newTime);
+        console.log(
+          `Rescheduled notification "${notification.getHeader()}" to: ${newTime}`,
+        );
+      }
+
+      // Now check if the notification should trigger
+      if (
+        !notification.getCompleted() &&
+        notification.getNotificationTime() <= currentGameTime
+      ) {
+        console.log(`🔔 Notification triggered: ${notification.getHeader()}`);
+        this.triggerNotification(notification);
+        break;
+      }
+    }
+    /*
     if (this.currentNotification) return; // Wait until the current notification is resolved
 
     for (let notification of this.notificationsQueue) {
@@ -303,6 +353,7 @@ export default class Logic {
         break;
       }
     }
+    */
   }
 
   // Handle the notification logic (pause tasks if forced)
