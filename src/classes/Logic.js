@@ -5,9 +5,16 @@ import Day, { DaysOfWeek, DayUtils } from "./Day.js";
 import { ATTRIBUTE_BITS } from "./Player.js";
 import Player from "./Player.js";
 
+export class GameEvent {
+  constructor() {}
+
+  notificationAvailable = (notification) => {};
+  dayEnd = (currentDay, nextDay, startTime, tasks) => {};
+}
+
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
-  constructor(numDays, timeInstance, player, dayEndCallback, notificationData) {
+  constructor(numDays, timeInstance, player, notificationData) {
     this.days = [];
     Array.from({ length: numDays }).forEach((_, i) => {
       let dayOfWeek =
@@ -31,8 +38,8 @@ export default class Logic {
     this.currentNotification = null;
     this.player = player instanceof Player ? player : new Player();
     this.availableTasks = [];
-    this.dayEndCallback = dayEndCallback;
     this.notificationData = notificationData;
+    this.eventHooks = new GameEvent();
   }
 
   getTasks() {
@@ -251,7 +258,7 @@ export default class Logic {
 
     this.loadNotifications(this.notificationData);
 
-    this.dayEndCallback(
+    this.eventHooks?.dayEnd(
       currentDay,
       nextDay,
       tomorrow.getCurrentGameTime(),

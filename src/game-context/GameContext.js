@@ -58,8 +58,9 @@ export const GameProvider = ({ children }) => {
       });
     };
 
-    const logic = new Logic(3, time, player, dayEndHandler, notificationData);
+    const logic = new Logic(3, time, player, notificationData);
     logic.loadNotifications(notificationData);
+    logic.eventHooks.dayEnd = dayEndHandler;
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
