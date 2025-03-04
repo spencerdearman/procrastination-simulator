@@ -7,7 +7,7 @@ import Player from "./Player.js";
 
 export default class Logic {
   // Accept an optional timeInstance to ensure a shared reference between logic and UI
-  constructor(numDays, timeInstance, player, dayEndCallback) {
+  constructor(numDays, timeInstance, player, dayEndCallback, notificationData) {
     this.days = [];
     Array.from({ length: numDays }).forEach((_, i) => {
       let dayOfWeek =
@@ -25,6 +25,7 @@ export default class Logic {
     this.player = player instanceof Player ? player : new Player();
     this.availableTasks = [];
     this.dayEndCallback = dayEndCallback;
+    this.notificationData = notificationData;
   }
 
   getTasks() {
@@ -250,6 +251,8 @@ export default class Logic {
     this.currentDay.updateCompleted(this.player.attributes);
     this.currentDay = nextDay;
     this.initializeCurrentDay();
+
+    this.loadNotifications(this.notificationData);
 
     this.dayEndCallback(
       currentDay,

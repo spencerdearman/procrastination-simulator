@@ -44,7 +44,7 @@ export const GameProvider = ({ children }) => {
 
   const initializeGameState = useCallback(() => {
     const time = new Time();
-    const player = new Player("TestPlayer", true);
+    const player = new Player("TestPlayer");
 
     const dayEndHandler = (currentDay, nextDay, startTime, tasks) => {
       setDay(nextDay);
@@ -58,7 +58,7 @@ export const GameProvider = ({ children }) => {
       });
     };
 
-    const logic = new Logic(3, time, player, dayEndHandler);
+    const logic = new Logic(3, time, player, dayEndHandler, notificationData);
     logic.loadNotifications(notificationData);
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
