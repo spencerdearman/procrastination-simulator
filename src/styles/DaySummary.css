@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 30vh;
+  height: 20vh;
   background-color: #5a2619;
   align-items: center;
   color: white;
@@ -43,7 +43,8 @@
 }
 
 .subheader-text {
-  font-size: 25px;
+  margin-top: 10%;
+  font-size: 50px;
   font-family: "Pixelify Sans";
   color: #5a2619;
 }
@@ -56,13 +57,14 @@
 }
 
 #banner-text-day {
+  margin-top: 3%;
   font-size: 100px;
   font-family: "Pixelify Sans";
   color: white;
 }
 
 #blurb-text {
-  font-size: 25px;
+  font-size: 30px;
   color: black;
   font-family: "Pixelify Sans";
 }
