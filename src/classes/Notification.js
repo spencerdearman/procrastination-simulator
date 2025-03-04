@@ -23,9 +23,14 @@ export default class Notification extends Task {
    */
   constructor(header, notificationDuration, forced = false) {
     super(header);
+    this.header = header;
     this.#notificationDuration = notificationDuration;
     this.#forced = forced;
     this.setCategory("NOTIFICATION");
+  }
+
+  getHeader() {
+    return this.header;
   }
 
   /**

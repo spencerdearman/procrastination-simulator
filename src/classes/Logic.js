@@ -119,14 +119,13 @@ export default class Logic {
 
   handleGameTick(oldTime, newTime) {
     const currentGameTime = newTime.getCurrentGameTime();
-    this.currentDay.removeCompletedNotifications();
 
     const currentHourIndex =
       this.currentDay.getCurrentGameHour(currentGameTime);
 
     const updatedAttributesBitmap = this.handleRunningTask(currentGameTime);
     this.handleTaskStart(currentGameTime, currentHourIndex);
-    this.checkAndTriggerNotification();
+    this.checkAndTriggerNotification(currentGameTime);
 
     // Decrement attributes, passing the bitmap of updated attributes
     const attributes = this.player.decrementAttributes(updatedAttributesBitmap);
@@ -329,8 +328,11 @@ export default class Logic {
   resolveNotification() {
     console.log("🛑 Resolving notification...");
     this.notificationsQueue.shift(); // Remove the notification from the queue
-    this.currentNotification =
-      this.notificationsQueue.length > 0 ? this.notificationsQueue[0] : null; //Assign next notification or null
+    this.currentNotification = null;
+
+    setTimeout(() => {
+      this.checkAndTriggerNotification(this.time.getCurrentGameTime());
+    }, 3000); //Assign next notification or null
 
     // Resume previous activity if any
     if (this.currentNotification === null && this.currentRunningTask) {

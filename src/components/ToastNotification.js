@@ -1,4 +1,4 @@
-export default function ToastNofication({ text }) {
+export default function ToastNotification({ text }) {
   return (
     <div
       role="alert"

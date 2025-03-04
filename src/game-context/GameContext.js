@@ -11,7 +11,7 @@ import Time from "../classes/Time";
 import Player from "../classes/Player";
 import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
-import ToastNofication from "components/ToastNotification";
+import ToastNotification from "components/ToastNotification";
 import { notificationData } from "../data/notificationData";
 
 export const GameState = Object.freeze({
@@ -48,14 +48,6 @@ export const GameProvider = ({ children }) => {
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
-
-    //Load notifications into the game logic
-    if (notificationData && Array.isArray(notificationData)) {
-      logic.loadNotifications(notificationData);
-      setNotifications([...logic.notificationsQueue]);
-    } else {
-      console.error("❌ notificationData is not an array!");
-    }
   }, []);
 
   // Update state when a notification is accepted
@@ -118,6 +110,7 @@ export const GameProvider = ({ children }) => {
 
     // Subscribe to time updates from the game logic
     const unsubscribe = gameLogic.time.subscribe((newTime) => {
+      // console.log("Time updated to:", newTime.getCurrentGameTime());
       setCurrentTime(newTime);
 
       // Get updated attributes from game logic
@@ -209,7 +202,17 @@ export const GameProvider = ({ children }) => {
 
   return (
     <>
-      {mode === GameState.PAUSED && <ToastNofication text="Plan your day!" />}
+      {gameLogic && gameLogic.currentNotification && (
+        <div className="notification-popup">
+          <p>{gameLogic.currentNotification.getDescription()}</p>
+          <div>
+            {!gameLogic.currentNotification.getForced() && (
+              <button onClick={handleRejectNotification}>Reject</button>
+            )}
+            <button onClick={handleAcceptNotification}>Accept</button>
+          </div>
+        </div>
+      )}
       <GameContext.Provider value={value}>{children}</GameContext.Provider>
     </>
   );
