@@ -44,7 +44,7 @@ export const GameProvider = ({ children }) => {
 
   const initializeGameState = useCallback(() => {
     const time = new Time();
-    const player = new Player();
+    const player = new Player("TestPlayer", true);
 
     const dayEndHandler = (currentDay, nextDay, startTime, tasks) => {
       setDay(nextDay);

@@ -267,7 +267,7 @@ export default class Logic {
     }
 
     // Determine the active hours for notifications (e.g., 6AM to 10PM)
-    const startHour = 6;
+    const startHour = 2;
     const endHour = 22;
     const activeHours = endHour - startHour;
     const count = 4 + Math.floor(Math.random() * 5); // random value: 4, 5, 6, 7, or 8
@@ -321,12 +321,11 @@ export default class Logic {
     if (this.currentNotification) return; // Wait until current one is resolved
 
     for (let notification of this.notificationsQueue) {
-      // If notification is overdue by more than, say, 5 minutes,
-      // re-schedule it to currentGameTime + a random delay (e.g., 10–20 minutes)
-      if (
-        !notification.getCompleted() &&
-        notification.getNotificationTime() <= currentGameTime
-      ) {
+      const notificationTime = notification.getNotificationTime();
+      const diff = currentGameTime - notificationTime; // difference in milliseconds
+
+      // If overdue by more than 5 minutes, reschedule
+      if (!notification.getCompleted() && diff > 5 * 60 * 1000) {
         const delayMinutes = 10 + Math.floor(Math.random() * 11); // 10 to 20 minutes
         const newTime = new Date(currentGameTime.getTime());
         newTime.setMinutes(newTime.getMinutes() + delayMinutes);
@@ -334,9 +333,11 @@ export default class Logic {
         console.log(
           `Rescheduled notification "${notification.getHeader()}" to: ${newTime}`,
         );
+        // Continue to next notification after rescheduling
+        continue;
       }
 
-      // Now check if the notification should trigger
+      // Now, if the notification is due, trigger it
       if (
         !notification.getCompleted() &&
         notification.getNotificationTime() <= currentGameTime
@@ -346,20 +347,6 @@ export default class Logic {
         break;
       }
     }
-    /*
-    if (this.currentNotification) return; // Wait until the current notification is resolved
-
-    for (let notification of this.notificationsQueue) {
-      if (
-        !notification.getCompleted() &&
-        notification.getNotificationTime() <= currentGameTime
-      ) {
-        console.log(`🔔 Notification triggered: ${notification.header}`);
-        this.triggerNotification(notification);
-        break;
-      }
-    }
-    */
   }
 
   // Handle the notification logic (pause tasks if forced)
@@ -380,15 +367,25 @@ export default class Logic {
 
   resolveNotification() {
     console.log("🛑 Resolving notification...");
-    this.notificationsQueue.shift(); // Remove the notification from the queue
-    this.currentNotification =
-      this.notificationsQueue.length > 0 ? this.notificationsQueue[0] : null; //Assign next notification or null
+    // Remove the current notification from the queue and clear it immediately
+    this.notificationsQueue.shift();
+    this.currentNotification = null; // Clear immediately for UI update
 
-    // Resume previous activity if any
-    if (this.currentNotification === null && this.currentRunningTask) {
-      console.log("▶ Resuming previous task:", this.currentRunningTask.header);
-      this.currentRunningTask.resumePreviousActivity();
-    }
+    // Schedule the next notification after the cooldown period
+    const cooldownInMilliseconds = 5 * 60 * 1000; // 5 minutes cooldown (adjust as needed)
+    setTimeout(() => {
+      if (this.notificationsQueue.length > 0) {
+        this.currentNotification = this.notificationsQueue[0];
+      }
+      // Optionally, resume any paused activity here if needed
+      if (!this.currentNotification && this.currentRunningTask) {
+        console.log(
+          "▶ Resuming previous task:",
+          this.currentRunningTask.header,
+        );
+        this.currentRunningTask.resumePreviousActivity();
+      }
+    }, cooldownInMilliseconds);
   }
 
   // Accept the notification decision

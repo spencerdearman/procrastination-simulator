@@ -13,9 +13,10 @@ export const ATTRIBUTE_BITS = {
 };
 
 export default class Player {
-  constructor(name = "Lebron") {
+  constructor(name = "Lebron", testingMode = false) {
     this.name = name;
     this.attributes = { ...FULL_ATTRIBUTES };
+    this.testingMode = testingMode; //to test the game
   }
 
   getAttributes() {
@@ -47,6 +48,11 @@ export default class Player {
   }
 
   decrementAttributes(updatedAttributesBitmap = 0) {
+    // If in testing mode, skip decrementing attributes
+    if (this.testingMode) {
+      return this.getAttributes();
+    }
+
     Object.keys(this.attributes).forEach((key) => {
       // Skip decrementing if the attribute was updated this tick
       if (!(updatedAttributesBitmap & ATTRIBUTE_BITS[key])) {
