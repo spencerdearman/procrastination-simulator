@@ -109,6 +109,12 @@ export default class Logic {
     this.currentDay = null;
   }
 
+  canPlanTask(index) {
+    const currentGameTime = this.time.getCurrentGameTime();
+    let newGameTime = new Date(currentGameTime);
+    return this.currentDay.canPlanTask(index, newGameTime);
+  }
+
   // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED
   logicPlanTask(task, index) {
     const currentGameTime = this.time.getCurrentGameTime();

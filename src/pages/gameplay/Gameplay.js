@@ -4,8 +4,10 @@ import NotificationsList from "components/Notifications";
 import Sidebar from "components/Sidebar";
 import TickingSound from "components/TickingSound";
 import { useGame } from "game-context/GameContext";
+import { useRef } from "react";
 
 export default function Gameplay() {
+  const draggedTaskGhostRef = useRef();
   const { mode } = useGame();
   return (
     <div id="container" onDragOver={(e) => e.preventDefault()}>
@@ -13,9 +15,9 @@ export default function Gameplay() {
       <TickingSound />
       <div id="main">
         <Header mode={mode} />
-        <Calendar />
+        <Calendar draggedTaskGhostRef={draggedTaskGhostRef} />
       </div>
-      <Sidebar />
+      <Sidebar draggedTaskGhostRef={draggedTaskGhostRef} />
     </div>
   );
 }

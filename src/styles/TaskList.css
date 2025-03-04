@@ -48,6 +48,7 @@
   cursor: grabbing;
 }
 
+.dragging .hideable,
 .task-block:active .hideable {
   display: none !important;
 }
@@ -86,4 +87,21 @@
 
 .task-block.flashing {
   animation: flashing 2.1s infinite ease-in-out;
+}
+
+.dragging {
+  opacity: 95%;
+  position: absolute;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.dragging.invalid {
+  border: dashed red 4px !important;
+  background-color: lightgray;
+}
+
+.dragging.invalid * {
+  background-color: inherit;
+  animation: none;
 }
