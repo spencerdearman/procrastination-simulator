@@ -282,6 +282,7 @@ export default class Logic {
       const notification = new Notification(
         data.header,
         data.notificationDuration,
+        data.category,
         data.forced,
       );
       notification.setDescription(data.description);
@@ -405,7 +406,6 @@ export default class Logic {
     // If the notification has a follow-up task, add it to the current day's schedule
     if (this.currentNotification.getFollowUp()) {
       const newTask = new Task(this.currentNotification.getFollowUp());
-      newTask.setCategory("NOTIFICATION");
       newTask.setStartTime(this.time.getCurrentGameTime());
       newTask.setDuration(1); // Default to 1 hour for follow-ups
       this.currentDay.addTask(newTask);
