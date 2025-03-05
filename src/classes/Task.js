@@ -5,6 +5,7 @@ export default class Task {
     SOCIAL: "social",
     ENERGY: "energy",
     MENTAL: "mental",
+    NOTIFICATION: "notification", // added category for notifications
   });
 
   constructor(name) {

@@ -12,6 +12,7 @@ import Player from "../classes/Player";
 import Logic from "../classes/Logic";
 import taskData from "../data/taskData";
 import ToastNofication from "components/ToastNotification";
+import { notificationData } from "../data/notificationData";
 
 export const GameState = Object.freeze({
   TUTORIAL: "tutorial",
@@ -36,14 +37,14 @@ export const GameProvider = ({ children }) => {
   const [attributes, setAttributes] = useState({});
   const [currentTime, setCurrentTime] = useState(null);
   const [tasks, setTasks] = useState([]);
-  const [notifications] = useState([]);
+  const [notifications, setNotifications] = useState([]);
   const location = useLocation();
   const navigate = useNavigate();
   const [day, setDay] = useState(null);
 
   const initializeGameState = useCallback(() => {
     const time = new Time();
-    const player = new Player();
+    const player = new Player("TestPlayer");
 
     const dayEndHandler = (currentDay, nextDay, startTime, tasks) => {
       setDay(nextDay);
@@ -57,7 +58,8 @@ export const GameProvider = ({ children }) => {
       });
     };
 
-    const logic = new Logic(3, time, player, dayEndHandler);
+    const logic = new Logic(3, time, player, dayEndHandler, notificationData);
+    logic.loadNotifications(notificationData);
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
@@ -101,7 +103,13 @@ export const GameProvider = ({ children }) => {
       // Get updated attributes from game logic
       setAttributes(gameLogic.getAttributes());
 
+      // *** Update notifications state here ***
+      const newNotification = gameLogic.currentNotification;
+      // Wrap in an array so NotificationsList can map over it
+      setNotifications(newNotification ? [newNotification] : []);
+
       const currentDay = gameLogic.getCurrentDay();
+
       if (currentDay === null) {
         navigate("/game/end-of-week");
         return;
@@ -112,6 +120,24 @@ export const GameProvider = ({ children }) => {
       unsubscribe();
     };
   }, [gameLogic, navigate]);
+
+  const handleAcceptNotification = () => {
+    if (gameLogic) {
+      gameLogic.acceptNotification();
+      // Update notifications immediately after a decision
+      const newNotification = gameLogic.currentNotification;
+      setNotifications(newNotification ? [newNotification] : []);
+    }
+  };
+
+  const handleRejectNotification = () => {
+    if (gameLogic) {
+      gameLogic.rejectNotification();
+      // Update notifications immediately after a decision
+      const newNotification = gameLogic.currentNotification;
+      setNotifications(newNotification ? [newNotification] : []);
+    }
+  };
 
   const logicPlanTask = useCallback(
     (taskData, hourIndex) => {
@@ -163,6 +189,8 @@ export const GameProvider = ({ children }) => {
       currentTime,
       tasks,
       notifications,
+      handleAcceptNotification,
+      handleRejectNotification,
       canPlanTask,
       logicPlanTask,
       getPlannedTasks,
@@ -177,6 +205,7 @@ export const GameProvider = ({ children }) => {
       notifications,
       canPlanTask,
       logicPlanTask,
+      gameLogic,
       getPlannedTasks,
       setMode,
       mode,
