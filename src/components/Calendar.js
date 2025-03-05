@@ -45,6 +45,11 @@ export default function Calendar({ draggedTaskGhostRef }) {
                   );
                   gameContext.logicPlanTask(taskData, i);
                   console.log(`Dropped task "${taskData.name}" at hour ${i}`);
+
+                  //Adding audio
+                  const taskPlacedSound = new Audio("/sound/new_task.mp3");
+                  taskPlacedSound.volume = 0.5; // Adjust volume as needed
+                  taskPlacedSound.play()
                 } catch (error) {
                   console.error("Error handling drop:", error);
                 }

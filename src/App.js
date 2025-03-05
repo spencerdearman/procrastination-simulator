@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import WeekSummary from "./components/WeekSummary";
 import StartPage from "./components/StartPage";
 import Tutorial from "./components/Tutorial";
@@ -10,7 +10,23 @@ import GameOver from "pages/GameOver";
 import EndOfDay from "pages/EndOfDay";
 import EndOfWeek from "pages/EndOfWeek";
 
+// Reference the sound file in the public folder
+const clickSound = "/sound/click.mp3";
+
 function App() {
+  useEffect(() => {
+    const handleClick = () => {
+      const audio = new Audio(clickSound);
+      audio.volume = 0.3;
+      audio.play();
+    };
+    document.addEventListener("click", handleClick);
+
+    return () => {
+      document.removeEventListener("click", handleClick);
+    };
+  }, []);
+
   return (
     <GameProvider>
       <Routes>
