@@ -19,6 +19,7 @@ export default class Task {
     this.locked = false;
     this.current = false;
     this.duration = 1; // In-game hours
+    this.ambient_sound = null;
     this.attributeImpacts = {
       academics: 0,
       socialLife: 0,
@@ -130,6 +131,22 @@ export default class Task {
       console.warn(`Task "${this.name}" is already running.`);
       return;
     }
+    let ambient = false;
+    console.log(this.name);
+    if (this.name.toLowerCase() === "naptime") {
+      this.ambient_sound = new Audio("/sound/snoring.mp3")
+      ambient = true;
+    }
+    if (this.name.toLowerCase() === "sleep") {
+      console.log("sleep-2");
+      this.ambient_sound = new Audio("/sound/snoring.mp3")
+      ambient = true;
+    }
+    if (ambient) {
+      this.ambient_sound.volume = 0.2;
+      this.ambient_sound.loop = true;
+      this.ambient_sound.play();
+    }
     this.setCurrent(true);
     console.log(`Task "${this.name}" has started.`);
   }
@@ -193,8 +210,27 @@ export default class Task {
       playerAttributes[key] += this.getAttributeImpact(key);
       playerAttributes[key] = Math.min(100, Math.max(0, playerAttributes[key]));
     }
+    if (this.ambient_sound) {
+      this.ambient_sound.pause();
+      this.ambient_sound = null;
+    }
 
     console.log(`Task "${this.name}" completed successfully.`);
+    //select sound type
+    console.log(this.category);
+    let completedSound = new Audio("/sound/heal.mp3");
+    completedSound.volume = 0.2;
+    if (this.category.toLowerCase() === 'mental') {
+      completedSound = new Audio("/sound/mental.mp3");
+      completedSound.volume = 0.3;
+    } else if (this.category.toLowerCase() === 'academic') {
+      completedSound = new Audio("/sound/page-flip.mp3");
+      completedSound.volume = 0.3;
+    } else if (this.category.toLowerCase() === 'social') {
+      completedSound = new Audio("/sound/social.mp3");
+      completedSound.volume = 0.3;
+    } // Adjust volume as needed
+    completedSound.play();
     return true;
   }
 

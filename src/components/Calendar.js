@@ -48,12 +48,8 @@ export default function Calendar({ draggedTaskGhostRef }) {
 
                   //Adding audio
                   const taskPlacedSound = new Audio("/sound/new_task.mp3");
-                  taskPlacedSound.volume = 0.3; // Adjust volume as needed
-                  taskPlacedSound.play().then(() => {
-                    console.log("Sound played successfully");
-                  }).catch((error) => {
-                    console.error("Error playing sound:", error);
-                  });
+                  taskPlacedSound.volume = 0.5; // Adjust volume as needed
+                  taskPlacedSound.play()
                 } catch (error) {
                   console.error("Error handling drop:", error);
                 }
