@@ -111,6 +111,7 @@ export const GameProvider = ({ children }) => {
       const currentDay = gameLogic.getCurrentDay();
 
       if (currentDay === null) {
+        setMode(GameState.COMPLETE);
         navigate("/game/end-of-week");
         return;
       }
