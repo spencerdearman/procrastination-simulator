@@ -77,7 +77,7 @@ function StartPage() {
           {/* The typed text */}
           <p className="blurb-text" id="text-position" ref={blurbRef} />
           {showContinue && (
-            <div style={{ marginTop: "1rem", marginLeft: "35rem" }}>
+            <div id="click-title">
               Click to Continue
             </div>
           )}
