@@ -3,7 +3,7 @@ import React from "react";
 import "../styles/Stats.css";
 
 export const StatIcons = Object.freeze({
-  ACADEMICS: "📖",
+  ACADEMIC: "📖",
   SOCIAL: "🍻",
   MENTAL: "😌",
   ENERGY: "⚡️",
@@ -19,10 +19,10 @@ const Stats = () => {
 
   return (
     <div id="stats">
-      <p className="side-bar-header">Your Stats</p>
       <div id="stats-block">
+        <h3 className="side-bar-header">Your Stats</h3>
         <StatBar
-          icon={StatIcons.ACADEMICS}
+          icon={StatIcons.ACADEMIC}
           title="Academics"
           colorClass="academics"
           score={attributes.academics}
@@ -64,7 +64,7 @@ function StatBar({ icon, title, colorClass, score }) {
           value={score}
           max="100"
         ></progress>
-        <label className={`min-w-[30px] ml-2 ${isLow ? "flash-warning" : ""}`}>
+        <label className={`min-w-[40px] ml-2 ${isLow ? "flash-warning" : ""}`}>
           {score}
         </label>
       </div>

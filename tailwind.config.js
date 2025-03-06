@@ -14,7 +14,7 @@ module.exports = {
           dark: "#a1544a", // Border for Social Life
         },
         yellow: {
-          DEFAULT: "#81beff", // Background for Energy
+          DEFAULT: "#f6e36b", // Background for Energy
           dark: "#b98d35", // Border for Energy
         },
         green: {

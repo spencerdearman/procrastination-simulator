@@ -2,9 +2,9 @@ export default class Task {
   // Define available categories as a static property.
   static Category = Object.freeze({
     ACADEMIC: "academic",
-    SOCIAL: "social",
-    ENERGY: "energy",
-    MENTAL: "mental",
+    SOCIAL: "Social",
+    ENERGY: "Energy",
+    MENTAL: "Mental",
   });
 
   constructor(name) {
@@ -30,9 +30,9 @@ export default class Task {
   }
 
   setCategory(value) {
-    const normalizedValue = value.toLowerCase();
-    if (Object.values(Task.Category).includes(normalizedValue)) {
-      this.category = normalizedValue;
+    // const normalizedValue = value.toLowerCase();
+    if (Object.values(Task.Category).includes(value)) {
+      this.category = value;
     } else {
       console.error(
         `Invalid category: ${value}. Allowed categories are: ${Object.values(

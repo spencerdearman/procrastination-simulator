@@ -14,7 +14,7 @@ export default function TaskBlock({ task, draggable, mode }) {
 
   return (
     // This outer div is necessary for styling the flashing animation
-    <div className={`task-block-container type-${task.category}`}>
+    <div className={`task-block-container type-${task.category.toLowerCase()}`}>
       <div
         className={`task-block ${mode === GameState.PAUSED ? "flashing" : ""}`}
         id={task.id}

@@ -4,18 +4,12 @@ import "styles/TaskList.css";
 import { useGame } from "game-context/GameContext";
 
 //this is the task list that will be used to display the tasks
-export default function TaskList({ draggedTaskGhostRef }) {
-  const { tasks, mode } = useGame();
-  const [unplannedTasks, setUnplannedTasks] = useState(tasks);
-
-  useEffect(() => {
-    setUnplannedTasks(tasks.filter((task) => !task.startTime || task.reusable));
-  }, [tasks]);
-
+export default function TaskList({ draggedTaskGhostRef, viewableTasks }) {
+  const { mode } = useGame();
   return (
     <div className="task-list">
       <div className="tasks-container">
-        {unplannedTasks.map((task, index) => (
+        {viewableTasks.map((task, index) => (
           <TaskBlock
             key={`${task.name}-${index}`}
             task={task}
