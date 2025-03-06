@@ -21,6 +21,19 @@ export default function TaskFilterBar({ setTaskFilterFunction }) {
   const tailwindDict = initTailwindDict();
   const [filterAttribute, setFilterAttribute] = useState();
 
+  const handleFilterChange = (id) => {
+    const shouldClearFilter = filterAttribute === id;
+
+    setTaskFilterFunction(() => {
+      if (shouldClearFilter) {
+        return undefined; // Clear the filter
+      }
+      return (task) => task.category === id;
+    });
+
+    setFilterAttribute(shouldClearFilter ? null : id);
+  };
+
   return (
     <>
       <small className="w-full block text-center mt-2 text-lg">
@@ -32,21 +45,12 @@ export default function TaskFilterBar({ setTaskFilterFunction }) {
             const attribute = tailwindDict[key];
             return (
               <div
+                key={attribute.id}
                 className={`size-[50px] relative text-3xl ${attribute.color} rounded-lg hover:scale-[1.05] transition-transform ${filterAttribute === attribute.id ? "border-white" : ""}`}
               >
                 <button
-                  key={attribute.id}
                   className="size-full"
-                  onClick={() =>
-                    setTaskFilterFunction(() => {
-                      if (filterAttribute === attribute.id) {
-                        setFilterAttribute(null);
-                        return undefined; // clear the filter
-                      }
-                      setFilterAttribute(attribute.id);
-                      return (task) => task.category === attribute.id;
-                    })
-                  }
+                  onClick={() => handleFilterChange(attribute.id)}
                 >
                   {attribute.icon}
                 </button>
