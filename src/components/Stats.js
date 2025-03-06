@@ -54,7 +54,7 @@ function StatBar({ icon, title, colorClass, score }) {
   const isLow = score < 10;
 
   return (
-    <div className="stats-bar">
+    <div className="stats-bar flex-1">
       <p className="side-bar-subheading">
         {icon} {title}
       </p>

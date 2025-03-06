@@ -7,8 +7,8 @@ import { useGame } from "game-context/GameContext";
 export default function TaskList({ draggedTaskGhostRef, viewableTasks }) {
   const { mode } = useGame();
   return (
-    <div className="task-list">
-      <div className="tasks-container">
+    <div className="overflow-hidden h-full">
+      <div className="tasks-container overflow-y-scroll">
         {viewableTasks.map((task, index) => (
           <TaskBlock
             key={`${task.name}-${index}`}

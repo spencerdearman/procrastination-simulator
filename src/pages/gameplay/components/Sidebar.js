@@ -23,9 +23,9 @@ function Sidebar({ draggedTaskGhostRef }) {
   }, [tasks, filterPredicate]);
 
   return (
-    <div id="sidebar">
+    <div id="sidebar" className="overflow">
       <Stats />
-      <div className="overflow-y-scroll h-full w-full">
+      <div className="w-full flex-[2] overflow-hidden flex flex-col">
         <h3 className="text-3xl text-center">Tasks</h3>
         <TaskFilterBar setTaskFilterFunction={setFilterPredicate} />
         <TaskList
