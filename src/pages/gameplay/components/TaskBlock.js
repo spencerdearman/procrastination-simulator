@@ -101,7 +101,7 @@ export default function TaskBlock({
   return (
     // This outer div is necessary for styling the flashing animation
     <div
-      className={`task-block-container transition-[top] duration-200 ease-out type-${task.category.toLowerCase()} mb-4 mx-4`}
+      className={`task-block-container transition-[top] duration-200 ease-out type-${task.category.toLowerCase()} mb-4`}
       style={{ marginTop: `${topMargin}px` }}
       onMouseDown={handleClick}
       onMouseUp={() => setTopMargin(0)}

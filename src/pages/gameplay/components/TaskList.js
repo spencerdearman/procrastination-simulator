@@ -8,7 +8,7 @@ export default function TaskList({ draggedTaskGhostRef, viewableTasks }) {
   const { mode } = useGame();
   return (
     <div className="overflow-hidden h-full">
-      <div className="tasks-container overflow-y-scroll">
+      <div className="tasks-container overflow-y-scroll p-4 bg-[#fdf7dd] rounded-[15px] border-2 border-blue-dark">
         {viewableTasks.map((task, index) => (
           <TaskBlock
             key={`${task.name}-${index}`}

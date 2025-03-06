@@ -19,7 +19,7 @@ const Stats = () => {
 
   return (
     <div id="stats">
-      <div id="stats-block">
+      <div id="stats-block" className="border-2 border-blue-dark">
         <h3 className="side-bar-header">Your Stats</h3>
         <StatBar
           icon={StatIcons.ACADEMIC}
