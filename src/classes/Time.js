@@ -65,7 +65,8 @@ export default class Time {
 
     newTimeInstance.lastGameRecordTime = newGameTime;
 
-    return newTimeInstance;
+    // Call all subscribers with the new time
+    this.subscribers.forEach((callback) => callback(newTimeInstance));
   }
 
   xSpeed(speed) {
@@ -92,8 +93,7 @@ export default class Time {
 
     this.lastRealWorldCheckTime = Date.now();
     this.gameLoopInterval = setInterval(() => {
-      const newTime = this.tick();
-      this.subscribers.forEach((callback) => callback(newTime));
+      this.tick();
     }, 1000);
   }
 

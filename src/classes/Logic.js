@@ -18,6 +18,13 @@ export default class Logic {
     this.currentDayIndex = 0;
     this.currentDay = this.days[0];
     this.time = timeInstance || new Time();
+
+    // Subscribe to time updates
+    this.timeUnsubscribe = this.time.subscribe((newTime) => {
+      this.handleGameTick(this.time, newTime);
+      this.time = newTime;
+    });
+
     this.tasksCompleted = [];
     this.timeXSpeed = 1;
     this.notificationsQueue = [];
@@ -96,12 +103,6 @@ export default class Logic {
 
     this.initializeCurrentDay();
     console.log("Tasks added to Day 1:", this.currentDay.tasks);
-
-    // Subscribe to time updates
-    this.timeUnsubscribe = this.time.subscribe((newTime) => {
-      this.handleGameTick(this.time, newTime);
-      this.time = newTime;
-    });
 
     return parsedTasks;
   }
