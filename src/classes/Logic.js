@@ -79,10 +79,6 @@ export default class Logic {
     });
   }
 
-  isWithinTimeWindow(task, currentGameTime) {
-    return DayUtils.isWithinTimeWindow(task, currentGameTime);
-  }
-
   initializeCurrentDay() {
     //filter to the corresponding days/unplanned list and tasks
     this.availableTasks.forEach((task) => {
@@ -193,7 +189,7 @@ export default class Logic {
       if (
         task &&
         !task.completed &&
-        this.isWithinTimeWindow(task, currentGameTime)
+        DayUtils.isWithinTimeWindow(task, currentGameTime)
       ) {
         task.startTask();
         this.currentRunningTask = task;
