@@ -195,12 +195,13 @@ export default class Day {
     this.logs.push(logEntry);
   }
 
-  canPlanTask(index, gameTime) {
+  canPlanTask(index, gameTime, task = null) {
     if (
       index < 0 ||
       index >= this.tasks.length ||
       index < gameTime.getHours() ||
-      this.tasks[index] !== null
+      this.tasks[index] !== null ||
+      task?.completed
     ) {
       return false;
     }
