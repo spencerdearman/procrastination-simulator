@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import Task from "./Task.js";
 
 export class DayUtils {
@@ -50,7 +51,7 @@ export const DaysOfWeek = Object.freeze({
 
 export default class Day {
   constructor(dayOfWeek) {
-    this.id = Math.random().toString(36).substring(2, 15); // Generate random ID
+    this.id = uuid(); // Generate random ID
     this.notifications = []; // Stores the list of notification class objects
     // Stores the list of task class objects ACTUALLY ON CALENDAR
     this.tasks = [
@@ -209,18 +210,17 @@ export default class Day {
   // THIS GETS CALLED BY LOGIC ONLY
   planTask(task, index, date) {
     if (!(task instanceof Task)) {
-      console.error("Invalid task. Must be an instance of Task.");
       return false;
     }
 
-    if (!this.canPlanTask(index, date)) return false;
+    if (!this.canPlanTask(index, date, task)) return false;
 
     let taskToSchedule = task;
 
     if (task.reusable) {
       taskToSchedule = new Task(task.name);
       taskToSchedule.initializeFromData(task);
-      taskToSchedule.id = `${task.id}-${Date.now()}`; // Unique ID
+      taskToSchedule.id = `${task.id}-${uuid()}`; // Unique ID
       taskToSchedule.reusable = false; // The copy isn't reusable
     }
 
