@@ -11,7 +11,7 @@ export class DayUtils {
   }
 
   static isWithinTimeWindow(task, currentGameTime) {
-    if (!task.startTime || !task.endTime) return true;
+    if (!task.startTime || !task.endTime) return false;
 
     if (!(currentGameTime instanceof Date)) {
       console.error(
