@@ -160,33 +160,24 @@ export default class Logic {
   }
 
   handleRunningTask(currentGameTime) {
-    let updatedAttributesBitmap = 0;
     const playerAttributesBeforeUpdate = this.player.attributes;
-    if (
-      this.currentRunningTask &&
-      currentGameTime >= this.currentRunningTask.endTime
-    ) {
-      // Apply task's attribute impacts and update bitmap
-      Object.entries(this.currentRunningTask.attributeImpacts).forEach(
-        ([attribute, impact]) => {
-          if (impact !== 0) {
-            this.player.addPoints(attribute, impact);
-            // Update bitmap for non-zero impacts
-            updatedAttributesBitmap |= ATTRIBUTE_BITS[attribute];
-          }
-        },
-      );
+    let bitmap = 0;
 
-      if (this.currentRunningTask.completeTask(this.player.attributes)) {
+    if (this.currentRunningTask) {
+      bitmap = this.addPointsToPlayer(this.currentRunningTask.attributeImpacts);
+      if (
+        currentGameTime >= this.currentRunningTask.endTime &&
+        this.currentRunningTask.completeTask()
+      ) {
         this.currentDay.logTaskCompleted(
           this.currentRunningTask,
           playerAttributesBeforeUpdate,
         );
+        this.currentDay.updateCompleted();
+        this.currentRunningTask = null;
       }
-      this.currentDay.updateCompleted();
-      this.currentRunningTask = null;
-      return updatedAttributesBitmap;
     }
+    return bitmap;
   }
 
   handleTaskStart(currentGameTime, currentHourIndex) {
@@ -222,10 +213,21 @@ export default class Logic {
     }
   }
 
-  applyAttributeChanges(changes) {
-    for (let [key, value] of Object.entries(changes)) {
-      this.player.addPoints(key, value);
-    }
+  addPointsToPlayer(changes) {
+    let updatedAttributesBitmap = 0;
+    const tickIncrementFactor = 5;
+
+    Object.entries(changes).forEach(([attribute, impact]) => {
+      if (impact !== 0) {
+        this.player.addPoints(
+          attribute,
+          Math.ceil(impact / tickIncrementFactor),
+        );
+        // Update bitmap for non-zero impacts
+        updatedAttributesBitmap |= ATTRIBUTE_BITS[attribute];
+      }
+    });
+    return updatedAttributesBitmap;
   }
 
   beginDay() {

@@ -233,6 +233,15 @@ export default class Day {
     taskToSchedule.setStartTime(plannedStartTime);
     taskToSchedule.setEndTime(); // Auto-calculates end time based on duration
 
+    // If this is a move attempt (task was on the calendar previously),
+    // remove it from its previous location
+    const oldIndex = this.tasks.findIndex(
+      (t) => t && t.id === taskToSchedule.id,
+    );
+    if (oldIndex !== -1) {
+      this.tasks[oldIndex] = null;
+    }
+
     // Move task to planned tasks
     this.tasks[index] = taskToSchedule;
 
