@@ -68,12 +68,6 @@ export default class Time {
     return newTimeInstance;
   }
 
-  compareTwoTime() {}
-
-  isTriggered() {}
-
-  hasEnded() {}
-
   xSpeed(speed) {
     this.playerDefinedSpeed = speed;
   }
