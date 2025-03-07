@@ -46,7 +46,6 @@
 #### **Functions**
 
 - `addPoints(attribute, amount)`: Increases the value of an attribute.
-- `reducePoints(attribute, amount)`: Decreases the value of an attribute.
 - `resetAttributes()`: Resets all attributes to default values.
 - `getAttribute(attribute)`: Retrieves the value of a specific attribute.
 - `getAllAttributes()`: Returns all attributes as an object.

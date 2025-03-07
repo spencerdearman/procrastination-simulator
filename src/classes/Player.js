@@ -35,18 +35,6 @@ export default class Player {
     return this.getAttributes();
   }
 
-  reducePoints(attribute, amount) {
-    if (this.attributes.hasOwnProperty(attribute)) {
-      this.attributes[attribute] = Math.min(
-        100,
-        Math.max(0, this.attributes[attribute] - amount),
-      );
-    } else {
-      console.warn(`Attribute "${attribute}" does not exist.`);
-    }
-    return this.getAttributes();
-  }
-
   decrementAttributes(updatedAttributesBitmap = 0) {
     // If in testing mode, skip decrementing attributes
     if (this.testingMode) {
