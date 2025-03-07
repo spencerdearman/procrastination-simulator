@@ -245,42 +245,6 @@ export default class Day {
     return true;
   }
 
-  // DONT CALL THIS
-  movePlannedTask(task, index, date) {
-    console.log("entering movePlannedTask");
-    if (!(task instanceof Task)) {
-      console.error("Invalid task. Must be an instance of Task.");
-      return;
-    }
-
-    if (index < 0 || index >= this.tasks.length) {
-      console.error(`Invalid task index for "${task.name}":`, index);
-      return;
-    }
-
-    if (this.tasks[index] !== null) {
-      console.error(
-        `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
-      );
-      return;
-    }
-
-    // Create a new startTime based on the given index and date
-    const plannedStartTime = new Date(date);
-    plannedStartTime.setHours(index, 0, 0, 0); // Set hour to match index, reset minutes/seconds
-
-    // Set task time values
-    task.setStartTime(plannedStartTime);
-    task.setEndTime(); // Auto-calculates end time based on duration
-
-    // Move task to planned tasks
-    const oldIndex = this.tasks.findIndex((t) => t === task);
-    this.tasks[oldIndex] = null;
-    console.log("index", index);
-    console.log("oldIndex", oldIndex);
-    this.tasks[index] = task;
-  }
-
   // Removes a task from the task list of the day
   deleteTask(taskName) {
     const index = this.tasks.findIndex((task) => task.name === taskName);
