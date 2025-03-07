@@ -144,14 +144,6 @@ export default class Logic {
     const updatedAttributesBitmap = this.handleRunningTask(currentGameTime);
     this.handleTaskStart(currentGameTime, currentHourIndex);
     this.checkAndTriggerNotification(currentGameTime);
-    console.log("Current game time:", currentGameTime);
-    this.notificationsQueue.forEach((n) => {
-      console.log("Notification scheduled for:", n.getNotificationTime());
-    });
-
-    this.notificationsQueue.forEach((n) => {
-      console.log("Notification instance:", n, n instanceof Notification);
-    });
 
     // Decrement attributes, passing the bitmap of updated attributes
     const attributes = this.player.decrementAttributes(updatedAttributesBitmap);
@@ -167,8 +159,6 @@ export default class Logic {
       this.currentRunningTask &&
       currentGameTime >= this.currentRunningTask.endTime
     ) {
-      console.log(`Completing Task: ${this.currentRunningTask.name}`);
-
       // Apply task's attribute impacts and update bitmap
       Object.entries(this.currentRunningTask.attributeImpacts).forEach(
         ([attribute, impact]) => {
@@ -205,9 +195,6 @@ export default class Logic {
         !task.completed &&
         this.isWithinTimeWindow(task, currentGameTime)
       ) {
-        console.log(
-          `Starting Task: ${task.name} at ${currentGameTime.toLocaleTimeString()}`,
-        );
         task.startTask();
         this.currentRunningTask = task;
       }

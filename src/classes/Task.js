@@ -132,7 +132,6 @@ export default class Task {
       return;
     }
     let ambient = false;
-    console.log(this.name);
     if (this.name.toLowerCase() === "naptime") {
       this.ambient_sound = new Audio("/sound/snoring.mp3");
       ambient = true;
@@ -148,7 +147,6 @@ export default class Task {
       this.ambient_sound.play();
     }
     this.setCurrent(true);
-    console.log(`Task "${this.name}" has started.`);
   }
 
   changeTime(newStartTime) {
@@ -215,9 +213,7 @@ export default class Task {
       this.ambient_sound = null;
     }
 
-    console.log(`Task "${this.name}" completed successfully.`);
     //select sound type
-    console.log(this.category);
     let completedSound = new Audio("/sound/heal.mp3");
     completedSound.volume = 0.2;
     if (this.category.toLowerCase() === "mental") {
