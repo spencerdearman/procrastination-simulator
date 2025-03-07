@@ -115,17 +115,28 @@ export default class Logic {
   }
 
   // CALL THIS FOR MOVING TASKS FROM PLANNED TO UNPLANNED
-  logicPlanTask(task, index) {
+  planTask(task, index) {
     const currentGameTime = this.time.getCurrentGameTime();
     let newGameTime = new Date(currentGameTime);
 
-    if (this.currentDay.planTask(task, index, newGameTime) && !task.reusable) {
-      this.availableTasks = this.availableTasks.filter((t) => t.id !== task);
+    // You can't move the current task
+    if (this.currentRunningTask === task) return;
+
+    if (this.currentDay.planTask(task, index, newGameTime)) {
+      if (!task.reusable) {
+        this.availableTasks = this.availableTasks.filter((t) => t.id !== task);
+      }
+
+      // If the task was added during the current hour, ensure to set
+      // the currentRunningTask to it
+      if (DayUtils.isWithinTimeWindow(task, currentGameTime)) {
+        this.currentRunningTask = task;
+      }
     }
   }
 
   // CALL THIS FOR MOVING PLANNED TASKS
-  logicMovePlannedTask(task, index) {
+  movePlannedTask(task, index) {
     const currentGameTime = this.time.getCurrentGameTime();
     let newGameTime = new Date(currentGameTime);
 

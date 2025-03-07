@@ -60,7 +60,7 @@ export default function Calendar({ draggedTaskGhostRef }) {
                   <TaskBlock
                     key={`${task.name}-${index}`}
                     task={task}
-                    draggable={false}
+                    draggable={!task.locked}
                     draggedTaskGhostRef={draggedTaskGhostRef}
                   />
                 ))}

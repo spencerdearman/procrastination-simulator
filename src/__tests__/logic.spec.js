@@ -3,6 +3,7 @@ import Player from "classes/Player";
 import Task from "classes/Task";
 import Time, { DEFAULT_SPEED } from "classes/Time";
 import { expect } from "@jest/globals";
+import { DayUtils } from "classes/Day";
 
 const defaultTask = {
   id: "study-art-history",
@@ -25,11 +26,23 @@ const defaultTask = {
   },
 };
 
+const waitAndTick = async (duration, time) => {
+  await new Promise((resolve) => setTimeout(resolve, duration));
+  time.tick();
+};
+
 describe("Logic", () => {
   let player;
+  let task;
+  let time;
+  let logic;
 
   beforeEach(() => {
     player = new Player("Matthew", false);
+    task = new Task(defaultTask.name);
+    task.initializeFromData(defaultTask);
+    time = new Time(null, DEFAULT_SPEED / 51);
+    logic = new Logic(1, time, player, null, []);
   });
 
   it("subscribes to time events on construction", () => {
@@ -44,17 +57,23 @@ describe("Logic", () => {
     expect(logic.time).toBe(time);
   });
 
-  it("doesn't complete task when a tick doesn't pass the task's end time", () => {
+  it("doesn't set the current running task when current time is not in task range", () => {
+    // Arrange & Act
+    logic.planTask(task, 10);
+
+    // Assert
+    expect(logic.currentRunningTask).toBeFalsy();
+    expect(task.startTime).toBeTruthy();
+    expect(task.endTime).toBeTruthy();
+  });
+
+  it("doesn't complete task when a tick doesn't pass the task's end time", async () => {
     // Arrange
-    const task = new Task(defaultTask.name);
-    task.initializeFromData(defaultTask);
-    const time = new Time();
-    const logic = new Logic(1, time, null, null, []);
     logic.planTask(task, 0);
     expect(logic.currentRunningTask).toBe(task);
 
     // Act
-    time.tick();
+    await waitAndTick(20, time);
 
     // Assert
     expect(logic.currentRunningTask).toBe(task);
@@ -63,36 +82,37 @@ describe("Logic", () => {
 
   it("completes task when a tick passes the task's end time", async () => {
     // Arrange
-    const task = new Task(defaultTask.name);
-    task.initializeFromData(defaultTask);
-    const time = new Time(null, DEFAULT_SPEED / 50);
-    const logic = new Logic(1, time, null, null, []);
+    let endTime;
+    time.subscribe((newTime) => (endTime = newTime));
+
     logic.planTask(task, 0);
     expect(logic.currentRunningTask).toBe(task);
 
     // Act
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    time.tick();
+    await waitAndTick(110, time);
 
     // Assert
     expect(logic.currentRunningTask).toBe(null);
     expect(task.completed).toBeTruthy();
+    expect(endTime.getCurrentGameTime().getTime()).toBeGreaterThanOrEqual(
+      task.startTime.getTime(),
+    );
   });
 
   it("sets the current task when the time has passed the task's start time after tick", async () => {
     // Arrange
-    const task = new Task(defaultTask.name);
-    task.initializeFromData(defaultTask);
-    const time = new Time(null, DEFAULT_SPEED / 50);
-    const logic = new Logic(1, time, null, null, []);
+    let endTime;
+    time.subscribe((newTime) => (endTime = newTime));
     logic.planTask(task, 1);
     expect(logic.currentRunningTask).toBeFalsy();
 
     // Act
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    time.tick();
+    await waitAndTick(100, time);
 
     // Assert
+    expect(
+      DayUtils.isWithinTimeWindow(task, endTime.getCurrentGameTime()),
+    ).toBeTruthy();
     expect(logic.currentRunningTask).toBe(task);
   });
 
@@ -103,14 +123,12 @@ describe("Logic", () => {
     runningTask.id += "-running";
     const newStartTask = new Task(defaultTask.name);
     newStartTask.initializeFromData(defaultTask);
-    const time = new Time(null, DEFAULT_SPEED / 50);
-    const logic = new Logic(1, time, null, null, []);
     logic.planTask(runningTask, 0);
     logic.planTask(newStartTask, 1);
     expect(logic.currentRunningTask).toBe(runningTask);
 
     // Act
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await waitAndTick(100, time);
     time.tick();
 
     // Assert
@@ -120,10 +138,6 @@ describe("Logic", () => {
 
   it("sets the current task when the time is equal to the task's start time on plan attempt", () => {
     // Arrange
-    const task = new Task(defaultTask.name);
-    task.initializeFromData(defaultTask);
-    const time = new Time();
-    const logic = new Logic(1, time, null, null, []);
     expect(logic.currentRunningTask).toBeFalsy();
 
     // Act
@@ -135,24 +149,64 @@ describe("Logic", () => {
 
   it("sets the current task when the time is within the task's time bounds on plan attempt", async () => {
     // Arrange
-    const task = new Task(defaultTask.name);
-    task.initializeFromData(defaultTask);
-    const time = new Time();
-    const startTime = time.getCurrentGameTime();
     let endTime;
-    const logic = new Logic(1, time, null, null, []);
-    expect(logic.currentRunningTask).toBeFalsy();
-    await new Promise((resolve) => setTimeout(resolve, 100));
     time.subscribe((newTime) => (endTime = newTime));
+    expect(logic.currentRunningTask).toBeFalsy();
 
     // Act
-    time.tick();
+    await waitAndTick(20, time);
     logic.planTask(task, 0);
 
     // Assert
-    expect(logic.currentRunningTask).toBe(task);
     expect(
-      startTime.getTime() === endTime.getCurrentGameTime().getTime(),
-    ).toBeFalsy();
+      DayUtils.isWithinTimeWindow(task, endTime.getCurrentGameTime()),
+    ).toBeTruthy();
+    expect(logic.currentRunningTask).toBe(task);
+  });
+
+  it("increments attributes multiple times during task", async () => {
+    // Arrange
+    logic.planTask(task, 0);
+    player.attributes = {
+      academics: 50,
+      socialLife: 50,
+      energy: 50,
+      mentalHealth: 50,
+    };
+    let currentStats = player.getAttributes();
+    let endTime;
+    time.subscribe((newTime) => (endTime = newTime));
+
+    // Ensure no weirdness with object equivalency
+    expect(currentStats).toEqual(player.getAttributes());
+
+    // Act - should increment stats three times, then complete the task
+    for (let i = 0; i < 3; i++) {
+      await waitAndTick(40, time);
+
+      const newAttributes = player.getAttributes();
+      expect(newAttributes).not.toEqual(currentStats);
+      currentStats = newAttributes;
+    }
+
+    // Assert
+    expect(task.completed).toBeTruthy();
+  });
+
+  it("prevents moving the currently-running task", () => {
+    // Arrange
+    logic.planTask(task, 0);
+    const startTime1 = task.startTime;
+    expect(logic.currentRunningTask).toBe(task);
+
+    // Act
+    logic.planTask(task, 4);
+    const startTime2 = task.startTime;
+
+    // Expect
+    expect(task.completed).toBeFalsy();
+    expect(logic.currentRunningTask).toBe(task);
+    expect(logic.getTasks().length).toBe(1);
+    expect(startTime1).toEqual(startTime2);
   });
 });

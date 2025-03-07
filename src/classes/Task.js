@@ -348,7 +348,7 @@ export default class Task {
     this.description = data.description;
     this.icon = data.icon;
     this.completed = data.completed;
-    this.locked = true; // Ensuring all tasks are locked
+    this.locked = data.locked; // Ensuring all tasks are locked
     this.current = data.current;
     this.duration = data.duration;
     this.reusable = data.reusable;

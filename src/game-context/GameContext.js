@@ -154,7 +154,7 @@ export const GameProvider = ({ children }) => {
       }
 
       // Let the game logic handle task planning
-      gameLogic.logicPlanTask(task, hourIndex);
+      gameLogic.planTask(task, hourIndex);
 
       // Update React state to reflect changes
       setTasks(gameLogic.getTasks());
