@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --hour-block-width: 70px;
+}
+
 body {
   font-family: "Pixelify Sans", sans-serif;
   background-color: rgb(135 129 118) !important;
