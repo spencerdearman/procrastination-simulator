@@ -3,30 +3,30 @@ import Task from "./Task.js";
 // should have the text content, the accept or decline button....thats it for MVP
 // also have the calls for accept and decline
 export default class Notification extends Task {
-  #description;
-  #notificationDuration; // Duration of the notification
-  #followUp; // Follow-up activity (string)
-  #accepted = false; // Whether the notification has been accepted (boolean)
-  #notificationTime; // Time of the notification (Date)
-  #option1; // First option text
-  #option2; // Second option text
-  #option1Impact = {}; // Impact of option 1 (e.g., { academics: 10, socialLife: -5 })
-  #option2Impact = {}; // Impact of option 2 (e.g., { academics: -5, socialLife: 10 })
-  #narrativeOutcome; // Narrative follow-up text
-  #forced = false; // Indicates if the notification is a forced interaction
-  #previousActivity; // The activity that is paused while the notification pops up
+  description;
+  notificationDuration; // Duration of the notification
+  followUp; // Follow-up activity (string)
+  accepted = false; // Whether the notification has been accepted (boolean)
+  notificationTime; // Time of the notification (Date)
+  option1; // First option text
+  option2; // Second option text
+  option1Impact = {}; // Impact of option 1 (e.g., { academics: 10, socialLife: -5 })
+  option2Impact = {}; // Impact of option 2 (e.g., { academics: -5, socialLife: 10 })
+  narrativeOutcome; // Narrative follow-up text
+  forced = false; // Indicates if the notification is a forced interaction
+  previousActivity; // The activity that is paused while the notification pops up
 
   /**
    * Constructor to initialize a Notification instance.
    * @param {string} header - The header of the task/notification.
    * @param {number} notificationDuration - The duration of the notification.
    */
-  constructor(header, notificationDuration, forced = false) {
+  constructor(header, notificationDuration, category, forced = false) {
     super(header);
     this.header = header;
-    this.#notificationDuration = notificationDuration;
-    this.#forced = forced;
-    this.setCategory("notification");
+    this.notificationDuration = notificationDuration;
+    this.forced = forced;
+    this.category = category;
   }
 
   getHeader() {
@@ -40,20 +40,20 @@ export default class Notification extends Task {
    */
   setOptions(option1, option2) {
     if (typeof option1 === "string" && typeof option2 === "string") {
-      this.#option1 = option1;
-      this.#option2 = option2;
+      this.option1 = option1;
+      this.option2 = option2;
     } else {
       console.error("Options must be strings.");
     }
   }
 
   getDescription() {
-    return this.#description;
+    return this.description;
   }
 
   setDescription(description) {
     if (typeof description === "string") {
-      this.#description = description;
+      this.description = description;
     } else {
       console.error(`Invalid description. Expected a string.`);
     }
@@ -64,7 +64,7 @@ export default class Notification extends Task {
    * @returns {object} An object containing option1 and option2.
    */
   getOptions() {
-    return { option1: this.#option1, option2: this.#option2 };
+    return { option1: this.option1, option2: this.option2 };
   }
 
   /**
@@ -73,8 +73,8 @@ export default class Notification extends Task {
    * @param {object} option2Impact - Impact of choosing option 2.
    */
   setImpacts(option1Impact, option2Impact) {
-    this.#option1Impact = option1Impact;
-    this.#option2Impact = option2Impact;
+    this.option1Impact = option1Impact;
+    this.option2Impact = option2Impact;
   }
 
   /**
@@ -83,8 +83,8 @@ export default class Notification extends Task {
    */
   getImpacts() {
     return {
-      option1Impact: this.#option1Impact,
-      option2Impact: this.#option2Impact,
+      option1Impact: this.option1Impact,
+      option2Impact: this.option2Impact,
     };
   }
 
@@ -93,7 +93,7 @@ export default class Notification extends Task {
    * @param {string} narrative - Narrative follow-up text.
    */
   setNarrative(narrative) {
-    this.#narrativeOutcome = narrative;
+    this.narrativeOutcome = narrative;
   }
 
   /**
@@ -101,7 +101,7 @@ export default class Notification extends Task {
    * @returns {string} The narrative follow-up text.
    */
   getNarrative() {
-    return this.#narrativeOutcome;
+    return this.narrativeOutcome;
   }
 
   /**
@@ -192,24 +192,24 @@ export default class Notification extends Task {
 
   //Set previous activity
   setPreviousActivity(activity) {
-    this.#previousActivity = activity;
+    this.previousActivity = activity;
   }
 
   //Get previous activity
   getPreviousActivity() {
-    return this.#previousActivity;
+    return this.previousActivity;
   }
 
   resumePreviousActivity() {
-    if (this.#previousActivity) {
+    if (this.previousActivity) {
       console.log(
-        `Resuming previous activity: ${this.#previousActivity.header}`,
+        `Resuming previous activity: ${this.previousActivity.header}`,
       );
 
-      this.#previousActivity.setCurrent(true);
-      this.#previousActivity.setStatus("IN_PROGRESS");
+      this.previousActivity.setCurrent(true);
+      this.previousActivity.setStatus("IN_PROGRESS");
 
-      this.#previousActivity = null;
+      this.previousActivity = null;
     } else {
       console.warn("No previous activity to resume.");
     }
@@ -221,7 +221,7 @@ export default class Notification extends Task {
    */
   setFollowUp(followUp) {
     if (typeof followUp === "string") {
-      this.#followUp = followUp;
+      this.followUp = followUp;
     } else {
       console.error(
         `Invalid follow-up. Expected a string but got ${typeof followUp}.`,
@@ -234,7 +234,7 @@ export default class Notification extends Task {
    * @returns {string} The follow-up activity.
    */
   getFollowUp() {
-    return this.#followUp;
+    return this.followUp;
   }
 
   /**
@@ -243,7 +243,7 @@ export default class Notification extends Task {
    */
   setAccepted(accepted) {
     if (typeof accepted === "boolean") {
-      this.#accepted = accepted;
+      this.accepted = accepted;
     } else {
       console.error(
         `Invalid value for accepted. Expected a boolean but got ${typeof accepted}.`,
@@ -256,7 +256,7 @@ export default class Notification extends Task {
    * @returns {boolean} True if the notification is accepted, otherwise false.
    */
   getAccepted() {
-    return this.#accepted;
+    return this.accepted;
   }
 
   /**
@@ -265,7 +265,7 @@ export default class Notification extends Task {
    */
   setNotificationTime(notificationTime) {
     if (notificationTime instanceof Date) {
-      this.#notificationTime = notificationTime;
+      this.notificationTime = notificationTime;
     } else {
       console.error(
         `Invalid notification time. Expected a Date object but got ${typeof notificationTime}.`,
@@ -278,7 +278,7 @@ export default class Notification extends Task {
    * @returns {Date} The time of the notification.
    */
   getNotificationTime() {
-    return this.#notificationTime;
+    return this.notificationTime;
   }
 
   /**
@@ -287,7 +287,7 @@ export default class Notification extends Task {
    */
   setNotificationDuration(duration) {
     if (typeof duration === "number" && duration > 0) {
-      this.#notificationDuration = duration;
+      this.notificationDuration = duration;
     } else {
       console.error(
         "Invalid notification duration. Must be a positive number.",
@@ -296,7 +296,7 @@ export default class Notification extends Task {
   }
 
   getForced() {
-    return this.#forced;
+    return this.forced;
   }
 
   /**
@@ -304,7 +304,7 @@ export default class Notification extends Task {
    * @returns {number} The duration of the notification.
    */
   getNotificationDuration() {
-    return this.#notificationDuration;
+    return this.notificationDuration;
   }
 
   /**

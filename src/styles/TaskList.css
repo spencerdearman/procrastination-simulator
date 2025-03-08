@@ -54,23 +54,19 @@
 }
 
 .type-academic {
-  border-color: #314d65;
-  background-color: #9fbfd6;
+  @apply border-blue-dark bg-blue;
 }
 
 .type-social {
-  border-color: #a1544a;
-  background-color: #e7c5ce;
+  @apply border-red-dark bg-red;
 }
 
 .type-energy {
-  border-color: #b98d35;
-  background-color: #f6e36b;
+  @apply border-yellow-dark bg-yellow;
 }
 
 .type-mental {
-  border-color: #4d675c;
-  background-color: #d3e5d7;
+  @apply border-green-dark bg-green;
 }
 
 @keyframes flashing {

@@ -1,9 +1,9 @@
 import React from "react";
-import { useGame } from "../game-context/GameContext";
+import { useGame } from "game-context/GameContext";
 import "styles/Calendar.css";
 import TaskBlock from "./TaskBlock";
-import "../styles/Calendar.css";
-import "../styles/Notification.css";
+import "styles/Calendar.css";
+import "styles/Notification.css";
 import TimeIndicator from "./TimeIndicator";
 
 export default function Calendar({ draggedTaskGhostRef }) {
@@ -23,7 +23,6 @@ export default function Calendar({ draggedTaskGhostRef }) {
       draggedTaskGhostRef.current.classList.remove("invalid");
     } else {
       draggedTaskGhostRef.current.classList.add("invalid");
-      // draggedTaskGhostRef.current.style.borderColor = "red");
     }
   };
 
@@ -49,7 +48,7 @@ export default function Calendar({ draggedTaskGhostRef }) {
                   //Adding audio
                   const taskPlacedSound = new Audio("/sound/new_task.mp3");
                   taskPlacedSound.volume = 0.5; // Adjust volume as needed
-                  taskPlacedSound.play()
+                  taskPlacedSound.play();
                 } catch (error) {
                   console.error("Error handling drop:", error);
                 }

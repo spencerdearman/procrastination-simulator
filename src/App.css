@@ -35,11 +35,7 @@ body {
   flex-direction: column;
 }
 
-.attribute {
-}
-
 #tasks-container {
-  height: 68vh;
   overflow-y: auto;
 }
 

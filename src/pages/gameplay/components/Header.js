@@ -1,7 +1,7 @@
 import React from "react";
-import "../styles/Header.css";
-import TimeDisplay from "./TimeDisplay";
-import PlayControls from "./PlayControls";
+import "styles/Header.css";
+import TimeDisplay from "components/TimeDisplay";
+import PlayControls from "components/PlayControls";
 import { GameState, useGame } from "game-context/GameContext";
 
 function Header({ mode }) {

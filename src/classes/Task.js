@@ -2,10 +2,9 @@ export default class Task {
   // Define available categories as a static property.
   static Category = Object.freeze({
     ACADEMIC: "academic",
-    SOCIAL: "social",
-    ENERGY: "energy",
-    MENTAL: "mental",
-    NOTIFICATION: "notification", // added category for notifications
+    SOCIAL: "Social",
+    ENERGY: "Energy",
+    MENTAL: "Mental",
   });
 
   constructor(name) {
@@ -31,9 +30,9 @@ export default class Task {
   }
 
   setCategory(value) {
-    const normalizedValue = value.toLowerCase();
-    if (Object.values(Task.Category).includes(normalizedValue)) {
-      this.category = normalizedValue;
+    // const normalizedValue = value.toLowerCase();
+    if (Object.values(Task.Category).includes(value)) {
+      this.category = value;
     } else {
       console.error(
         `Invalid category: ${value}. Allowed categories are: ${Object.values(
@@ -135,12 +134,12 @@ export default class Task {
     let ambient = false;
     console.log(this.name);
     if (this.name.toLowerCase() === "naptime") {
-      this.ambient_sound = new Audio("/sound/snoring.mp3")
+      this.ambient_sound = new Audio("/sound/snoring.mp3");
       ambient = true;
     }
     if (this.name.toLowerCase() === "sleep") {
       console.log("sleep-2");
-      this.ambient_sound = new Audio("/sound/snoring.mp3")
+      this.ambient_sound = new Audio("/sound/snoring.mp3");
       ambient = true;
     }
     if (ambient) {
@@ -221,13 +220,13 @@ export default class Task {
     console.log(this.category);
     let completedSound = new Audio("/sound/heal.mp3");
     completedSound.volume = 0.2;
-    if (this.category.toLowerCase() === 'mental') {
+    if (this.category.toLowerCase() === "mental") {
       completedSound = new Audio("/sound/mental.mp3");
       completedSound.volume = 0.3;
-    } else if (this.category.toLowerCase() === 'academic') {
+    } else if (this.category.toLowerCase() === "academic") {
       completedSound = new Audio("/sound/page-flip.mp3");
       completedSound.volume = 0.3;
-    } else if (this.category.toLowerCase() === 'social') {
+    } else if (this.category.toLowerCase() === "social") {
       completedSound = new Audio("/sound/social.mp3");
       completedSound.volume = 0.3;
     } // Adjust volume as needed

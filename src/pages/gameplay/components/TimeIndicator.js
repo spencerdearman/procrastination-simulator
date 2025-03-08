@@ -1,11 +1,11 @@
 import { DEFAULT_SPEED } from "classes/Time";
 import { useEffect, useRef, useState } from "react";
-import { GameState, useGame } from "../game-context/GameContext";
+import { GameState, useGame } from "game-context/GameContext";
 
-function TimeIndicator() {
+function TimeIndicator({ currentTime }) {
   const [position, setPosition] = useState(0);
   const indicatorRef = useRef(null);
-  const { currentTime, mode } = useGame();
+  const { mode } = useGame();
   const lastUpdateTimeRef = useRef(null);
 
   useEffect(() => {
