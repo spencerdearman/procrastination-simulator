@@ -43,6 +43,7 @@ describe("Logic", () => {
     task.initializeFromData(defaultTask);
     time = new Time(null, DEFAULT_SPEED / 51);
     logic = new Logic(1, time, player, null, []);
+    logic.isDayRunning = true;
   });
 
   it("subscribes to time events on construction", () => {
@@ -136,7 +137,19 @@ describe("Logic", () => {
     expect(logic.currentRunningTask).toBe(newStartTask);
   });
 
-  it("sets the current task when the time is equal to the task's start time on plan attempt", () => {
+  it("doesn't set the current task when the time is equal to the task's start time on plan attempt while day isn't running", () => {
+    // Arrange
+    logic.isDayRunning = false;
+    expect(logic.currentRunningTask).toBeFalsy();
+
+    // Act
+    logic.planTask(task, 0);
+
+    // Assert
+    expect(logic.currentRunningTask).toBeFalsy();
+  });
+
+  it("sets the current task when the time is equal to the task's start time on plan attempt while day is running", () => {
     // Arrange
     expect(logic.currentRunningTask).toBeFalsy();
 

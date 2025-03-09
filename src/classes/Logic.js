@@ -40,6 +40,7 @@ export default class Logic {
     this.availableTasks = [];
     this.notificationData = notificationData;
     this.eventHooks = new GameEvent();
+    this.isDayRunning = false;
   }
 
   getTasks() {
@@ -139,8 +140,14 @@ export default class Logic {
 
       // If the task was added during the current hour, ensure to set
       // the currentRunningTask to it
-      if (DayUtils.isWithinTimeWindow(task, currentGameTime)) {
-        this.currentRunningTask = task;
+      if (
+        DayUtils.isWithinTimeWindow(task, currentGameTime) &&
+        this.isDayRunning
+      ) {
+        this.handleTaskStart(
+          currentGameTime,
+          DayUtils.getCurrentGameHour(currentGameTime),
+        );
       }
     }
   }
@@ -245,6 +252,7 @@ export default class Logic {
   }
 
   beginDay() {
+    this.isDayRunning = true;
     this.time.startGameLoop();
   }
 
@@ -252,6 +260,7 @@ export default class Logic {
   completeDay(tomorrow) {
     // Move to the next day
     this.currentDayIndex++;
+    this.isDayRunning = false;
     if (this.currentDayIndex >= this.days.length) {
       this.endGame();
       return;
