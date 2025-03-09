@@ -238,7 +238,7 @@ export default class Logic {
 
   addPointsToPlayer(changes) {
     let updatedAttributesBitmap = 0;
-    const tickIncrementFactor = 5;
+    const tickIncrementFactor = 4;
 
     Object.entries(changes).forEach(([attribute, impact]) => {
       if (impact !== 0) {
