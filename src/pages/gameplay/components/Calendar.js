@@ -28,7 +28,9 @@ export default function Calendar({ draggedTaskGhostRef }) {
 
   return (
     <div id="calendar-container" className="calendar">
-      <TimeIndicator />
+      {gameContext.currentTime && (
+        <TimeIndicator currentTime={gameContext.currentTime} />
+      )}
       <div id="calendar" className="hours-container">
         {[...Array(24)].map((_, i) => (
           <div key={i} className="time-block">
