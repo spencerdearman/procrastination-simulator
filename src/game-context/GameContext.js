@@ -190,10 +190,6 @@ export const GameProvider = ({ children }) => {
     }
   }, [attributes, navigate, initializeGameState]);
 
-  const getPlannedTasks = useCallback(() => {
-    return tasks.filter((task) => task.startTime);
-  }, [tasks]);
-
   const canPlanTask = useCallback(
     (hourIndex) => {
       return gameLogic.canPlanTask(hourIndex);
@@ -211,7 +207,6 @@ export const GameProvider = ({ children }) => {
       handleRejectNotification,
       canPlanTask,
       logicPlanTask,
-      getPlannedTasks,
       unplanTask,
       mode,
       setMode,
@@ -225,7 +220,6 @@ export const GameProvider = ({ children }) => {
       canPlanTask,
       logicPlanTask,
       gameLogic,
-      getPlannedTasks,
       unplanTask,
       setMode,
       mode,
