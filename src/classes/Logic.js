@@ -10,6 +10,7 @@ export class GameEvent {
 
   notificationAvailable = (notification) => {};
   dayEnd = (currentDay, nextDay, startTime, tasks) => {};
+  taskStarted = () => {};
 }
 
 export default class Logic {
@@ -216,6 +217,7 @@ export default class Logic {
       ) {
         task.startTask();
         this.currentRunningTask = task;
+        this.eventHooks?.taskStarted();
       }
     }
   }

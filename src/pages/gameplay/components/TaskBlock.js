@@ -15,6 +15,17 @@ export default function TaskBlock({
 }) {
   const [topMargin, setTopMargin] = useState(0);
   const blockRef = useRef(null);
+  const [styles, setStyles] = useState(`type-${task.category.toLowerCase()}`);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  useEffect(() => {
+    if (styles.includes("disabled")) return;
+
+    if (task.completed || task.current) {
+      setIsDisabled(true);
+      setStyles((prev) => prev + " disabled");
+    }
+  }, [task.completed, task.current, styles]);
 
   const handleDragStart = (e) => {
     if (!blockRef.current) return;
@@ -84,7 +95,7 @@ export default function TaskBlock({
   return (
     // This outer div is necessary for styling the flashing animation
     <div
-      className={`task-block-container transition-[top] duration-200 ease-out type-${task.category.toLowerCase()} mb-4`}
+      className={`task-block-container transition-[top] duration-200 ease-out ${styles} mb-4 mx-4`}
       style={{ marginTop: `${topMargin}px` }}
       onMouseDown={handleClick}
       onMouseUp={() => setTopMargin(0)}
@@ -95,7 +106,7 @@ export default function TaskBlock({
       <div
         className={`task-block ${mode === GameState.PAUSED ? "flashing" : ""}`}
         id={task.id}
-        draggable={draggable}
+        draggable={draggable && !isDisabled}
       >
         <h2 className="mb-4">
           {task.icon} {task.name}

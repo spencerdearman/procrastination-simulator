@@ -61,6 +61,9 @@ export const GameProvider = ({ children }) => {
     const logic = new Logic(3, time, player, notificationData);
     logic.loadNotifications(notificationData);
     logic.eventHooks.dayEnd = dayEndHandler;
+    logic.eventHooks.taskStarted = () => {
+      setTasks(logic.getTasks());
+    };
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
