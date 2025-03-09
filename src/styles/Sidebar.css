@@ -1,6 +1,5 @@
 #sidebar {
   @apply flex flex-col items-start p-4 gap-4;
-  width: 40vw;
   height: 100%;
   border: 4px solid rgba(128, 128, 128, 0.15);
   background-color: #e2dac7;

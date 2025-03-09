@@ -17,6 +17,7 @@
   border-bottom: 1px dashed grey;
   background-color: white;
   position: relative;
+  display: flex;
 }
 
 .time-block:hover {
@@ -36,11 +37,9 @@
 }
 
 .slot {
-  width: calc(100% - 70px);
+  flex-grow: 1;
+  align-self: stretch;
   height: 100%;
-  position: absolute;
-  top: 0px;
-  left: 70px;
 }
 
 .slot .task-block-container {
