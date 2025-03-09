@@ -163,6 +163,19 @@ export const GameProvider = ({ children }) => {
     [gameLogic, tasks],
   );
 
+  const unplanTask = useCallback(
+    (taskData) => {
+      const task = tasks.find((t) => t.id === taskData.id);
+      if (!task) {
+        console.error("Could not find matching task with ID:", taskData.id);
+        return;
+      }
+      gameLogic.unplanTask(task);
+      setTasks(gameLogic.getTasks());
+    },
+    [gameLogic, tasks],
+  );
+
   useEffect(() => {
     const deficiency = Object.keys(attributes).find(
       (stat) => attributes[stat] <= 0,
@@ -196,6 +209,7 @@ export const GameProvider = ({ children }) => {
       canPlanTask,
       logicPlanTask,
       getPlannedTasks,
+      unplanTask,
       mode,
       setMode,
       day,
@@ -209,6 +223,7 @@ export const GameProvider = ({ children }) => {
       logicPlanTask,
       gameLogic,
       getPlannedTasks,
+      unplanTask,
       setMode,
       mode,
       day,

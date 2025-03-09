@@ -89,12 +89,15 @@ export default class Logic {
   initializeCurrentDay() {
     //filter to the corresponding days/unplanned list and tasks
     this.availableTasks.forEach((task) => {
-      if (
-        !task.completed &&
-        (!task.startTime ||
-          DayUtils.isSameDay(this.time.lastGameRecordTime, task.startTime))
-      ) {
-        this.currentDay.addTask(task);
+      const startTime = task.startTime;
+      if (!task.completed) {
+        if (!startTime) {
+          this.currentDay.unplanTask(task);
+        } else if (
+          DayUtils.isSameDay(this.time.lastGameRecordTime, startTime)
+        ) {
+          this.currentDay.planTask(task);
+        }
       }
     });
   }
@@ -140,6 +143,10 @@ export default class Logic {
         this.currentRunningTask = task;
       }
     }
+  }
+
+  unplanTask(task) {
+    this.currentDay.unplanTask(task);
   }
 
   // CALL THIS FOR MOVING PLANNED TASKS
@@ -412,7 +419,7 @@ export default class Logic {
       const newTask = new Task(this.currentNotification.getFollowUp());
       newTask.setStartTime(this.time.getCurrentGameTime());
       newTask.setDuration(1); // Default to 1 hour for follow-ups
-      this.currentDay.addTask(newTask);
+      this.currentDay.unplanTask(newTask); // FIXME: This will not add the task to the calendar
       console.log(`📌 New Task Added: ${newTask.name}`);
     }
 

@@ -13,6 +13,71 @@ describe("Day", () => {
     task.initializeFromData(defaultTask);
   });
 
+  it("allows you to add a task to the list of unplanned tasks", () => {
+    // Arrange & Act
+    day.unplanTask(task);
+
+    // Act
+    expect(day.unplannedTasks.length).toBe(1);
+    expect(day.unplannedTasks[0]).toBe(task);
+  });
+
+  it("removes start and end time when unplanning tasks", () => {
+    // Arrange
+    task.startTime = Date.now();
+    task.endTime = Date.now();
+
+    // Act
+    day.unplanTask(task);
+
+    // Assert
+    expect(day.unplannedTasks.length).toBe(1);
+    expect(task.startTime).toBeFalsy();
+    expect(task.endTime).toBeFalsy();
+  });
+
+  it("doesn't allow duplicate tasks to be planned", () => {
+    // Arrange & Act
+    day.unplanTask(task);
+    day.unplanTask(task);
+
+    // Assert
+    expect(day.unplannedTasks.length).toBe(1);
+  });
+
+  it("doesn't allow unplanning a completed task", () => {
+    // Arrange
+    task.completed = true;
+
+    // Act
+    day.unplanTask(task);
+
+    // Assert
+    expect(day.unplannedTasks.length).toBe(0);
+  });
+
+  it("doesn't allow unplanning a currently running task", () => {
+    // Arrange
+    task.current = true;
+
+    // Act
+    day.unplanTask(task);
+
+    // Assert
+    expect(day.unplannedTasks.length).toBe(0);
+  });
+
+  it("doesn't add task duplicates created from reusable tasks back to the unplanned tasks list", () => {
+    // Arrange
+    task.id = Day.createReusableTaskId(task);
+
+    // Act
+    day.unplanTask(task);
+
+    // Assert
+    expect(day.unplannedTasks.length).toBe(0);
+  });
+
   it("allows you to plan tasks", () => {
     // Arrange & Act
     const didPlan = day.planTask(task, 0, startTime);

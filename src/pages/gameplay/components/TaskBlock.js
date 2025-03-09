@@ -81,23 +81,6 @@ export default function TaskBlock({
     }
   };
 
-  // Add this effect near your other hooks
-  useEffect(() => {
-    return () => {
-      // Cleanup on unmount
-      if (draggedTaskGhostRef.current) {
-        if (draggedTaskGhostRef.current.dragHandler) {
-          document.removeEventListener(
-            "drag",
-            draggedTaskGhostRef.current.dragHandler,
-          );
-        }
-        draggedTaskGhostRef.current.remove();
-        draggedTaskGhostRef.current = null;
-      }
-    };
-  }, [draggedTaskGhostRef]);
-
   return (
     // This outer div is necessary for styling the flashing animation
     <div

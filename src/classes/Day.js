@@ -49,6 +49,9 @@ export const DaysOfWeek = Object.freeze({
   SATURDAY: 6,
 });
 
+const uuidRegex =
+  /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
 export default class Day {
   constructor(dayOfWeek) {
     this.id = uuid(); // Generate random ID
@@ -131,34 +134,26 @@ export default class Day {
     return DayUtils.getCurrentGameHour(time);
   }
 
-  addTask(task) {
+  unplanTask(task) {
     if (!(task instanceof Task)) {
       console.error("Invalid task. Must be an instance of Task.");
       return;
     }
 
-    if (!task.startTime) {
-      this.unplannedTasks.push(task);
+    if (
+      this.unplannedTasks.find((t) => t.id === task.id) ||
+      task.completed ||
+      task.current ||
+      uuidRegex.test(task.id)
+    ) {
       return;
     }
 
-    console.log(`Task "${task.name}" start time:`, task.startTime);
-    const index = this.getCurrentGameHour(task.startTime);
-
-    if (isNaN(index) || index < 0 || index >= this.tasks.length) {
-      console.error(`Invalid task index for "${task.name}":`, index);
-      return;
-    }
-
-    if (this.tasks[index] !== null) {
-      console.error(
-        `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
-      );
-      return;
-    }
-
-    console.log(`Task "${task.name}" scheduled at index ${index}.`);
-    this.tasks[index] = task;
+    task.startTime = null;
+    task.endTime = null;
+    this.tasks = this.tasks.map((t) => (t?.id === task.id ? null : t));
+    this.unplannedTasks.unshift(task);
+    return;
   }
 
   logTaskPlanning(task) {
@@ -195,11 +190,25 @@ export default class Day {
     this.logs.push(logEntry);
   }
 
+  static createReusableTaskId(task) {
+    if (!(task instanceof Task)) {
+      console.error("Invalid task. Must be an instance of Task.");
+      return;
+    }
+
+    const id = `${task.id}-${uuid()}`;
+    if (!uuidRegex.test(id)) {
+      console.error("Improper reusable ID structure. Something went wrong");
+      return;
+    }
+    return id;
+  }
+
   canPlanTask(index, gameTime, task = null) {
     if (
       index < 0 ||
       index >= this.tasks.length ||
-      index < gameTime.getHours() ||
+      index < gameTime?.getHours() ||
       this.tasks[index] !== null ||
       task?.completed
     ) {
@@ -221,7 +230,7 @@ export default class Day {
     if (task.reusable) {
       taskToSchedule = new Task(task.name);
       taskToSchedule.initializeFromData(task);
-      taskToSchedule.id = `${task.id}-${uuid()}`; // Unique ID
+      taskToSchedule.id = Day.createReusableTaskId(task);
       taskToSchedule.reusable = false; // The copy isn't reusable
     }
 
