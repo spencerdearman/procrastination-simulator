@@ -52,6 +52,8 @@ export default function TaskBlock({
     // Set initial position
     ghostEl.style.left = `${e.clientX - nodeRect.width / 2}px`;
     ghostEl.style.top = `${e.clientY - nodeRect.height / 2}px`;
+    ghostEl.style.boxShadow =
+      "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)";
 
     // Add drag event listener to update ghost position
     const handleDrag = (dragEvent) => {

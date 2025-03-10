@@ -38,13 +38,15 @@
 }
 
 .task-block-container:hover:not(.disabled) {
-  transform: scale(0.98);
   cursor: grab;
   border-color: white;
 }
 
-.task-block-container:active:not(.disabled) {
-  @apply shadow-xl;
+.task-block-container:hover:not(.disabled):not(.slot .task-block-container) {
+  transform: scale(0.98);
+}
+
+.task-block-container:active:not(.disabled):not(.slot .task-block-container) {
   transform: scale(1.02);
   cursor: grabbing;
 }
