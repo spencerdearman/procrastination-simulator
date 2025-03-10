@@ -28,7 +28,7 @@ export default function TaskBlock({
   }, [task.completed, task.current, styles]);
 
   const handleDragStart = (e) => {
-    if (!blockRef.current) return;
+    if (!blockRef.current || isDisabled) return;
 
     // Make sure to include the id in the data being transferred
     const dragEl = blockRef.current;
@@ -70,7 +70,9 @@ export default function TaskBlock({
   };
 
   const handleClick = (e) => {
-    if (draggable) {
+    const isPlannedTask =
+      task.startTime !== null && task.startTime !== undefined;
+    if (draggable && !isDisabled && !isPlannedTask) {
       const boundingRect = blockRef.current.getBoundingClientRect();
       const topMargin = e.clientY - boundingRect.top - boundingRect.height / 2;
       setTopMargin(Math.max(Math.round(topMargin), 0));
