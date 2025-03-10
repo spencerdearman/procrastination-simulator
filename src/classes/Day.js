@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import Task from "./Task.js";
 
 export class DayUtils {
@@ -10,7 +11,7 @@ export class DayUtils {
   }
 
   static isWithinTimeWindow(task, currentGameTime) {
-    if (!task.startTime || !task.endTime) return true;
+    if (!task.startTime || !task.endTime) return false;
 
     if (!(currentGameTime instanceof Date)) {
       console.error(
@@ -48,9 +49,12 @@ export const DaysOfWeek = Object.freeze({
   SATURDAY: 6,
 });
 
+const uuidRegex =
+  /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
 export default class Day {
   constructor(dayOfWeek) {
-    this.id = Math.random().toString(36).substring(2, 15); // Generate random ID
+    this.id = uuid(); // Generate random ID
     this.notifications = []; // Stores the list of notification class objects
     // Stores the list of task class objects ACTUALLY ON CALENDAR
     this.tasks = [
@@ -130,34 +134,26 @@ export default class Day {
     return DayUtils.getCurrentGameHour(time);
   }
 
-  addTask(task) {
+  unplanTask(task) {
     if (!(task instanceof Task)) {
       console.error("Invalid task. Must be an instance of Task.");
       return;
     }
 
-    if (!task.startTime) {
-      this.unplannedTasks.push(task);
+    if (
+      this.unplannedTasks.find((t) => t.id === task.id) ||
+      task.completed ||
+      task.current ||
+      uuidRegex.test(task.id)
+    ) {
       return;
     }
 
-    console.log(`Task "${task.name}" start time:`, task.startTime);
-    const index = this.getCurrentGameHour(task.startTime);
-
-    if (isNaN(index) || index < 0 || index >= this.tasks.length) {
-      console.error(`Invalid task index for "${task.name}":`, index);
-      return;
-    }
-
-    if (this.tasks[index] !== null) {
-      console.error(
-        `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
-      );
-      return;
-    }
-
-    console.log(`Task "${task.name}" scheduled at index ${index}.`);
-    this.tasks[index] = task;
+    task.startTime = null;
+    task.endTime = null;
+    this.tasks = this.tasks.map((t) => (t?.id === task.id ? null : t));
+    this.unplannedTasks.unshift(task);
+    return;
   }
 
   logTaskPlanning(task) {
@@ -194,12 +190,27 @@ export default class Day {
     this.logs.push(logEntry);
   }
 
-  canPlanTask(index, gameTime) {
+  static createReusableTaskId(task) {
+    if (!(task instanceof Task)) {
+      console.error("Invalid task. Must be an instance of Task.");
+      return;
+    }
+
+    const id = `${task.id}-${uuid()}`;
+    if (!uuidRegex.test(id)) {
+      console.error("Improper reusable ID structure. Something went wrong");
+      return;
+    }
+    return id;
+  }
+
+  canPlanTask(index, gameTime, task = null) {
     if (
       index < 0 ||
       index >= this.tasks.length ||
-      index < gameTime.getHours() ||
-      this.tasks[index] !== null
+      index < gameTime?.getHours() ||
+      this.tasks[index] !== null ||
+      task?.completed
     ) {
       return false;
     }
@@ -209,18 +220,17 @@ export default class Day {
   // THIS GETS CALLED BY LOGIC ONLY
   planTask(task, index, date) {
     if (!(task instanceof Task)) {
-      console.error("Invalid task. Must be an instance of Task.");
       return false;
     }
 
-    if (!this.canPlanTask(index, date)) return false;
+    if (!this.canPlanTask(index, date, task)) return false;
 
     let taskToSchedule = task;
 
     if (task.reusable) {
       taskToSchedule = new Task(task.name);
       taskToSchedule.initializeFromData(task);
-      taskToSchedule.id = `${task.id}-${Date.now()}`; // Unique ID
+      taskToSchedule.id = Day.createReusableTaskId(task);
       taskToSchedule.reusable = false; // The copy isn't reusable
     }
 
@@ -231,6 +241,15 @@ export default class Day {
     // Set task time values
     taskToSchedule.setStartTime(plannedStartTime);
     taskToSchedule.setEndTime(); // Auto-calculates end time based on duration
+
+    // If this is a move attempt (task was on the calendar previously),
+    // remove it from its previous location
+    const oldIndex = this.tasks.findIndex(
+      (t) => t && t.id === taskToSchedule.id,
+    );
+    if (oldIndex !== -1) {
+      this.tasks[oldIndex] = null;
+    }
 
     // Move task to planned tasks
     this.tasks[index] = taskToSchedule;
@@ -243,42 +262,6 @@ export default class Day {
     this.logTaskPlanning(taskToSchedule);
 
     return true;
-  }
-
-  // DONT CALL THIS
-  movePlannedTask(task, index, date) {
-    console.log("entering movePlannedTask");
-    if (!(task instanceof Task)) {
-      console.error("Invalid task. Must be an instance of Task.");
-      return;
-    }
-
-    if (index < 0 || index >= this.tasks.length) {
-      console.error(`Invalid task index for "${task.name}":`, index);
-      return;
-    }
-
-    if (this.tasks[index] !== null) {
-      console.error(
-        `Task conflict: "${task.name}" overlaps with an existing task at index ${index}.`,
-      );
-      return;
-    }
-
-    // Create a new startTime based on the given index and date
-    const plannedStartTime = new Date(date);
-    plannedStartTime.setHours(index, 0, 0, 0); // Set hour to match index, reset minutes/seconds
-
-    // Set task time values
-    task.setStartTime(plannedStartTime);
-    task.setEndTime(); // Auto-calculates end time based on duration
-
-    // Move task to planned tasks
-    const oldIndex = this.tasks.findIndex((t) => t === task);
-    this.tasks[oldIndex] = null;
-    console.log("index", index);
-    console.log("oldIndex", oldIndex);
-    this.tasks[index] = task;
   }
 
   // Removes a task from the task list of the day

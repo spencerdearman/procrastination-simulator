@@ -5,8 +5,6 @@ const PlayerStats = ({ attributes }) => {
     return <p className="text-red-500">No attributes found</p>;
   }
 
-  console.log(attributes); // Debugging log to verify props
-
   return (
     <div className="p-4 border border-purple-300 rounded-lg shadow-md">
       <h2 className="text-xl font-semibold mb-2">Your Score</h2>

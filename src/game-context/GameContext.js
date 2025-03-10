@@ -58,8 +58,12 @@ export const GameProvider = ({ children }) => {
       });
     };
 
-    const logic = new Logic(3, time, player, dayEndHandler, notificationData);
+    const logic = new Logic(3, time, player, notificationData);
     logic.loadNotifications(notificationData);
+    logic.eventHooks.dayEnd = dayEndHandler;
+    logic.eventHooks.taskStarted = () => {
+      setTasks(logic.getTasks());
+    };
     setCurrentTime(time);
     setAttributes(logic.getAttributes());
     setGameLogic(logic);
@@ -154,9 +158,22 @@ export const GameProvider = ({ children }) => {
       }
 
       // Let the game logic handle task planning
-      gameLogic.logicPlanTask(task, hourIndex);
+      gameLogic.planTask(task, hourIndex);
 
       // Update React state to reflect changes
+      setTasks(gameLogic.getTasks());
+    },
+    [gameLogic, tasks],
+  );
+
+  const unplanTask = useCallback(
+    (taskData) => {
+      const task = tasks.find((t) => t.id === taskData.id);
+      if (!task) {
+        console.error("Could not find matching task with ID:", taskData.id);
+        return;
+      }
+      gameLogic.unplanTask(task);
       setTasks(gameLogic.getTasks());
     },
     [gameLogic, tasks],
@@ -172,10 +189,6 @@ export const GameProvider = ({ children }) => {
       navigate("/game/game-over", { state: { deathCause: deficiency } });
     }
   }, [attributes, navigate, initializeGameState]);
-
-  const getPlannedTasks = useCallback(() => {
-    return tasks.filter((task) => task.startTime);
-  }, [tasks]);
 
   const canPlanTask = useCallback(
     (hourIndex) => {
@@ -194,7 +207,7 @@ export const GameProvider = ({ children }) => {
       handleRejectNotification,
       canPlanTask,
       logicPlanTask,
-      getPlannedTasks,
+      unplanTask,
       mode,
       setMode,
       day,
@@ -204,10 +217,11 @@ export const GameProvider = ({ children }) => {
       currentTime,
       tasks,
       notifications,
+      handleAcceptNotification,
+      handleRejectNotification,
       canPlanTask,
       logicPlanTask,
-      gameLogic,
-      getPlannedTasks,
+      unplanTask,
       setMode,
       mode,
       day,

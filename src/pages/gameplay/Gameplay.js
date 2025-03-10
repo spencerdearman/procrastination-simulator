@@ -16,14 +16,14 @@ export default function Gameplay() {
   } = useGame();
 
   return (
-    <div id="container" onDragOver={(e) => e.preventDefault()}>
+    <div id="container" className="grid grid-cols-3 grid-rows-1">
       <NotificationsList
         notifications={notifications}
         onAccept={handleAcceptNotification}
         onReject={handleRejectNotification}
       />
       <TickingSound />
-      <div id="main">
+      <div id="main" className="col-span-2">
         <Header mode={mode} />
         <Calendar draggedTaskGhostRef={draggedTaskGhostRef} />
       </div>

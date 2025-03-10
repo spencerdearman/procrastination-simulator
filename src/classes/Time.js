@@ -3,7 +3,7 @@ import { DayUtils } from "./Day";
 export const DEFAULT_SPEED = 5;
 
 export default class Time {
-  constructor(time = null) {
+  constructor(time = null, speed = DEFAULT_SPEED) {
     if (time) {
       this.realSecondsPerGameHour = time.realSecondsPerGameHour;
       this.startTime = time.startTime;
@@ -15,7 +15,7 @@ export default class Time {
         : [];
       this.gameLoopInterval = time.gameLoopInterval;
     } else {
-      this.realSecondsPerGameHour = DEFAULT_SPEED;
+      this.realSecondsPerGameHour = speed;
       this.startTime = Date.now();
       this.lastGameRecordTime = new Date(2025, 0, 1, 0, 0, 0);
       this.lastRealWorldCheckTime = Date.now();
@@ -65,14 +65,9 @@ export default class Time {
 
     newTimeInstance.lastGameRecordTime = newGameTime;
 
-    return newTimeInstance;
+    // Call all subscribers with the new time
+    this.subscribers.forEach((callback) => callback(newTimeInstance));
   }
-
-  compareTwoTime() {}
-
-  isTriggered() {}
-
-  hasEnded() {}
 
   xSpeed(speed) {
     this.playerDefinedSpeed = speed;
@@ -98,8 +93,7 @@ export default class Time {
 
     this.lastRealWorldCheckTime = Date.now();
     this.gameLoopInterval = setInterval(() => {
-      const newTime = this.tick();
-      this.subscribers.forEach((callback) => callback(newTime));
+      this.tick();
     }, 1000);
   }
 

@@ -132,7 +132,6 @@ export default class Task {
       return;
     }
     let ambient = false;
-    console.log(this.name);
     if (this.name.toLowerCase() === "naptime") {
       this.ambient_sound = new Audio("/sound/snoring.mp3");
       ambient = true;
@@ -148,7 +147,6 @@ export default class Task {
       this.ambient_sound.play();
     }
     this.setCurrent(true);
-    console.log(`Task "${this.name}" has started.`);
   }
 
   changeTime(newStartTime) {
@@ -182,12 +180,7 @@ export default class Task {
     }
   }
 
-  completeTask(playerAttributes) {
-    if (typeof playerAttributes !== "object" || playerAttributes === null) {
-      console.error("Invalid playerAttributes provided. Expected an object.");
-      return false;
-    }
-
+  completeTask() {
     if (this.getCompleted()) {
       console.warn(`Task "${this.name}" is already completed.`);
       return false;
@@ -195,29 +188,16 @@ export default class Task {
 
     this.setCompleted(true);
 
-    if (Object.keys(this.getAttributeImpactsObject()).length === 0) {
-      console.warn(`Task "${this.name}" has no attribute impacts defined.`);
-      return false;
-    }
+    this.playCompletionSound();
+    return true;
+  }
 
-    // Apply attribute impacts to player attributes
-    for (let key in this.getAttributeImpactsObject()) {
-      if (!playerAttributes.hasOwnProperty(key)) {
-        console.error(`Player attributes lacks attribute: ${key}`);
-        continue;
-      }
-
-      playerAttributes[key] += this.getAttributeImpact(key);
-      playerAttributes[key] = Math.min(100, Math.max(0, playerAttributes[key]));
-    }
+  playCompletionSound() {
     if (this.ambient_sound) {
       this.ambient_sound.pause();
       this.ambient_sound = null;
     }
 
-    console.log(`Task "${this.name}" completed successfully.`);
-    //select sound type
-    console.log(this.category);
     let completedSound = new Audio("/sound/heal.mp3");
     completedSound.volume = 0.2;
     if (this.category.toLowerCase() === "mental") {
@@ -231,7 +211,6 @@ export default class Task {
       completedSound.volume = 0.3;
     } // Adjust volume as needed
     completedSound.play();
-    return true;
   }
 
   isOverdue(currentGameTime) {
@@ -352,7 +331,7 @@ export default class Task {
     this.description = data.description;
     this.icon = data.icon;
     this.completed = data.completed;
-    this.locked = true; // Ensuring all tasks are locked
+    this.locked = data.locked; // Ensuring all tasks are locked
     this.current = data.current;
     this.duration = data.duration;
     this.reusable = data.reusable;

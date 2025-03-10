@@ -46,7 +46,6 @@
 #### **Functions**
 
 - `addPoints(attribute, amount)`: Increases the value of an attribute.
-- `reducePoints(attribute, amount)`: Decreases the value of an attribute.
 - `resetAttributes()`: Resets all attributes to default values.
 - `getAttribute(attribute)`: Retrieves the value of a specific attribute.
 - `getAllAttributes()`: Returns all attributes as an object.
@@ -64,7 +63,6 @@
 - `getCurrentGameHour(time)`: Returns the hour from a given game time.
 - `addTask(task)`: Adds a task to the day’s schedule.
 - `planTask(task, index, date)`: Plans a task at a specified time slot. **NOTE DO NOT USE THIS METHOD USE THE ONE IN LOGIC.JS**
-- `movePlannedTask(task, index, date)`: Moves a planned task to a different time slot. **NOTE DO NOT USE THIS METHOD USE THE ONE IN LOGIC.JS**
 - `deleteTask(taskName)`: Removes a task from the schedule.
 - `updateCompleted()`: Updates the list of completed tasks.
 - `updateRollover()`: Updates rollover tasks for the next day.
@@ -81,7 +79,7 @@
 - `parseTasks(taskDataArray)`: Converts raw task data into `Task` objects.
 - `isWithinTimeWindow(task, currentGameTime)`: Checks if a task is scheduled within the current time window.
 - `startGame(taskDataArray)`: Initializes the game with predefined tasks.
-- `logicPlanTask(task, index)`: Moves tasks from unplanned to planned.
+- `planTask(task, index)`: Moves tasks from unplanned to planned.
 - `logicMovePlannedTask(task, index)`: Moves a planned task to another time slot.
 - `startGameLoop()`: Manages the core game loop.
 - `applyAttributeChanges(changes)`: Applies changes to player attributes.

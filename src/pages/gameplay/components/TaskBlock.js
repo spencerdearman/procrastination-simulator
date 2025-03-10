@@ -15,9 +15,20 @@ export default function TaskBlock({
 }) {
   const [topMargin, setTopMargin] = useState(0);
   const blockRef = useRef(null);
+  const [styles, setStyles] = useState(`type-${task.category.toLowerCase()}`);
+  const [isDisabled, setIsDisabled] = useState(false);
+
+  useEffect(() => {
+    if (styles.includes("disabled")) return;
+
+    if (task.completed || task.current) {
+      setIsDisabled(true);
+      setStyles((prev) => prev + " disabled");
+    }
+  }, [task.completed, task.current, styles]);
 
   const handleDragStart = (e) => {
-    if (!blockRef.current) return;
+    if (!blockRef.current || isDisabled) return;
 
     // Make sure to include the id in the data being transferred
     const dragEl = blockRef.current;
@@ -41,6 +52,8 @@ export default function TaskBlock({
     // Set initial position
     ghostEl.style.left = `${e.clientX - nodeRect.width / 2}px`;
     ghostEl.style.top = `${e.clientY - nodeRect.height / 2}px`;
+    ghostEl.style.boxShadow =
+      "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)";
 
     // Add drag event listener to update ghost position
     const handleDrag = (dragEvent) => {
@@ -59,7 +72,9 @@ export default function TaskBlock({
   };
 
   const handleClick = (e) => {
-    if (draggable) {
+    const isPlannedTask =
+      task.startTime !== null && task.startTime !== undefined;
+    if (draggable && !isDisabled && !isPlannedTask) {
       const boundingRect = blockRef.current.getBoundingClientRect();
       const topMargin = e.clientY - boundingRect.top - boundingRect.height / 2;
       setTopMargin(Math.max(Math.round(topMargin), 0));
@@ -81,27 +96,10 @@ export default function TaskBlock({
     }
   };
 
-  // Add this effect near your other hooks
-  useEffect(() => {
-    return () => {
-      // Cleanup on unmount
-      if (draggedTaskGhostRef.current) {
-        if (draggedTaskGhostRef.current.dragHandler) {
-          document.removeEventListener(
-            "drag",
-            draggedTaskGhostRef.current.dragHandler,
-          );
-        }
-        draggedTaskGhostRef.current.remove();
-        draggedTaskGhostRef.current = null;
-      }
-    };
-  }, [draggedTaskGhostRef]);
-
   return (
     // This outer div is necessary for styling the flashing animation
     <div
-      className={`task-block-container transition-[top] duration-200 ease-out type-${task.category.toLowerCase()} mb-4 mx-4`}
+      className={`task-block-container transition-[top] duration-200 ease-out ${styles} mb-4 mx-4`}
       style={{ marginTop: `${topMargin}px` }}
       onMouseDown={handleClick}
       onMouseUp={() => setTopMargin(0)}
@@ -112,7 +110,7 @@ export default function TaskBlock({
       <div
         className={`task-block ${mode === GameState.PAUSED ? "flashing" : ""}`}
         id={task.id}
-        draggable={draggable}
+        draggable={draggable && !isDisabled}
       >
         <h2 className="mb-4">
           {task.icon} {task.name}

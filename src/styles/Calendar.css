@@ -17,6 +17,7 @@
   border-bottom: 1px dashed grey;
   background-color: white;
   position: relative;
+  display: flex;
 }
 
 .time-block:hover {
@@ -28,7 +29,7 @@
 }
 
 .hours {
-  width: 70px;
+  width: var(--hour-block-width);
   height: 100%;
   padding-left: 5px;
   border-right: 1px solid black;
@@ -36,34 +37,15 @@
 }
 
 .slot {
-  width: calc(100% - 70px);
+  flex-grow: 1;
+  align-self: stretch;
   height: 100%;
-  position: absolute;
-  top: 0px;
-  left: 70px;
 }
 
 .slot .task-block-container {
   margin: 0px;
   height: 100%;
   width: 100%;
-}
-.slot .task-block:hover {
-  transform: scale(1);
-}
-.slot .type-academic:hover {
-  border-color: #314d65;
-  background-color: #9fbfd6;
-}
-
-.slot .type-social:hover {
-  border-color: #a1544a;
-  background-color: #e7c5ce;
-}
-
-.slot .type-energy:hover {
-  border-color: #b98d35;
-  background-color: #f6e36b;
 }
 
 .slot .type-mental:hover {
@@ -80,8 +62,8 @@
 
 .current-time-indicator {
   position: absolute;
-  width: calc(60vw - 74px);
-  left: 74px;
+  left: calc(4px + var(--hour-block-width));
+  width: calc(100% - var(--hour-block-width));
   height: 2px;
   background-color: red;
   z-index: 10;

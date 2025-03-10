@@ -40,13 +40,16 @@ export default function TaskFilterBar({ setTaskFilterFunction }) {
         Filter by:
       </small>
       <div className="mx-auto flex mb-4 justify-center">
-        <div className="inline-flex gap-8 p-4 inline-block bg-gray-400 rounded-md">
+        <div
+          className="inline-flex gap-8 p-4 inline-block border-4 border-gray-200 bg-gray-400 rounded-md"
+          style={{ borderStyle: "inset" }}
+        >
           {Object.keys(tailwindDict).map((key) => {
             const attribute = tailwindDict[key];
             return (
               <div
                 key={attribute.id}
-                className={`size-[50px] relative text-3xl ${attribute.color} rounded-lg hover:scale-[1.05] transition-transform ${filterAttribute === attribute.id ? "border-white" : ""}`}
+                className={`size-[50px] relative text-3xl ${attribute.color} rounded-lg hover:scale-[1.05] shadow-sm hover:shadow-lg duration-[100ms] transition-shadow transition-transform ${filterAttribute === attribute.id ? "border-white" : ""}`}
               >
                 <button
                   className="size-full"

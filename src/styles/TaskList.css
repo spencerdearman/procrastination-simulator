@@ -37,19 +37,22 @@
   font-family: "Open Sans", sans-serif;
 }
 
-.task-block-container:hover {
-  transform: scale(0.98);
+.task-block-container:hover:not(.disabled) {
   cursor: grab;
   border-color: white;
 }
 
-.task-block-container:active {
+.task-block-container:hover:not(.disabled):not(.slot .task-block-container) {
+  transform: scale(0.98);
+}
+
+.task-block-container:active:not(.disabled):not(.slot .task-block-container) {
   transform: scale(1.02);
   cursor: grabbing;
 }
 
 .dragging .hideable,
-.task-block:active .hideable {
+.task-block-container:active .hideable {
   display: none !important;
 }
 
@@ -57,16 +60,32 @@
   @apply border-blue-dark bg-blue;
 }
 
+.type-academic.disabled {
+  @apply border-blue-dark bg-blue-disabled;
+}
+
 .type-social {
   @apply border-red-dark bg-red;
+}
+
+.type-social.disabled {
+  @apply border-red-dark bg-red-disabled;
 }
 
 .type-energy {
   @apply border-yellow-dark bg-yellow;
 }
 
+.type-energy.disabled {
+  @apply border-yellow-dark bg-yellow-disabled;
+}
+
 .type-mental {
   @apply border-green-dark bg-green;
+}
+
+.type-mental.disabled {
+  @apply border-green-dark bg-green-disabled;
 }
 
 @keyframes flashing {
@@ -81,7 +100,7 @@
   }
 }
 
-.task-block.flashing {
+.task-block-container:not(.disabled) .task-block.flashing {
   animation: flashing 2.1s infinite ease-in-out;
 }
 
