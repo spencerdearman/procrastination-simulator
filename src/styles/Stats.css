@@ -1,6 +1,4 @@
 #stats {
-  /* height: 40vh; */
-  padding: 20px;
   display: block;
   justify-content: center;
   align-items: center;
@@ -10,8 +8,9 @@
 
 #stats-block {
   width: 100%;
-  border: #ebe8d4 solid 10px;
-  border-radius: 10px;
+  border-style: solid;
+  border-color: #ebe8d4;
+  border-radius: 15px;
   background-color: #fdf7dd;
   position: relative;
 
@@ -21,14 +20,12 @@
   justify-content: space-evenly;
   align-items: center;
   padding: 20px 0px;
-  margin-top: 20px;
 }
 
 .stats-bar {
   width: 100%;
   position: relative;
   padding: 0px 20px;
-  margin-bottom: 10px;
 }
 
 .stats-bar-fill {
@@ -38,24 +35,20 @@
   border-radius: 5px;
 }
 
-.academics {
-  background-color: #4d799b;
-  border-color: #4d799b;
+progress.academics {
+  @apply border-blue-dark;
 }
 
-.social-life {
-  background-color: #a1544a;
-  border-color: #a1544a;
+progress.social-life {
+  @apply border-red-dark;
 }
 
-.energy {
-  background-color: #81beff;
-  border-color: #b98d35;
+progress.energy {
+  @apply border-yellow-dark;
 }
 
-.mental-health {
-  background-color: #a97ec5;
-  border-color: #4d675c;
+progress.mental-health {
+  @apply border-green-dark;
 }
 
 progress {
@@ -119,6 +112,7 @@ progress::-webkit-progress-value {
 }
 
 .sb-mental-health::-webkit-progress-bar {
+  background-color: blue;
   background-color: #ebe8d4;
   border-color: #4d675c;
 }
@@ -144,7 +138,7 @@ progress::-moz-progress-value {
 }
 
 .sb-mental-health::-moz-progress-value {
-  background-color: #a97ec5;
+  background-color: blue;
   transition: width 0.3s ease-out;
 }
 
@@ -165,7 +159,7 @@ progress::-moz-progress-value {
 }
 
 .sb-mental-health::-moz-progress-bar {
-  background-color: #ffffff;
+  background-color: blue;
   border-color: #a97ec5;
 }
 
@@ -182,7 +176,7 @@ progress::-moz-progress-value {
 }
 
 #stats progress {
-  width: 98%;
+  flex-grow: 1;
   display: inline-block;
 }
 
@@ -192,15 +186,12 @@ progress::-moz-progress-value {
 
 #stats label {
   display: inline-block;
-  /* width: 15%; */
-  text-align: center;
   font-size: 20px;
 }
 
 .progress-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -216,6 +207,23 @@ progress::-moz-progress-value {
   }
 }
 
+@keyframes flash-red-bg {
+  0% {
+    background-color: initial;
+  }
+  50% {
+    background-color: red;
+  }
+  100% {
+    background-color: initial;
+  }
+}
+
 .flash-warning {
   animation: flash-red 1.5s infinite ease-in-out;
+}
+
+flash-warning::-moz-progress-value,
+flash-warning::-webkit-progress-value {
+  animation: flash-red-bg 1.5s infinite ease-in-out;
 }

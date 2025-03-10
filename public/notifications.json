@@ -1,7 +1,9 @@
 {
   "notifications": [
     {
+      "id": "yoga-1",
       "header": "Morning Yoga Session",
+      "category": "Mental",
       "description": "A friend invited you to a relaxing yoga session at the park. It could help clear your mind and boost your energy for the day ahead.",
       "option1": "Join the yoga session",
       "option2": "Skip and continue your routine",
@@ -24,7 +26,9 @@
       "forced": false
     },
     {
+      "id": "last-minute-study-1",
       "header": "Last-Minute Study Group",
+      "category": "Mental",
       "description": "Your study group is meeting for a last-minute review before tomorrow's exam. Joining could help improve your understanding, but it might cost you some energy.",
       "option1": "Attend the study session",
       "option2": "Stay home and rest",

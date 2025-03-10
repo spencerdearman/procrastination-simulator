@@ -1,8 +1,8 @@
 import { useGame } from "game-context/GameContext";
-import Calendar from "components/Calendar";
-import Header from "components/Header";
+import Calendar from "./components/Calendar";
+import Header from "./components/Header";
 import NotificationsList from "components/Notifications";
-import Sidebar from "components/Sidebar";
+import Sidebar from "./components/Sidebar";
 import TickingSound from "components/TickingSound";
 import { useRef } from "react";
 

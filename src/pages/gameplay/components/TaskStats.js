@@ -2,7 +2,7 @@ import { StatIcons } from "components/Stats";
 
 export default function TaskStats({ attributes }) {
   const icons = {
-    academics: StatIcons.ACADEMICS,
+    academics: StatIcons.ACADEMIC,
     socialLife: StatIcons.SOCIAL,
     energy: StatIcons.ENERGY,
     mentalHealth: StatIcons.MENTAL,
